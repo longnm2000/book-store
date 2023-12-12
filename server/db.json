@@ -1,0 +1,16 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "longnguyen2005@gmail.com",
+      "password": "$2a$10$BMD2PaVFc6r0FeoYUSa0y.o9g6Dl/svu/zSmtPIV.doJb1Lg6/2oW",
+      "name": "Nguyễn Mạnh Long"
+    },
+    {
+      "email": "longnguyen20051@gmail.com",
+      "password": "$2a$10$BMD2PaVFc6r0FeoYUSa0y.o9g6Dl/svu/zSmtPIV.doJb1Lg6/2oW",
+      "id": 2,
+      "name": "Long Ka Ka"
+    }
+  ]
+}
