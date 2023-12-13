@@ -2,15 +2,31 @@
   "users": [
     {
       "id": 1,
+      "name": "Nguyễn Mạnh Long",
       "email": "longnguyen2005@gmail.com",
       "password": "$2a$10$BMD2PaVFc6r0FeoYUSa0y.o9g6Dl/svu/zSmtPIV.doJb1Lg6/2oW",
-      "name": "Nguyễn Mạnh Long"
+      "phone": "0123456789"
     },
     {
+      "id": 2,
+      "name": "Long Ka Ka",
       "email": "longnguyen20051@gmail.com",
       "password": "$2a$10$BMD2PaVFc6r0FeoYUSa0y.o9g6Dl/svu/zSmtPIV.doJb1Lg6/2oW",
-      "id": 2,
-      "name": "Long Ka Ka"
+      "phone": "0123123211"
+    },
+    {
+      "id": 3,
+      "name": "Mạnh",
+      "email": "longnguyen2000@gmail.com",
+      "password": "$2a$10$ERiz4Oo1lBBCC205n70cMuFbK0zDyrfVyhmc2yhOdWIUZdX5kjmmy",
+      "phone": "3829173219"
+    },
+    {
+      "email": "longmanhnguyen205@gmail.com",
+      "password": "$2a$10$xpU/mt13BMfLfK9FeWVDn.O9uhIcrig3Gc3Qwd3Ls8WySzD9VQTM.",
+      "name": "Nguyễn Mạnh Long",
+      "phone": "0866808540",
+      "id": 4
     }
   ]
 }

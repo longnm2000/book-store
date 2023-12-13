@@ -1,8 +1,32 @@
-import { Box, Button, Grid, Link, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormHelperText,
+  Grid,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  TextField,
+} from "@mui/material";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import FooterComp from "../../components/footer/FooterComp";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import Swal, { SweetAlertOptions } from "sweetalert2";
+import { Link, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useState } from "react";
+import HeaderComp from "../../components/header/HeaderComp";
+
+type Account = {
+  email: string;
+  password: string;
+};
+
 const schema = yup.object().shape({
   email: yup
     .string()
@@ -25,11 +49,77 @@ const LoginPage: React.FC = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data: object) => {
-    console.log(data);
+  const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
+
+  const onSubmit = (data: Account) => {
+    axios
+      .post(`${import.meta.env.VITE_API_URL}/login`, data)
+      .then(async (res: AxiosResponse) => {
+        if (res.status === 200) {
+          await Swal.fire({
+            title: "Đăng nhập thành công!",
+            icon: "success",
+            timer: 2000,
+          } as SweetAlertOptions);
+          localStorage.setItem(
+            "accessToken",
+            JSON.stringify(res.data?.accessToken)
+          );
+          localStorage.setItem("user", JSON.stringify(res.data?.user));
+          console.log(res.data);
+
+          navigate("/");
+        }
+      })
+      .catch((err: AxiosError) => {
+        if (err.code === "ERR_NETWORK") {
+          Swal.fire({
+            title: "Lỗi mạng",
+            timer: 2000,
+            icon: "error",
+          } as SweetAlertOptions);
+          return;
+        }
+        switch (err.response?.data) {
+          case "Cannot find user":
+            Swal.fire({
+              title: "Email chưa được đăng ký",
+              icon: "error",
+              timer: 2000,
+            });
+            break;
+          case "Incorrect password":
+            Swal.fire({
+              title: "Mật khẩu không chính xác",
+              icon: "error",
+              timer: 2000,
+            });
+            break;
+          default:
+            Swal.fire({
+              title: "Có lỗi xảy ra",
+              icon: "error",
+              timer: 2000,
+            });
+        }
+      });
   };
   return (
     <>
+      <Helmet>
+        <title>Đăng nhập</title>
+      </Helmet>
+      <HeaderComp />
       <div className="sm:py-20  mx-auto bg-no-repeat bg-center bg-cover bg-[url('https://marketplace.canva.com/EAD2962NKnQ/2/0/1600w/canva-rainbow-gradient-pink-and-purple-virtual-background-_Tcjok-d9b4.jpg')]">
         <div className=" w-fit mx-auto p-2 md:p-4 md:rounded-lg bg-white shadow-xl">
           <Box
@@ -65,19 +155,37 @@ const LoginPage: React.FC = () => {
               control={control}
               defaultValue=""
               render={({ field }) => (
-                <TextField
-                  {...field}
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Mật khẩu"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  error={!!errors.password}
-                  helperText={errors.password?.message}
-                />
+                <FormControl variant="outlined" fullWidth sx={{ mt: 2 }}>
+                  <InputLabel
+                    error={!!errors.password}
+                    htmlFor="outlined-adornment-password"
+                  >
+                    Password
+                  </InputLabel>
+                  <OutlinedInput
+                    {...field}
+                    error={!!errors.password}
+                    //   helperText={errors.password?.message}
+                    id="outlined-adornment-password"
+                    type={showPassword ? "text" : "password"}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Password"
+                  />
+                  <FormHelperText error id="component-error-text">
+                    {errors?.password?.message}
+                  </FormHelperText>
+                </FormControl>
               )}
             />
 
@@ -91,19 +199,19 @@ const LoginPage: React.FC = () => {
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Button component={Link} to={"/login"}>
                   Quên mật khẩu
-                </Link>
+                </Button>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Button component={Link} to={"/register"}>
                   Không có tài khoản? Đăng ký
-                </Link>
+                </Button>
               </Grid>
             </Grid>
           </Box>
           <div className=" max-w-md mx-auto">
-            <p className="mt-3">Hoặc đăng nhập bằng</p>
+            <p className="mt-3 font-semibold">Hoặc đăng nhập bằng</p>
             <Button fullWidth variant="outlined" sx={{ mt: 3, mb: 2 }}>
               Facebook
             </Button>
