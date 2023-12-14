@@ -20,7 +20,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
-import HeaderComp from "../../components/header/HeaderComp";
+// import HeaderComp from "../../components/header/HeaderComp";
 
 type Account = {
   email: string;
@@ -119,7 +119,7 @@ const LoginPage: React.FC = () => {
       <Helmet>
         <title>Đăng nhập</title>
       </Helmet>
-      <HeaderComp />
+      {/* <HeaderComp /> */}
       <div className="sm:py-20  mx-auto bg-no-repeat bg-center bg-cover bg-[url('https://marketplace.canva.com/EAD2962NKnQ/2/0/1600w/canva-rainbow-gradient-pink-and-purple-virtual-background-_Tcjok-d9b4.jpg')]">
         <div className=" w-fit mx-auto p-2 md:p-4 md:rounded-lg bg-white shadow-xl">
           <Box

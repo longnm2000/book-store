@@ -27,6 +27,20 @@
       "name": "Nguyễn Mạnh Long",
       "phone": "0866808540",
       "id": 4
+    },
+    {
+      "email": "longnguyen2004@gmail.com",
+      "password": "$2a$10$wqnGMO42835HHM0w9udeJugdxRmx05qSBS9VHT4bL76vqt0clFXqK",
+      "name": "Nguyễn Mạnh Long",
+      "phone": "0866808540",
+      "id": 5
+    },
+    {
+      "email": "longnguyen2001@gmail.com",
+      "password": "$2a$10$TI6Ah0xTAVloDn.gNwhrcOJdspijcB4JQWfVzuSKg4FtIFN9HWFAi",
+      "name": "Nguyễn Mạnh Long",
+      "phone": "0866808540",
+      "id": 6
     }
   ]
 }

@@ -5,6 +5,10 @@ import { useEffect } from "react";
 import RegisterPage from "./pages/register/RegisterPage";
 import HomePage from "./pages/home/HomePage";
 import NotFoundPage from "./pages/notFound/NotFoundPage";
+import DetailPage from "./pages/detail/DetailPage";
+import SearchPage from "./pages/searchProduct/SearchPage";
+import UserInfoPage from "./pages/userInfo/UserInfoPage";
+import PrivateUserRoutes from "./components/privateUserRoute/PrivateUserRoute";
 
 function App() {
   const navigate = useNavigate();
@@ -18,8 +22,14 @@ function App() {
     <>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route element={<PrivateUserRoutes />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+        </Route>
+
+        <Route path="/detail/:id" element={<DetailPage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/information/:id" element={<UserInfoPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>

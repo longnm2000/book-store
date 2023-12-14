@@ -20,7 +20,6 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import HeaderComp from "../../components/header/HeaderComp";
 
 interface RegisterInfo {
   name: string;
@@ -113,7 +112,7 @@ const RegisterPage: React.FC = () => {
       <Helmet>
         <title>Đăng ký</title>
       </Helmet>
-      <HeaderComp />
+      {/* <HeaderComp /> */}
       <main className=" bg-black md:py-4">
         <div className="container mx-auto">
           <div className=" sm:rounded-lg sm:overflow-hidden bg-no-repeat bg-center bg-cover bg-[url('https://png.pngtree.com/background/20230731/original/pngtree-a-lot-of-used-books-book-library-closeup-photo-picture-image_4349455.jpg')]">

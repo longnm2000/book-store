@@ -1,8 +1,8 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "./CarouselComp.css";
-const CarouselComp: React.FC = () => {
+import "./BannerComp.css";
+const BannerComp: React.FC = () => {
   const settings = {
     dots: false,
     infinite: true,
@@ -13,7 +13,6 @@ const CarouselComp: React.FC = () => {
     autoplaySpeed: 2000,
     pauseOnHover: true,
   };
-
   return (
     <div className="custom-carousel-wrapper">
       <Slider {...settings}>
@@ -57,4 +56,4 @@ const CarouselComp: React.FC = () => {
   );
 };
 
-export default CarouselComp;
+export default BannerComp;
