@@ -168,6 +168,7 @@ const LoginPage: React.FC = () => {
                     //   helperText={errors.password?.message}
                     id="outlined-adornment-password"
                     type={showPassword ? "text" : "password"}
+                    autoComplete="password"
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton

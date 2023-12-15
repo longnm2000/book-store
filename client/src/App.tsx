@@ -7,7 +7,7 @@ import HomePage from "./pages/home/HomePage";
 import NotFoundPage from "./pages/notFound/NotFoundPage";
 import DetailPage from "./pages/detail/DetailPage";
 import SearchPage from "./pages/searchProduct/SearchPage";
-import UserInfoPage from "./pages/userInfo/UserInfoPage";
+import ProfileComp from "./pages/profile/ProfileComp";
 import PrivateUserRoutes from "./components/privateUserRoute/PrivateUserRoute";
 
 function App() {
@@ -26,10 +26,9 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
         </Route>
-
+        <Route path="/profile/:id" element={<ProfileComp />} />
         <Route path="/detail/:id" element={<DetailPage />} />
         <Route path="/search" element={<SearchPage />} />
-        <Route path="/information/:id" element={<UserInfoPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
