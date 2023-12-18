@@ -13,7 +13,7 @@ import {
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import FooterComp from "../../components/footer/FooterComp";
+import FooterComp from "../../components/layout/footer/FooterComp";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import Swal, { SweetAlertOptions } from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";

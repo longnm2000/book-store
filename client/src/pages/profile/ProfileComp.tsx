@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet";
-import HeaderComp from "../../components/header/HeaderComp";
-import FooterComp from "../../components/footer/FooterComp";
+import HeaderComp from "../../components/layout/header/HeaderComp";
+import FooterComp from "../../components/layout/footer/FooterComp";
 import { useState } from "react";
 import React from "react";
 import { useForm, Controller } from "react-hook-form";

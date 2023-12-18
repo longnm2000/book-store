@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import logo from "../../assets/logo.jfif";
+import logo from "../../../assets/logo.jfif";
 const FooterComp: React.FC = () => {
   return (
     <>

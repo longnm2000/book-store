@@ -1,4 +1,5 @@
 import {
+  Button,
   FormControl,
   Grid,
   MenuItem,
@@ -8,20 +9,51 @@ import {
 } from "@mui/material";
 import { Helmet } from "react-helmet";
 import CardComp from "../../components/card/CardComp";
-import HeaderComp from "../../components/header/HeaderComp";
-import FooterComp from "../../components/footer/FooterComp";
-import { useState } from "react";
+import HeaderComp from "../../components/layout/header/HeaderComp";
+import FooterComp from "../../components/layout/footer/FooterComp";
+import { useEffect, useState } from "react";
+import axios, { AxiosResponse } from "axios";
+import { Category } from "../../types/types";
+import { Book } from "../../types/types";
 
 const SearchPage: React.FC = () => {
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<Book[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<number>(0);
   const [age, setAge] = useState("10");
-  const [moneyValue, setMoneyValue] = useState<number[]>([0, 3700000]);
+  const [moneyValue, setMoneyValue] = useState<number[]>([0, 10000000]);
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value);
   };
   const handleSliderChange = (event: Event, newValue: number | number[]) => {
     setMoneyValue(newValue as number[]);
   };
-  console.log(moneyValue);
+
+  const handleSelectedCategory = (categoryId: number) => {
+    setSelectedCategory(categoryId);
+  };
+  const fetchCategories = async () => {
+    const response: AxiosResponse = await axios.get(
+      "http://localhost:3000/categories"
+    );
+    setCategories(response.data);
+  };
+
+  const fetchFilteredProducts = async () => {
+    const response: AxiosResponse = await axios.get(
+      `http://localhost:3000/products?categoryId=${selectedCategory}`
+    );
+    setProducts(response.data);
+  };
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+  console.log(categories);
+  useEffect(() => {
+    fetchFilteredProducts();
+  }, [selectedCategory]);
+
+  console.log(products);
 
   return (
     <>
@@ -37,20 +69,24 @@ const SearchPage: React.FC = () => {
                 <div className="w-full h-full">
                   <div className="bg-white p-4 rounded-lg sticky top-4">
                     <h1 className=" font-semibold text-xl">Các loại sách</h1>
-                    <p>Thiếu Nhi</p>
-                    <p>Giáo Khoa - Tham Khảo</p>
-                    <p>Văn Học</p>
-                    <p>Tâm Lý - Kỹ Năng Sống</p>
-                    <p>Manga - Comic</p>
-                    <p>Sách Học Ngoại Ngữ</p>
-                    <p>Kinh Tế</p>
-                    <p>Khoa Học Kỹ Thuật</p>
+                    {categories.map((category) => (
+                      <div>
+                        <Button
+                          color="inherit"
+                          onClick={() => handleSelectedCategory(category.id)}
+                        >
+                          {category.name}
+                        </Button>
+                      </div>
+                    ))}
                     <hr className="my-4" />
                     <h1 className=" font-semibold text-xl">Giá</h1>
                     <Slider
                       value={moneyValue}
                       min={0}
-                      max={10000000}
+                      max={5000000}
+                      marks
+                      step={500000}
                       valueLabelDisplay="auto"
                       onChange={handleSliderChange}
                     />
@@ -90,11 +126,11 @@ const SearchPage: React.FC = () => {
                   </FormControl>
                 </div>
                 <Grid container spacing={6}>
-                  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((e) => (
+                  {/* {products.map((e, i) => (
                     <Grid item key={e} sm={6} md={4} xs={12} lg={4}>
-                      <CardComp />
+                      <CardComp book={e} />
                     </Grid>
-                  ))}
+                  ))} */}
                 </Grid>
               </Grid>
             </Grid>

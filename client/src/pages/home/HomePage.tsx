@@ -1,11 +1,57 @@
 import { Grid } from "@mui/material";
 import CardComp from "../../components/card/CardComp";
 import BannerComp from "../../components/banner/BannerComp";
-import FooterComp from "../../components/footer/FooterComp";
-import HeaderComp from "../../components/header/HeaderComp";
+import FooterComp from "../../components/layout/footer/FooterComp";
+import HeaderComp from "../../components/layout/header/HeaderComp";
 import { Helmet } from "react-helmet";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 const HomePage: React.FC = () => {
+  interface Book {
+    id: number;
+    avatar: string;
+    title: string;
+    author: string;
+    supplier: string;
+    publisher: string;
+    language: string;
+    weight: number;
+    dimensions: string;
+    releaseDate: number;
+    format: string;
+    numberOfPages: number;
+    categories: number[];
+    description: string;
+    createAt: number;
+    comments: Comment[];
+  }
+
+  interface Comment {
+    id: number;
+    productId: number;
+    userId: number;
+    score: number;
+    content: string;
+    createAt: number;
+  }
+
+  const [data, setData] = useState<Book[]>([]);
+  const fetchData = () => {
+    axios
+      .get(
+        "http://localhost:3000/products?_embed=comments&_limit=8&_sort=createAt&_order=desc"
+      )
+      .then((res) => {
+        setData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <>
       <Helmet>
@@ -132,9 +178,9 @@ const HomePage: React.FC = () => {
           <div className=" bg-white rounded-lg p-4">
             <h1 className="font-semibold text-xl mb-4">CÁC CUỐN SÁCH MỚI</h1>
             <Grid container spacing={2}>
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((e) => (
-                <Grid key={e} item sm={6} md={4} xs={12} lg={3}>
-                  <CardComp />
+              {data?.map((e, i) => (
+                <Grid key={i} item sm={6} md={4} xs={12} lg={3}>
+                  <CardComp book={e} />
                 </Grid>
               ))}
             </Grid>

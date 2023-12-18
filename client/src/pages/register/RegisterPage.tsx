@@ -1,4 +1,4 @@
-import FooterComp from "../../components/footer/FooterComp";
+import FooterComp from "../../components/layout/footer/FooterComp";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
