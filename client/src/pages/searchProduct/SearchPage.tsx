@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import axios, { AxiosResponse } from "axios";
 import { Category } from "../../types/types";
 import { Book } from "../../types/types";
+import { useSearchParams } from "react-router-dom";
 
 const SearchPage: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -22,6 +23,7 @@ const SearchPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<number>(0);
   const [age, setAge] = useState("10");
   const [moneyValue, setMoneyValue] = useState<number[]>([0, 10000000]);
+  const [searchParam, setSearchParam] = useSearchParams();
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value);
   };
@@ -41,7 +43,7 @@ const SearchPage: React.FC = () => {
 
   const fetchFilteredProducts = async () => {
     const response: AxiosResponse = await axios.get(
-      `http://localhost:3000/products?categoryId=${selectedCategory}`
+      `http://localhost:3000/products?_embed=comments&categoryId=${selectedCategory}`
     );
     setProducts(response.data);
   };
@@ -67,10 +69,10 @@ const SearchPage: React.FC = () => {
             <Grid container columnSpacing={5}>
               <Grid item xs={12} md={3}>
                 <div className="w-full h-full">
-                  <div className="bg-white p-4 rounded-lg sticky top-4">
+                  <div className="bg-white p-4 rounded-lg">
                     <h1 className=" font-semibold text-xl">Các loại sách</h1>
-                    {categories.map((category) => (
-                      <div>
+                    {categories.map((category, i) => (
+                      <div key={i}>
                         <Button
                           color="inherit"
                           onClick={() => handleSelectedCategory(category.id)}
@@ -126,11 +128,11 @@ const SearchPage: React.FC = () => {
                   </FormControl>
                 </div>
                 <Grid container spacing={6}>
-                  {/* {products.map((e, i) => (
-                    <Grid item key={e} sm={6} md={4} xs={12} lg={4}>
+                  {products.map((e, i) => (
+                    <Grid item key={i} sm={6} md={4} xs={12} lg={4}>
                       <CardComp book={e} />
                     </Grid>
-                  ))} */}
+                  ))}
                 </Grid>
               </Grid>
             </Grid>

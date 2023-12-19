@@ -14,7 +14,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { User } from "../../../types/types";
 import { Link } from "react-router-dom";
-import Swal, { SweetAlertOptions } from "sweetalert2";
+import { toast } from "react-toastify";
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -39,11 +39,8 @@ function ResponsiveAppBar() {
     localStorage.removeItem("user");
     localStorage.removeItem("accessToken");
     setAnchorElNav(null);
-    Swal.fire({
-      title: "Đăng xuất thành công",
-      timer: 2000,
-      icon: "success",
-    } as SweetAlertOptions);
+    setAnchorElUser(null);
+    toast.success("Đăng xuất thành công");
   };
 
   const handleCloseUserMenu = () => {
@@ -59,7 +56,6 @@ function ResponsiveAppBar() {
     <AppBar position="sticky" sx={{ background: "white", color: "black" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} /> */}
           <Link to={"/"}>
             <img
               src={logo}
@@ -68,23 +64,6 @@ function ResponsiveAppBar() {
               className=" hidden md:inline-block"
             />
           </Link>
-          {/* <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            LOGO
-          </Typography> */}
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -122,24 +101,7 @@ function ResponsiveAppBar() {
           </Box>
           {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
           <img src={logo} alt="" width={50} className="md:hidden" />
-          {/* <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
-            sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            LOGO
-          </Typography> */}
+
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <Button
               component={Link}
@@ -156,47 +118,61 @@ function ResponsiveAppBar() {
                 <Avatar alt={currentUser?.name || ""} src="ewqewq" />
               </IconButton>
             </Tooltip>
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {currentUser ? (
-                <>
-                  <MenuItem onClick={handleLogout}>
-                    <Typography>Đăng xuất</Typography>
-                  </MenuItem>
-                </>
-              ) : (
-                <>
-                  <MenuItem
-                    onClick={handleCloseUserMenu}
-                    component={Link}
-                    to="/login"
-                  >
-                    <Typography>Đăng Nhập</Typography>
-                  </MenuItem>
-                  <MenuItem
-                    onClick={handleCloseUserMenu}
-                    component={Link}
-                    to="/register"
-                  >
-                    <Typography>Đăng Ký</Typography>
-                  </MenuItem>
-                </>
-              )}
-            </Menu>
+
+            {currentUser ? (
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem onClick={handleLogout}>
+                  <Typography>Đăng xuất</Typography>
+                </MenuItem>{" "}
+              </Menu>
+            ) : (
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem
+                  onClick={handleCloseUserMenu}
+                  component={Link}
+                  to="/login"
+                >
+                  <Typography>Đăng Nhập</Typography>
+                </MenuItem>
+                <MenuItem
+                  onClick={handleCloseUserMenu}
+                  component={Link}
+                  to="/register"
+                >
+                  <Typography>Đăng Ký</Typography>
+                </MenuItem>
+              </Menu>
+            )}
           </Box>
         </Toolbar>
       </Container>

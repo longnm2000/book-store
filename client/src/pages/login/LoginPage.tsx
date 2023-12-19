@@ -3,7 +3,6 @@ import {
   Button,
   FormControl,
   FormHelperText,
-  Grid,
   IconButton,
   InputAdornment,
   InputLabel,
@@ -15,12 +14,12 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import FooterComp from "../../components/layout/footer/FooterComp";
 import axios, { AxiosError, AxiosResponse } from "axios";
-import Swal, { SweetAlertOptions } from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
-// import HeaderComp from "../../components/header/HeaderComp";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Account = {
   email: string;
@@ -64,13 +63,9 @@ const LoginPage: React.FC = () => {
   const onSubmit = (data: Account) => {
     axios
       .post(`${import.meta.env.VITE_API_URL}/login`, data)
-      .then(async (res: AxiosResponse) => {
+      .then((res: AxiosResponse) => {
         if (res.status === 200) {
-          await Swal.fire({
-            title: "Đăng nhập thành công!",
-            icon: "success",
-            timer: 2000,
-          } as SweetAlertOptions);
+          toast.success("Đăng nhập thành công!");
           localStorage.setItem(
             "accessToken",
             JSON.stringify(res.data?.accessToken)
@@ -83,34 +78,18 @@ const LoginPage: React.FC = () => {
       })
       .catch((err: AxiosError) => {
         if (err.code === "ERR_NETWORK") {
-          Swal.fire({
-            title: "Lỗi mạng",
-            timer: 2000,
-            icon: "error",
-          } as SweetAlertOptions);
+          toast.error("Loại mạng");
           return;
         }
         switch (err.response?.data) {
           case "Cannot find user":
-            Swal.fire({
-              title: "Email chưa được đăng ký",
-              icon: "error",
-              timer: 2000,
-            });
+            toast.error("Không tìm thấy người dùng");
             break;
           case "Incorrect password":
-            Swal.fire({
-              title: "Mật khẩu không chính xác",
-              icon: "error",
-              timer: 2000,
-            });
+            toast.error("Sai mật khẩu");
             break;
           default:
-            Swal.fire({
-              title: "Có lỗi xảy ra",
-              icon: "error",
-              timer: 2000,
-            });
+            toast.error("Có lỗi xảy ra");
         }
       });
   };
@@ -119,7 +98,7 @@ const LoginPage: React.FC = () => {
       <Helmet>
         <title>Đăng nhập</title>
       </Helmet>
-      {/* <HeaderComp /> */}
+
       <div className="sm:py-20  mx-auto bg-no-repeat bg-center bg-cover bg-[url('https://marketplace.canva.com/EAD2962NKnQ/2/0/1600w/canva-rainbow-gradient-pink-and-purple-virtual-background-_Tcjok-d9b4.jpg')]">
         <div className=" w-fit mx-auto p-2 md:p-4 md:rounded-lg bg-white shadow-xl">
           <Box
@@ -138,7 +117,6 @@ const LoginPage: React.FC = () => {
                 <TextField
                   {...field}
                   margin="normal"
-                  required
                   fullWidth
                   id="email"
                   label="Email"
@@ -156,16 +134,10 @@ const LoginPage: React.FC = () => {
               defaultValue=""
               render={({ field }) => (
                 <FormControl variant="outlined" fullWidth sx={{ mt: 2 }}>
-                  <InputLabel
-                    error={!!errors.password}
-                    htmlFor="outlined-adornment-password"
-                  >
-                    Password
-                  </InputLabel>
+                  <InputLabel error={!!errors.password}>Mật khẩu</InputLabel>
                   <OutlinedInput
                     {...field}
                     error={!!errors.password}
-                    //   helperText={errors.password?.message}
                     id="outlined-adornment-password"
                     type={showPassword ? "text" : "password"}
                     autoComplete="password"
@@ -198,25 +170,13 @@ const LoginPage: React.FC = () => {
             >
               Đăng nhập
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Button component={Link} to={"/login"}>
-                  Quên mật khẩu
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button component={Link} to={"/register"}>
-                  Không có tài khoản? Đăng ký
-                </Button>
-              </Grid>
-            </Grid>
+
+            <div className="flex justify-end">
+              <Button component={Link} to={"/register"} sx={{ color: "black" }}>
+                Đăng ký
+              </Button>
+            </div>
           </Box>
-          <div className=" max-w-md mx-auto">
-            <p className="mt-3 font-semibold">Hoặc đăng nhập bằng</p>
-            <Button fullWidth variant="outlined" sx={{ mt: 3, mb: 2 }}>
-              Facebook
-            </Button>
-          </div>
         </div>
       </div>
       <FooterComp />

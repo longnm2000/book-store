@@ -20,6 +20,7 @@ export interface Book {
   numberOfPages: number;
   categories: number[];
   description: string;
+  price: number;
   createAt: number;
   comments: Comment[];
 }
@@ -37,4 +38,14 @@ export interface Comment {
 export interface Category {
   id: number;
   name: string;
+}
+
+export interface CommentForm {
+  score: number;
+  content: string;
+}
+
+export interface UserAction {
+  type: string;
+  payload: User;
 }

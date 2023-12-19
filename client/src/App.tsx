@@ -9,6 +9,7 @@ import DetailPage from "./pages/detail/DetailPage";
 import SearchPage from "./pages/searchProduct/SearchPage";
 import ProfileComp from "./pages/profile/ProfileComp";
 import PrivateUserRoutes from "./components/privateUserRoute/PrivateUserRoute";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   const navigate = useNavigate();
@@ -20,6 +21,18 @@ function App() {
   }, [navigate]);
   return (
     <>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route element={<PrivateUserRoutes />}>

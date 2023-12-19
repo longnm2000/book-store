@@ -12,7 +12,7 @@ const CardComp: React.FC<CardProps> = ({ book }) => {
   return (
     <>
       <Link to={`/detail/${book.id}`}>
-        <div className=" p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <div className=" p-4 bg-white hover:shadow-lg ">
           <div>
             <img
               className="rounded-t-lg"
@@ -39,6 +39,7 @@ const CardComp: React.FC<CardProps> = ({ book }) => {
               />{" "}
               <span>({commentTotal} đánh giá)</span>
             </p>
+            <p className="font-semibold text-xl mt-3">{book.price} Đ / ngày</p>
           </div>
         </div>
       </Link>

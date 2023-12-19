@@ -41,29 +41,96 @@
       "name": "Nguyễn Mạnh Long",
       "phone": "0866808540",
       "id": 6
+    },
+    {
+      "email": "chinh@gmail.com",
+      "password": "$2a$10$UGi4TCyy8kL0YLr5yh1Bt.tQIOLfutdE8UTGKq39jJXg8XF7KMAna",
+      "name": "Nguyễn Đức Chính",
+      "phone": "0123456789",
+      "id": 7
     }
   ],
-  "categories": [
-    { "id": 1, "name": "Sách Thiếu Nhi" },
-    { "id": 2, "name": "Sách Khoa Học" },
-    { "id": 3, "name": "Tiểu Thuyết" },
-    { "id": 4, "name": "Sách Kỹ Năng Sống" },
-    { "id": 5, "name": "Sách Học Đường" },
-    { "id": 6, "name": "Sách Tự Truyện" },
-    { "id": 7, "name": "Sách Lịch Sử" },
-    { "id": 8, "name": "Sách Chính Trị - Pháp Luật" },
-    { "id": 9, "name": "Sách Kinh Tế" },
-    { "id": 10, "name": "Sách Tôn Giáo - Tâm Linh" },
-    { "id": 11, "name": "Sách Âm Nhạc - Nghệ Thuật" },
-    { "id": 12, "name": "Sách Thể Thao" },
-    { "id": 13, "name": "Sách Y Học" },
-    { "id": 14, "name": "Sách Công Nghệ - Khoa Học Công Nghệ" },
-    { "id": 15, "name": "Sách Du Lịch" },
-    { "id": 16, "name": "Sách Điện Ảnh - Truyền Hình" },
-    { "id": 17, "name": "Sách Địa Lý" },
-    { "id": 18, "name": "Sách Văn Hóa - Xã Hội" },
-    { "id": 19, "name": "Sách Nấu Ăn" },
-    { "id": 20, "name": "Sách Truyện Cười" }
+  "types": [
+    {
+      "id": 1,
+      "name": "Sách Thiếu Nhi"
+    },
+    {
+      "id": 2,
+      "name": "Sách Khoa Học"
+    },
+    {
+      "id": 3,
+      "name": "Tiểu Thuyết"
+    },
+    {
+      "id": 4,
+      "name": "Sách Kỹ Năng Sống"
+    },
+    {
+      "id": 5,
+      "name": "Sách Học Đường"
+    },
+    {
+      "id": 6,
+      "name": "Sách Tự Truyện"
+    },
+    {
+      "id": 7,
+      "name": "Sách Lịch Sử"
+    },
+    {
+      "id": 8,
+      "name": "Sách Chính Trị - Pháp Luật"
+    },
+    {
+      "id": 9,
+      "name": "Sách Kinh Tế"
+    },
+    {
+      "id": 10,
+      "name": "Sách Tôn Giáo - Tâm Linh"
+    },
+    {
+      "id": 11,
+      "name": "Sách Âm Nhạc - Nghệ Thuật"
+    },
+    {
+      "id": 12,
+      "name": "Sách Thể Thao"
+    },
+    {
+      "id": 13,
+      "name": "Sách Y Học"
+    },
+    {
+      "id": 14,
+      "name": "Sách Công Nghệ - Khoa Học Công Nghệ"
+    },
+    {
+      "id": 15,
+      "name": "Sách Du Lịch"
+    },
+    {
+      "id": 16,
+      "name": "Sách Điện Ảnh - Truyền Hình"
+    },
+    {
+      "id": 17,
+      "name": "Sách Địa Lý"
+    },
+    {
+      "id": 18,
+      "name": "Sách Văn Hóa - Xã Hội"
+    },
+    {
+      "id": 19,
+      "name": "Sách Nấu Ăn"
+    },
+    {
+      "id": 20,
+      "name": "Sách Truyện Cười"
+    }
   ],
   "products": [
     {
@@ -79,7 +146,8 @@
       "releaseDate": 2024,
       "format": "hardcover",
       "numberOfPages": 540,
-      "categories": [1, 2, 3],
+      "typeId": 1,
+      "price": 10000,
       "description": "Năm đó, tại một ngôi làng xa xôi trên một ngọn núi hoang vu, người ta đón Tết trong sự kinh hãi tột độ, hoài nghi đau đáu và giận dữ khôn cùng trước sự ập tới của những bi kich tàn khốc. Ngôi làng ấy vốn dĩ không có tên, nhưng những người nơi đây mặc định chốn này là địa ngục. Dân trong làng không ai dám tự ý băng rừng thoát khỏi làng, càng không biết thế giới bên ngoài rộng lớn như thế nào, bởi lẽ họ sợ người khác sẽ biết rằng bản thân mình vốn là hậu duệ của băng cướp khét tiếng ở truông nhà Hồ dưới thời chúa Nguyễn ở Đàng Trong. Vào một đêm cuối năm rét buốt, ông Thập – người duy nhất có thể ra khỏi làng – được báo mộng bởi một âm hồn mặc quan phục màu đỏ rực. Làng Địa Ngục sắp gặp họa lớn! Thành danh bằng những tác phẩm văn học kinh dị đậm chất Việt Nam được phát hành qua mạng, lần này tác giả Thảo Trang tiếp tục mang đến một câu chuyện hấp dẫn, mở ra một thế giới huyền bí với những sinh vật, thế lực siêu linh mà người đọc không bao giờ hết hứng thú, để lại những dư âm không phai khi gấp sách lại. ",
       "createAt": 1702870620210
     },
@@ -96,7 +164,8 @@
       "releaseDate": 2017,
       "format": "hardcover",
       "numberOfPages": 528,
-      "categories": [3, 6],
+      "typeId": 1,
+      "price": 10000,
       "description": "Mắt Biếc là tác phẩm viết về tuổi thơ của nhân vật Nguyễn Xuân Vân và nhóm bạn ở vùng quê miền Trung những năm 80-90 của thế kỷ trước. Tác phẩm đã đi sâu vào lòng người đọc qua những câu chuyện về tình bạn, tình yêu, lòng chung thủy, và những giá trị tinh thần cao đẹp.",
       "createAt": 1702870620210
     },
@@ -113,7 +182,8 @@
       "releaseDate": 2019,
       "format": "paperback",
       "numberOfPages": 280,
-      "categories": [4, 9],
+      "typeId": 4,
+      "price": 10000,
       "description": "Cuốn sách Bí Mật Của May Mắn của tác giả Adam Khoo là một trong những cuốn sách nổi tiếng về phát triển bản thân và kỹ năng sống. Sách tập trung vào việc khám phá và áp dụng những nguyên lý cơ bản để thu hút may mắn và thành công trong cuộc sống.",
       "createAt": 1702870620210
     },
@@ -130,7 +200,8 @@
       "releaseDate": 2014,
       "format": "hardcover",
       "numberOfPages": 443,
-      "categories": [2, 7],
+      "typeId": 2,
+      "price": 10000,
       "description": "Sapiens: A Brief History of Humankind is a book by Yuval Noah Harari that explores the history of humankind from the emergence of Homo sapiens in East Africa up to the present day, spanning over 70,000 years of human development and evolution.",
       "createAt": 1702870620210
     },
@@ -147,7 +218,8 @@
       "releaseDate": 1936,
       "format": "paperback",
       "numberOfPages": 320,
-      "categories": [4, 18],
+      "typeId": 4,
+      "price": 10000,
       "description": "Đắc Nhân Tâm là một trong những cuốn sách nổi tiếng nhất về phát triển bản thân và kỹ năng giao tiếp. Cuốn sách tập trung vào việc hiểu rõ người khác, tạo mối quan hệ tích cực và thành công trong giao tiếp hàng ngày.",
       "createAt": 1702870620210
     },
@@ -164,7 +236,8 @@
       "releaseDate": 1988,
       "format": "hardcover",
       "numberOfPages": 208,
-      "categories": [3, 10],
+      "typeId": 3,
+      "price": 10000,
       "description": "The Alchemist is a novel by Brazilian author Paulo Coelho that follows the journey of an Andalusian shepherd named Santiago as he travels in search of a worldly treasure.",
       "createAt": 1702870620210
     },
@@ -181,7 +254,8 @@
       "releaseDate": 1949,
       "format": "paperback",
       "numberOfPages": 328,
-      "categories": [3, 8],
+      "typeId": 3,
+      "price": 10000,
       "description": "1984 is a dystopian novel by George Orwell that explores the consequences of totalitarianism, mass surveillance, and oppressive regimes on society and individual freedom.",
       "createAt": 1702870620210
     },
@@ -198,7 +272,8 @@
       "releaseDate": 1937,
       "format": "hardcover",
       "numberOfPages": 256,
-      "categories": [4, 9],
+      "typeId": 4,
+      "price": 10000,
       "description": "Think and Grow Rich is a personal development and self-help book by Napoleon Hill. The book emphasizes the importance of personal beliefs and positive thinking in achieving success.",
       "createAt": 1702870620210
     },
@@ -215,7 +290,8 @@
       "releaseDate": 1997,
       "format": "hardcover",
       "numberOfPages": 332,
-      "categories": [1, 3],
+      "typeId": 1,
+      "price": 10000,
       "description": "Harry Potter and the Philosopher's Stone is the first novel in the Harry Potter series written by J.K. Rowling. It follows the story of a young wizard, Harry Potter, and his adventures at Hogwarts School of Witchcraft and Wizardry.",
       "createAt": 1702870620210
     },
@@ -232,7 +308,8 @@
       "releaseDate": 1960,
       "format": "paperback",
       "numberOfPages": 281,
-      "categories": [3, 18],
+      "typeId": 3,
+      "price": 10000,
       "description": "To Kill a Mockingbird is a novel by Harper Lee set in the American South during the 1930s. It addresses issues of racial injustice and moral growth as seen through the eyes of a young girl.",
       "createAt": 1702870620210
     },
@@ -249,7 +326,8 @@
       "releaseDate": 1925,
       "format": "hardcover",
       "numberOfPages": 218,
-      "categories": [3, 18],
+      "typeId": 3,
+      "price": 10000,
       "description": "The Great Gatsby is a novel by F. Scott Fitzgerald that portrays the American Dream in the Jazz Age of the 1920s and explores themes of wealth, love, and the pursuit of happiness.",
       "createAt": 1702870620210
     },
@@ -266,7 +344,8 @@
       "releaseDate": 1937,
       "format": "hardcover",
       "numberOfPages": 310,
-      "categories": [1, 3],
+      "typeId": 1,
+      "price": 10000,
       "description": "The Hobbit is a fantasy novel by J.R.R. Tolkien that follows the journey of Bilbo Baggins as he embarks on an adventure to reclaim treasure guarded by the dragon Smaug.",
       "createAt": 1702870620210
     },
@@ -283,7 +362,8 @@
       "releaseDate": 1951,
       "format": "paperback",
       "numberOfPages": 277,
-      "categories": [3, 18],
+      "typeId": 3,
+      "price": 10000,
       "description": "The Catcher in the Rye is a novel by J.D. Salinger that explores the themes of teenage angst, alienation, and the search for identity through the eyes of its protagonist, Holden Caulfield.",
       "createAt": 1702870620210
     },
@@ -300,7 +380,8 @@
       "releaseDate": 1813,
       "format": "hardcover",
       "numberOfPages": 279,
-      "categories": [3, 18],
+      "typeId": 3,
+      "price": 10000,
       "description": "Pride and Prejudice by Jane Austen is a classic romance novel that follows the story of Elizabeth Bennet and Mr. Darcy, exploring themes of love, marriage, and social status.",
       "createAt": 1702870620210
     },
@@ -317,7 +398,8 @@
       "releaseDate": 1943,
       "format": "hardcover",
       "numberOfPages": 96,
-      "categories": [1, 6],
+      "typeId": 1,
+      "price": 10000,
       "description": "The Little Prince is a novella by Antoine de Saint-Exupéry that tells the story of a young prince who travels from planet to planet, meeting various characters and learning important life lessons.",
       "createAt": 1702870620210
     },
@@ -334,7 +416,8 @@
       "releaseDate": 1950,
       "format": "paperback",
       "numberOfPages": 206,
-      "categories": [1, 3],
+      "typeId": 1,
+      "price": 10000,
       "description": "The Lion, the Witch and the Wardrobe is the first book in C.S. Lewis's classic fantasy series The Chronicles of Narnia, following the adventures of siblings who discover a magical land called Narnia.",
       "createAt": 1702870620210
     },
@@ -351,7 +434,8 @@
       "releaseDate": 2003,
       "format": "hardcover",
       "numberOfPages": 454,
-      "categories": [3, 8],
+      "typeId": 1,
+      "price": 10000,
       "description": "The Da Vinci Code is a mystery thriller novel by Dan Brown that follows symbologist Robert Langdon as he investigates a murder and uncovers a series of secrets hidden in famous artworks.",
       "createAt": 1702870620210
     },
@@ -368,7 +452,8 @@
       "releaseDate": 1979,
       "format": "paperback",
       "numberOfPages": 224,
-      "categories": [2, 11],
+      "typeId": 2,
+      "price": 10000,
       "description": "The Hitchhiker's Guide to the Galaxy is a comedic science fiction series by Douglas Adams following the misadventures of Arthur Dent after Earth is destroyed to make way for a hyperspace bypass.",
       "createAt": 1702870620210
     },
@@ -385,7 +470,8 @@
       "releaseDate": 2009,
       "format": "bìa mềm",
       "numberOfPages": 256,
-      "categories": [3, 6],
+      "typeId": 3,
+      "price": 10000,
       "description": "Hoa Cúc Vàng Trên Cỏ Xanh kể về tuổi thơ ngây ngô, những tình cảm đầu đời của những cậu bé, cô bé trong một ngôi làng yên bình của miền quê Việt Nam.",
       "createAt": 1702870620210
     },
@@ -402,7 +488,8 @@
       "releaseDate": 1941,
       "format": "bìa cứng",
       "numberOfPages": 128,
-      "categories": [1, 6],
+      "typeId": 6,
+      "price": 10000,
       "description": "Dế Mèn Phiêu Lưu Ký là câu chuyện về cuộc phiêu lưu tìm đồng bọn của Dế Mèn sau khi cậu ta rời tổ.",
       "createAt": 1702870620210
     },
@@ -419,7 +506,8 @@
       "releaseDate": 2018,
       "format": "bìa mềm",
       "numberOfPages": 320,
-      "categories": [4, 19],
+      "typeId": 19,
+      "price": 10000,
       "description": "Cuốn sách chia sẻ kinh nghiệm trồng rau sạch tại nhà, cung cấp thông tin về các loại rau, cách chăm sóc và bảo quản chúng một cách an toàn và hiệu quả.",
       "createAt": 1702870620210
     },
@@ -436,7 +524,8 @@
       "releaseDate": 1820,
       "format": "bìa cứng",
       "numberOfPages": 320,
-      "categories": [3, 18],
+      "typeId": 18,
+      "price": 10000,
       "description": "Truyện Kiều là một trong những kiệt tác văn học cổ điển của Việt Nam, kể về cuộc đời đầy bi thương và nghị lực của cô gái Kiều.",
       "createAt": 1702870620210
     },
@@ -453,7 +542,8 @@
       "releaseDate": 2015,
       "format": "bìa mềm",
       "numberOfPages": 208,
-      "categories": [10, 20],
+      "typeId": 20,
+      "price": 10000,
       "description": "Tâm Tư Tâm Linh là tập hợp những câu chuyện, triết lý về tâm linh và cuộc sống từ góc nhìn của tác giả.",
       "createAt": 1702870620210
     },
@@ -470,7 +560,8 @@
       "releaseDate": 1960,
       "format": "bìa cứng",
       "numberOfPages": 400,
-      "categories": [3, 17],
+      "typeId": 17,
+      "price": 10000,
       "description": "Sử Ký của Hồ Chí Minh là tập hợp các bài viết, diễn văn, tác phẩm văn học và tài liệu của Người kể về cuộc đời và sự nghiệp của Người.",
       "createAt": 1702870620210
     },
@@ -487,7 +578,8 @@
       "releaseDate": 2012,
       "format": "bìa mềm",
       "numberOfPages": 320,
-      "categories": [3, 6],
+      "typeId": 6,
+      "price": 10000,
       "description": "Hồn Papa Da Con Gái là câu chuyện về tình cảm của một người cha dành cho con gái trong những thời kỳ khó khăn và đầy biến động.",
       "createAt": 1702870620210
     },
@@ -504,7 +596,8 @@
       "releaseDate": 2019,
       "format": "bìa mềm",
       "numberOfPages": 256,
-      "categories": [4, 9],
+      "typeId": 9,
+      "price": 10000,
       "description": "Bí Mật Của May Mắn là cuốn sách giúp bạn hiểu rõ hơn về cách may mắn ảnh hưởng đến cuộc sống của bạn và cách tạo ra điều may mắn.",
       "createAt": 1702870620210
     },
@@ -521,7 +614,8 @@
       "releaseDate": 2018,
       "format": "bìa mềm",
       "numberOfPages": 300,
-      "categories": [4, 9],
+      "typeId": 9,
+      "price": 10000,
       "description": "Vượt Lên Chính Mình là cuốn sách giúp bạn phát triển khả năng lãnh đạo bản thân, khám phá tiềm năng và vượt qua giới hạn cá nhân.",
       "createAt": 1702870620210
     },
@@ -538,7 +632,8 @@
       "releaseDate": 1936,
       "format": "bìa mềm",
       "numberOfPages": 336,
-      "categories": [4, 9],
+      "typeId": 9,
+      "price": 10000,
       "description": "Đắc Nhân Tâm của Dale Carnegie là cuốn sách nổi tiếng về kỹ năng giao tiếp, quản lý mối quan hệ và thành công trong cuộc sống.",
       "createAt": 1702870620210
     },
@@ -555,7 +650,8 @@
       "releaseDate": 2015,
       "format": "bìa cứng",
       "numberOfPages": 451,
-      "categories": [2, 14],
+      "typeId": 14,
+      "price": 10000,
       "description": "Homo Deus của Yuval Noah Harari là cuốn sách đưa ra những triển vọng về tương lai của loài người dựa trên phân tích lịch sử và khoa học.",
       "createAt": 1702870620210
     },
@@ -572,7 +668,8 @@
       "releaseDate": 2011,
       "format": "bìa mềm",
       "numberOfPages": 390,
-      "categories": [3, 18],
+      "typeId": 18,
+      "price": 10000,
       "description": "Cô Bé Quàng Khăn Đỏ của Jodi Picoult là một phiên bản hiện đại của câu chuyện cổ tích với nhiều yếu tố mới lạ và sâu sắc.",
       "createAt": 1702870620211
     }
@@ -649,6 +746,102 @@
       "score": 3,
       "content": "Bình thường",
       "createAt": 1702870620211
+    },
+    {
+      "productId": 28,
+      "userId": 1,
+      "score": 4,
+      "content": "100 Điểm",
+      "createAt": 1702870620211,
+      "id": 10
+    },
+    {
+      "productId": 28,
+      "score": 4,
+      "userId": 2,
+      "content": "100 Điểm",
+      "createAt": 1702870620211,
+      "id": 11
+    },
+    {
+      "productId": 28,
+      "score": 4,
+      "userId": 3,
+      "content": "100 Điểm",
+      "createAt": 1702870620211,
+      "id": 12
+    },
+    {
+      "score": 1,
+      "content": "wqewqeqw",
+      "productId": 30,
+      "userId": 3,
+      "createAt": 1702953811610,
+      "id": 13
+    },
+    {
+      "content": "wqewqeqw iqwjeiwqeqw",
+      "score": 3,
+      "productId": 30,
+      "userId": 3,
+      "createAt": 1702953884005,
+      "id": 14
+    },
+    {
+      "content": "wqewqeqw iqwjeiwqeqw doiqdwq",
+      "score": 4,
+      "productId": 30,
+      "userId": 3,
+      "createAt": 1702953934343,
+      "id": 15
+    },
+    {
+      "productId": 28,
+      "score": 4,
+      "userId": 3,
+      "content": "100 Điểm",
+      "createAt": 1702870620211,
+      "id": 16
+    },
+    {
+      "score": 1,
+      "content": "ewqeqwewq",
+      "productId": 30,
+      "userId": 4,
+      "createAt": 1702958089428,
+      "id": 17
+    },
+    {
+      "score": 1,
+      "content": "ewqewq",
+      "productId": 30,
+      "userId": 4,
+      "createAt": 1702958992744,
+      "id": 18
+    },
+    {
+      "score": 1,
+      "content": "ưqewqeqw",
+      "productId": 30,
+      "userId": 4,
+      "createAt": 1702959063100,
+      "id": 19
+    },
+    {
+      "score": 1,
+      "content": "eqewqwq",
+      "productId": 30,
+      "userId": 4,
+      "createAt": 1702959734237,
+      "id": 20
+    },
+    {
+      "content": "ưqewqe",
+      "score": 3,
+      "productId": 30,
+      "userId": 4,
+      "createAt": 1702959776393,
+      "id": 21
     }
   ]
 }

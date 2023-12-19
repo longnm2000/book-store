@@ -6,36 +6,9 @@ import HeaderComp from "../../components/layout/header/HeaderComp";
 import { Helmet } from "react-helmet";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Book } from "../../types/types";
 
 const HomePage: React.FC = () => {
-  interface Book {
-    id: number;
-    avatar: string;
-    title: string;
-    author: string;
-    supplier: string;
-    publisher: string;
-    language: string;
-    weight: number;
-    dimensions: string;
-    releaseDate: number;
-    format: string;
-    numberOfPages: number;
-    categories: number[];
-    description: string;
-    createAt: number;
-    comments: Comment[];
-  }
-
-  interface Comment {
-    id: number;
-    productId: number;
-    userId: number;
-    score: number;
-    content: string;
-    createAt: number;
-  }
-
   const [data, setData] = useState<Book[]>([]);
   const fetchData = () => {
     axios
