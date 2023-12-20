@@ -4,7 +4,16 @@ export interface User {
   email: string;
   phone: string;
   password?: string;
+  avatar?: string;
 }
+
+export interface RegisterInfo {
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
+}
+
 export interface Book {
   id: number;
   avatar: string;
@@ -48,4 +57,9 @@ export interface CommentForm {
 export interface UserAction {
   type: string;
   payload: User;
+}
+
+export interface Account {
+  email: string;
+  password: string;
 }

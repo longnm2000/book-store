@@ -1,15 +1,16 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
-import LoginPage from "./pages/login/LoginPage";
+import LoginPage from "./pages/Login/LoginPage";
 import { useEffect } from "react";
-import RegisterPage from "./pages/register/RegisterPage";
-import HomePage from "./pages/home/HomePage";
-import NotFoundPage from "./pages/notFound/NotFoundPage";
-import DetailPage from "./pages/detail/DetailPage";
-import SearchPage from "./pages/searchProduct/SearchPage";
-import ProfileComp from "./pages/profile/ProfileComp";
-import PrivateUserRoutes from "./components/privateUserRoute/PrivateUserRoute";
+import RegisterPage from "./pages/Register/RegisterPage";
+import HomePage from "./pages/Home/HomePage";
+import NotFoundPage from "./pages/NotFound/NotFoundPage";
+import DetailPage from "./pages/Detail/DetailPage";
+import SearchPage from "./pages/SearchProduct/SearchPage";
+import ProfilePage from "./pages/Profile/ProfilePage";
 import { ToastContainer } from "react-toastify";
+import NotSignedIn from "./components/PrivateUserRoutes/NotSignedIn";
+import SignedIn from "./components/PrivateUserRoutes/SignedIn";
 
 function App() {
   const navigate = useNavigate();
@@ -35,11 +36,13 @@ function App() {
       />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route element={<PrivateUserRoutes />}>
+        <Route element={<NotSignedIn />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
         </Route>
-        <Route path="/profile/:id" element={<ProfileComp />} />
+        <Route element={<SignedIn />}>
+          <Route path="/profile" element={<ProfilePage />} />
+        </Route>
         <Route path="/detail/:id" element={<DetailPage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="*" element={<NotFoundPage />} />

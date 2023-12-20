@@ -25,7 +25,7 @@ import * as dayjs from "dayjs";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { axiosInstance } from "../../axios/axiosInstance";
+import { axiosInstance } from "../../axios/config";
 import { toast } from "react-toastify";
 import { calculateForBook } from "../../helper/helper";
 
@@ -48,7 +48,7 @@ const DetailPage: React.FC = () => {
     resolver: yupResolver(schema),
   });
   const id = useParams().id;
-  const userId = JSON.parse(localStorage.getItem("user") || "")?.id || "";
+
   const [data, setData] = useState<Book | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [pageTotal, setPageTotal] = useState<number>(1);
@@ -105,8 +105,9 @@ const DetailPage: React.FC = () => {
   }
 
   const onSubmit = (data: CommentForm) => {
+    const userId = JSON.parse(localStorage.getItem("user") || "")?.id || "";
     axiosInstance
-      .post("http://localhost:3000/600/comments", {
+      .post("/comments", {
         ...data,
         productId: id ? +id : 0,
         userId,
@@ -333,7 +334,7 @@ const DetailPage: React.FC = () => {
                     <div className="flex flex-col justify-center items-center h-full">
                       <p>
                         <span className="font-semibold text-5xl">
-                          {average}
+                          {average || 0}
                         </span>
                         <span className="font-semibold text-4xl">/5</span>
                       </p>

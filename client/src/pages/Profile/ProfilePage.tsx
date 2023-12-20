@@ -25,7 +25,7 @@ const schema = yup.object().shape({
     .matches(/^\d{10}$/, "Số điện thoại phải có 10 chữ số")
     .required("Vui lòng nhập số điện thoại"),
 });
-const Profile: React.FC = () => {
+const ProfilePage: React.FC = () => {
   const {
     handleSubmit,
     control,
@@ -158,4 +158,4 @@ const Profile: React.FC = () => {
     </>
   );
 };
-export default Profile;
+export default ProfilePage;

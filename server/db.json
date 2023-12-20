@@ -48,6 +48,20 @@
       "name": "Nguyễn Đức Chính",
       "phone": "0123456789",
       "id": 7
+    },
+    {
+      "email": "phuong@gmail.com",
+      "password": "$2a$10$RHSnNUL2qSzBBkwILHlxGOg53kRs4bRstt1cJDIG1EY9Y9TYfC8/q",
+      "name": "Phuong",
+      "phone": "0366525695",
+      "id": 8
+    },
+    {
+      "email": "trang@gmail.com",
+      "password": "$2a$10$/71YFU.UcXHA6Y1lx5NFD.4JJvK1AUUc2Vrre3Sss3cp/5MEXKvQm",
+      "name": "Trang",
+      "phone": "0123456789",
+      "id": 9
     }
   ],
   "types": [
@@ -669,7 +683,7 @@
       "format": "bìa mềm",
       "numberOfPages": 390,
       "typeId": 18,
-      "price": 10000,
+      "price": 5000,
       "description": "Cô Bé Quàng Khăn Đỏ của Jodi Picoult là một phiên bản hiện đại của câu chuyện cổ tích với nhiều yếu tố mới lạ và sâu sắc.",
       "createAt": 1702870620211
     }
