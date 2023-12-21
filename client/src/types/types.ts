@@ -3,8 +3,7 @@ export interface User {
   name: string;
   email: string;
   phone: string;
-  password?: string;
-  avatar?: string;
+  avatar: string;
 }
 
 export interface RegisterInfo {
@@ -29,9 +28,8 @@ export interface Book {
   numberOfPages: number;
   categories: number[];
   description: string;
-  price: number;
   createAt: number;
-  comments: Comment[];
+  comments?: Comment[];
 }
 
 export interface Comment {
@@ -62,4 +60,10 @@ export interface UserAction {
 export interface Account {
   email: string;
   password: string;
+}
+
+export interface SearchParams {
+  categoryId: string;
+  _order: string;
+  title_like: string;
 }

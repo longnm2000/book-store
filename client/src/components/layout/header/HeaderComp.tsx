@@ -12,11 +12,15 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { User } from "../../../types/types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { act_setUser } from "../../../redux/action";
 
 function ResponsiveAppBar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -36,8 +40,18 @@ function ResponsiveAppBar() {
   };
 
   const handleLogout = () => {
+    dispatch(
+      act_setUser({
+        id: -1,
+        name: "",
+        email: "",
+        phone: "",
+        avatar: "",
+      })
+    );
     localStorage.removeItem("user");
     localStorage.removeItem("accessToken");
+    navigate("/");
     setAnchorElNav(null);
     setAnchorElUser(null);
     toast.success("Đăng xuất thành công");
@@ -47,10 +61,8 @@ function ResponsiveAppBar() {
     setAnchorElUser(null);
   };
 
-  let currentUser: User | null = null;
-  if (localStorage.getItem("user")) {
-    currentUser = JSON.parse(localStorage.getItem("user") || "");
-  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const currentUser = useSelector((state: any) => state.user);
 
   return (
     <AppBar position="sticky" sx={{ background: "white", color: "black" }}>
@@ -115,11 +127,18 @@ function ResponsiveAppBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={currentUser?.name || ""} src="ewqewq" />
+                <Avatar
+                  alt={currentUser.name}
+                  src={
+                    currentUser.name
+                      ? "https://gaixinhbikini.com/wp-content/uploads/2023/02/anh-gai-dep-2k-005.jpg"
+                      : ""
+                  }
+                />
               </IconButton>
             </Tooltip>
 
-            {currentUser ? (
+            {currentUser.name ? (
               <Menu
                 sx={{ mt: "45px" }}
                 id="menu-appbar"
@@ -136,9 +155,12 @@ function ResponsiveAppBar() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
+                <MenuItem onClick={() => navigate("/profile")}>
+                  <Typography>Trang cá nhân</Typography>
+                </MenuItem>
                 <MenuItem onClick={handleLogout}>
                   <Typography>Đăng xuất</Typography>
-                </MenuItem>{" "}
+                </MenuItem>
               </Menu>
             ) : (
               <Menu

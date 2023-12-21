@@ -5,20 +5,22 @@ import { AxiosResponse } from "axios";
 
 export const useCategory = () => {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
   const fetchCategories = async () => {
     try {
       const response: AxiosResponse = await getCategory();
       setCategories(response.data);
-      setLoading(false);
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
-      setLoading(false);
+      setIsLoading(false);
     }
   };
-  return { categories, loading };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  return { categories, isLoading };
 };

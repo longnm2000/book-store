@@ -28,9 +28,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { axiosInstance } from "../../axios/config";
 import { toast } from "react-toastify";
 import { calculateForBook } from "../../helper/helper";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-const ratingCount = (data: Book, point: number) => {
-  return data.comments.filter((comment) => comment.score === point).length;
+const ratingCount = (data: Comment[], point: number) => {
+  return data.filter((comment) => comment.score === point).length;
 };
 
 const schema = yup.object().shape({
@@ -96,12 +99,12 @@ const DetailPage: React.FC = () => {
   };
 
   let average: number = 0,
-    commentsTotal: number = 0,
+    totalComments: number = 0,
     sumScore: number = 0;
-  if (data) {
-    commentsTotal = calculateForBook(data).commentsTotal;
-    sumScore = calculateForBook(data).sumScore;
-    average = Math.floor(sumScore / commentsTotal);
+  if (data?.comments) {
+    totalComments = calculateForBook(data.comments).totalComments;
+    sumScore = calculateForBook(data.comments).sumScore;
+    average = Math.floor(sumScore / totalComments);
   }
 
   const onSubmit = (data: CommentForm) => {
@@ -224,13 +227,19 @@ const DetailPage: React.FC = () => {
                     Hình thức bìa:{" "}
                     <span className="font-semibold">{data?.format}</span>
                   </p>
-                  <div className="flex gap-2">
-                    <Rating name="read-only" value={5} readOnly />{" "}
-                    <span>1 đánh giá</span>
-                  </div>
-                  <p className=" text-red-500 font-semibold text-3xl">
-                    10000 VNĐ/ngày
-                  </p>
+                  <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                      label="Ngày mượn"
+                      disablePast
+                      defaultValue={dayjs(Date.now())}
+                    />
+                    <DatePicker
+                      label="Ngày trả"
+                      disablePast
+                      defaultValue={dayjs(Date.now())}
+                    />
+                  </LocalizationProvider>
+
                   <Button variant="contained" fullWidth color="error">
                     Mượn sách
                   </Button>
@@ -344,7 +353,7 @@ const DetailPage: React.FC = () => {
                         value={average ? average : 0}
                         readOnly
                       />
-                      <p>{commentsTotal} đánh giá</p>
+                      <p>{totalComments} đánh giá</p>
                     </div>
                   </Grid>
                   <Grid item xs={12} md={9}>
@@ -352,16 +361,19 @@ const DetailPage: React.FC = () => {
                       <div className="flex gap-2">
                         <span>5 sao</span>
                         <Slider
-                          value={data ? ratingCount(data, 5) : 0}
+                          value={
+                            data?.comments ? ratingCount(data.comments, 5) : 0
+                          }
                           color="warning"
-                          max={commentsTotal}
+                          max={totalComments}
                           min={0}
                           valueLabelDisplay="auto"
                         />
                         <div className=" w-10">
-                          {data && commentsTotal
+                          {data?.comments && totalComments
                             ? (
-                                (ratingCount(data, 5) / commentsTotal) *
+                                (ratingCount(data.comments, 5) /
+                                  totalComments) *
                                 100
                               ).toFixed(1)
                             : 0}{" "}
@@ -371,16 +383,19 @@ const DetailPage: React.FC = () => {
                       <div className="flex gap-2">
                         <span>4 sao</span>
                         <Slider
-                          value={data ? ratingCount(data, 4) : 0}
+                          value={
+                            data?.comments ? ratingCount(data.comments, 4) : 0
+                          }
                           color="warning"
                           valueLabelDisplay="auto"
-                          max={commentsTotal}
+                          max={totalComments}
                           min={0}
                         />
                         <div className=" w-10">
-                          {data && commentsTotal
+                          {data?.comments && totalComments
                             ? (
-                                (ratingCount(data, 4) / commentsTotal) *
+                                (ratingCount(data.comments, 4) /
+                                  totalComments) *
                                 100
                               ).toFixed(2)
                             : 0}{" "}
@@ -390,15 +405,18 @@ const DetailPage: React.FC = () => {
                       <div className="flex gap-2">
                         <span>3 sao</span>
                         <Slider
-                          value={data ? ratingCount(data, 3) : 0}
+                          value={
+                            data?.comments ? ratingCount(data.comments, 3) : 0
+                          }
                           color="warning"
                           valueLabelDisplay="auto"
-                          max={commentsTotal}
+                          max={totalComments}
                         />
                         <div className=" w-10">
-                          {data && commentsTotal
+                          {data?.comments && totalComments
                             ? (
-                                (ratingCount(data, 3) / commentsTotal) *
+                                (ratingCount(data.comments, 3) /
+                                  totalComments) *
                                 100
                               ).toFixed(2)
                             : 0}{" "}
@@ -408,15 +426,18 @@ const DetailPage: React.FC = () => {
                       <div className="flex gap-2">
                         <span>2 sao</span>
                         <Slider
-                          value={data ? ratingCount(data, 2) : 0}
+                          value={
+                            data?.comments ? ratingCount(data.comments, 2) : 0
+                          }
                           color="warning"
                           valueLabelDisplay="auto"
-                          max={commentsTotal}
+                          max={totalComments}
                         />
                         <div className=" w-10">
-                          {data && commentsTotal
+                          {data?.comments && totalComments
                             ? (
-                                (ratingCount(data, 2) / commentsTotal) *
+                                (ratingCount(data.comments, 2) /
+                                  totalComments) *
                                 100
                               ).toFixed(2)
                             : 0}{" "}
@@ -426,15 +447,18 @@ const DetailPage: React.FC = () => {
                       <div className="flex gap-2">
                         <span>1 sao</span>
                         <Slider
-                          value={data ? ratingCount(data, 1) : 0}
+                          value={
+                            data?.comments ? ratingCount(data.comments, 1) : 0
+                          }
                           color="warning"
                           valueLabelDisplay="auto"
-                          max={commentsTotal}
+                          max={totalComments}
                         />
                         <div className=" w-10">
-                          {data && commentsTotal
+                          {data?.comments && totalComments
                             ? (
-                                (ratingCount(data, 1) / commentsTotal) *
+                                (ratingCount(data.comments, 1) /
+                                  totalComments) *
                                 100
                               ).toFixed(2)
                             : 0}{" "}

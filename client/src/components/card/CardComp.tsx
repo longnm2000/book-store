@@ -1,14 +1,19 @@
 import { Rating } from "@mui/material";
 import { Link } from "react-router-dom";
 import { Book } from "../../types/types";
+import { calculateForBook } from "../../helper/helper";
 interface CardProps {
   book: Book;
 }
 
 const CardComp: React.FC<CardProps> = ({ book }) => {
-  const sum = book.comments.reduce((a, b) => a + b.score, 0);
-  const commentTotal = book.comments.length;
-  const average = sum / commentTotal;
+  let totalComments = 0,
+    average = 0;
+  if (book.comments) {
+    totalComments = calculateForBook(book.comments).totalComments;
+    average = calculateForBook(book.comments).average;
+  }
+
   return (
     <>
       <Link to={`/detail/${book.id}`}>
@@ -25,21 +30,15 @@ const CardComp: React.FC<CardProps> = ({ book }) => {
           </div>
           <div className="mt-4">
             <h5
-              className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white truncate"
+              className="mb-2 text-xl font-bold tracking-tight text-gray-900  truncate"
               title={book.title}
             >
               {book.title}
             </h5>
             <p className="flex items-center justify-between flex-wrap">
-              <Rating
-                name="half-rating-read"
-                value={average || 0}
-                precision={0.5}
-                readOnly
-              />{" "}
-              <span>({commentTotal} đánh giá)</span>
+              <Rating name="half-rating-read" value={average} readOnly />{" "}
+              <span>({totalComments} đánh giá)</span>
             </p>
-            <p className="font-semibold text-xl mt-3">{book.price} Đ / ngày</p>
           </div>
         </div>
       </Link>
