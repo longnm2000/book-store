@@ -1,17 +1,19 @@
 import {
-  Box,
+  // Box,
   Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
+  FormHelperText,
+  // FormHelperText,
+  // Dialog,
+  // DialogActions,
+  // DialogContent,
+  // DialogTitle,
   Grid,
   Pagination,
   Rating,
   Slider,
-  TextField,
+  // TextField,
 } from "@mui/material";
-import ProductCarouselComp from "../../components/productCarousel/ProductCarouselComp";
+// import ProductCarouselComp from "../../components/productCarousel/ProductCarouselComp";
 import { Helmet } from "react-helmet";
 import HeaderComp from "../../components/layout/header/HeaderComp";
 import CreateIcon from "@mui/icons-material/Create";
@@ -19,26 +21,44 @@ import FooterComp from "../../components/layout/footer/FooterComp";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios, { AxiosResponse } from "axios";
-import { Book, CommentForm } from "../../types/types";
+import { Book } from "../../types/types";
 import { Comment } from "../../types/types";
 import * as dayjs from "dayjs";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { axiosInstance } from "../../axios/config";
-import { toast } from "react-toastify";
+// import { axiosInstance } from "../../axios/config";
+// import { toast } from "react-toastify";
 import { calculateForBook } from "../../helper/helper";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+// import { set } from "lodash";
 
 const ratingCount = (data: Comment[], point: number) => {
   return data.filter((comment) => comment.score === point).length;
 };
 
 const schema = yup.object().shape({
-  score: yup.number().required("Vui lòng chọn rating"),
-  content: yup.string().required("Không được để trống"),
+  borrowedDate: yup.date().required("Không để trống"),
+  returnDate: yup
+    .date()
+    .required("Không để trống")
+    // .min(yup.ref("borrowedDate"), "Ngày trả phải sau ngày mượn")
+    .test(
+      "is-after-borrowed",
+      "Ngày trả phải sau ngày mượn ít nhất 1 ngày",
+      function (value) {
+        const borrowedDate = this.parent.borrowedDate;
+        const returnDate = value;
+        if (borrowedDate && returnDate) {
+          const diffTime = returnDate.getTime() - borrowedDate.getTime();
+          const diffDays = diffTime / (1000 * 3600 * 24);
+          return diffDays >= 1;
+        }
+        return true;
+      }
+    ),
 });
 
 const DetailPage: React.FC = () => {
@@ -46,7 +66,7 @@ const DetailPage: React.FC = () => {
     handleSubmit,
     control,
     formState: { errors },
-    reset,
+    // reset,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -56,7 +76,7 @@ const DetailPage: React.FC = () => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [pageTotal, setPageTotal] = useState<number>(1);
   const [page, setPage] = useState<number>(1);
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   // const [rowPerPage, setRowPerPage] = useState<number>(5);
   const rowPerPage = 5;
   const fetchData = async () => {
@@ -89,14 +109,14 @@ const DetailPage: React.FC = () => {
     fetchComments();
   };
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  // const handleOpen = () => {
+  //   setOpen(true);
+  // };
 
-  const handleClose = () => {
-    setOpen(false);
-    reset();
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  //   reset();
+  // };
 
   let average: number = 0,
     totalComments: number = 0,
@@ -107,35 +127,54 @@ const DetailPage: React.FC = () => {
     average = Math.floor(sumScore / totalComments);
   }
 
-  const onSubmit = (data: CommentForm) => {
-    const userId = JSON.parse(localStorage.getItem("user") || "")?.id || "";
-    axiosInstance
-      .post("/comments", {
-        ...data,
-        productId: id ? +id : 0,
-        userId,
-        createAt: Date.now(),
-      })
-      .then((res) => {
-        console.log(res);
-        if (res.status === 201) {
-          toast.success("Đánh giá sản phẩm thành công");
-          // sumScore += data.score;
-          // commentsTotal++;
-          handleClose();
-          fetchComments();
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        if (err.code === "ERR_NETWORK") {
-          toast.error("Lỗi mạng");
-          return;
-        }
-        toast.error(`Có lỗi xảy ra ${err.response?.data}`);
-      });
+  // const onSubmit = (data: CommentForm) => {
+  //   const userId = JSON.parse(localStorage.getItem("user") || "")?.id || "";
+  //   axiosInstance
+  //     .post("/comments", {
+  //       ...data,
+  //       productId: id ? +id : 0,
+  //       userId,
+  //       createAt: Date.now(),
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+  //       if (res.status === 201) {
+  //         toast.success("Đánh giá sản phẩm thành công");
+  //         // sumScore += data.score;
+  //         // commentsTotal++;
+  //         handleClose();
+  //         fetchComments();
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //       if (err.code === "ERR_NETWORK") {
+  //         toast.error("Lỗi mạng");
+  //         return;
+  //       }
+  //       toast.error(`Có lỗi xảy ra ${err.response?.data}`);
+  //     });
+  // };
+  // console.log(comments);
+
+  // const [borrowedDate, setBorrowedDate] = useState(dayjs());
+  // const [returnDate, setReturnDate] = useState(dayjs().add(1, "day"));
+  // const [timeInfo, setTimeInfo] = useState({
+  //   borrowedDate: dayjs(),
+  //   returnDate: dayjs().add(1, "day"),
+  // });
+  // // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // const handleChangeTime = (value: any, name: string) => {
+  //   setTimeInfo((prev) => ({ ...prev, [name]: dayjs(value) }));
+  // };
+  // console.log(timeInfo);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSubmit = (data: any) => {
+    console.log(data);
+    console.log("haha");
   };
-  console.log(comments);
+  console.log(errors);
 
   return (
     <>
@@ -143,7 +182,7 @@ const DetailPage: React.FC = () => {
         <title>{data?.title}</title>
       </Helmet>
       <HeaderComp />
-      <Dialog
+      {/* <Dialog
         open={open}
         fullWidth
         onClose={handleClose}
@@ -198,51 +237,110 @@ const DetailPage: React.FC = () => {
             Agree
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
       <main className=" bg-slate-50 py-4">
         <div className="container mx-auto">
           <div className=" bg-white p-4 rounded-lg">
             <Grid container spacing={4}>
               <Grid item xs={12} md={6}>
-                <div className="h-full">
-                  <div className="sticky top-5">
-                    <ProductCarouselComp />
+                <div>
+                  <div className="w-3/4 mx-auto">
+                    {/* <ProductCarouselComp picture={data?.avatar} /> */}
+                    <img src={data?.avatar} alt={data?.title} />
                   </div>
                 </div>
               </Grid>
               <Grid item xs={12} md={6}>
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-3 break-words">
                   <h1 className=" font-bold text-3xl" title={data?.title}>
                     {data?.title}
                   </h1>
                   <p>
                     Tác giả:{" "}
-                    <span className="font-semibold">{data?.author}</span>
+                    <span className="font-semibold break-words">
+                      {data?.author}
+                    </span>
                   </p>
                   <p>
                     Nhà xuất bản:{" "}
-                    <span className="font-semibold">{data?.publisher}</span>
+                    <span className="font-semibold break-words">
+                      {data?.publisher}
+                    </span>
                   </p>
                   <p>
                     Hình thức bìa:{" "}
                     <span className="font-semibold">{data?.format}</span>
                   </p>
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DatePicker
-                      label="Ngày mượn"
-                      disablePast
-                      defaultValue={dayjs(Date.now())}
-                    />
-                    <DatePicker
-                      label="Ngày trả"
-                      disablePast
-                      defaultValue={dayjs(Date.now())}
-                    />
-                  </LocalizationProvider>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                      <div className="flex justify-between my-4 gap-4 flex-col md:flex-row">
+                        {" "}
+                        <div>
+                          <Controller
+                            name="borrowedDate"
+                            control={control}
+                            defaultValue={undefined}
+                            render={({ field }) => (
+                              <>
+                                {" "}
+                                <DatePicker
+                                  {...field}
+                                  label="Ngày mượn"
+                                  format="DD/MM/YYYY"
+                                  className="w-full"
+                                  disablePast
+                                />
+                                <FormHelperText error>
+                                  {errors.borrowedDate?.message}
+                                </FormHelperText>
+                              </>
+                            )}
+                          />
+                        </div>
+                        <div>
+                          <Controller
+                            name="returnDate"
+                            control={control}
+                            defaultValue={undefined}
+                            render={({ field }) => (
+                              <>
+                                <DatePicker
+                                  {...field}
+                                  label="Ngày trả"
+                                  format="DD/MM/YYYY"
+                                  className="w-full"
+                                  disablePast
+                                  minDate={dayjs().add(1, "day")}
+                                />
+                                <FormHelperText error>
+                                  {errors.returnDate?.message}
+                                </FormHelperText>
+                              </>
+                            )}
+                          />
+                        </div>
+                      </div>
 
-                  <Button variant="contained" fullWidth color="error">
-                    Mượn sách
-                  </Button>
+                      {/* <DatePicker
+                        label="Ngày trả"
+                        disablePast
+                        minDate={dayjs(timeInfo.borrowedDate).add(1, "day")}
+                        onChange={(e) => handleChangeTime(e, "returnDate")}
+                        value={timeInfo.returnDate}
+                        format="DD/MM/YYYY"
+                        className="w-full"
+                      /> */}
+                      <Button
+                        variant="contained"
+                        fullWidth
+                        onClick={handleSubmit(onSubmit)}
+                        type="submit"
+                        className="bg-blue-500 hover:bg-blue-700 text-white text-lg py-2 px-4 rounded-lg capitalize"
+                      >
+                        Mượn sách
+                      </Button>
+                    </form>
+                  </LocalizationProvider>
                 </div>
                 <div className=" mt-8">
                   <table className="table-auto w-full border-collapse">
@@ -475,7 +573,7 @@ const DetailPage: React.FC = () => {
                     variant="outlined"
                     color="error"
                     startIcon={<CreateIcon />}
-                    onClick={handleOpen}
+                    // onClick={handleOpen}
                   >
                     Viết đánh giá
                   </Button>

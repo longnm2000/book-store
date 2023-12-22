@@ -62,6 +62,12 @@ export interface Account {
   password: string;
 }
 
+export interface ProfileInfo {
+  avatar: string;
+  name: string;
+  phone: string;
+}
+
 export interface SearchParams {
   categoryId: string;
   _order: string;

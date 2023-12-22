@@ -116,6 +116,7 @@ const SearchPage: React.FC = () => {
                           color="inherit"
                           fullWidth
                           variant={"text"}
+                          className=""
                           onClick={() => handleSelectedCategory("")}
                         >
                           Tất cả
@@ -126,6 +127,7 @@ const SearchPage: React.FC = () => {
                           <Button
                             color="inherit"
                             fullWidth
+                            className=" capitalize"
                             variant={
                               searchParams.get("categoryId") ===
                               category.id.toString()

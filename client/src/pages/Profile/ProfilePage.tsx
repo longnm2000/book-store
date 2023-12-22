@@ -3,29 +3,49 @@ import HeaderComp from "../../components/layout/header/HeaderComp";
 import FooterComp from "../../components/layout/footer/FooterComp";
 import { useState } from "react";
 import React from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import {
   Box,
   Button,
   Grid,
-  TextField,
   Dialog,
   DialogContent,
   DialogTitle,
-  IconButton,
+  Avatar,
+  DialogActions,
 } from "@mui/material";
 
-import CloseIcon from "@mui/icons-material/Close";
+import { useDispatch, useSelector } from "react-redux";
+import { useGetUserByID } from "../../hooks/user";
+import CustomInput from "../../components/common/CustomInput/CustomInput";
+import { nameValidation, phoneValidation } from "../../helper/validations";
+import { storage } from "../../../firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { toast } from "react-toastify";
+import { updateDetailUser } from "../../axios/user";
+import { AxiosResponse } from "axios";
+import { act_setUser } from "../../redux/action";
+
+interface updateInfo {
+  name: string;
+  phone: string;
+}
+
 const schema = yup.object().shape({
-  name: yup.string().required("Họ tên không để trống"),
-  phone: yup
-    .string()
-    .matches(/^\d{10}$/, "Số điện thoại phải có 10 chữ số")
-    .required("Vui lòng nhập số điện thoại"),
+  name: nameValidation,
+  phone: phoneValidation,
 });
 const ProfilePage: React.FC = () => {
+  const dispatch = useDispatch();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const currentUser = useSelector((state: any) => state.user);
+  const { detailUser, fetchDetailUser } = useGetUserByID(currentUser.id);
+  const [imageUrlAvatar, setImageUrlAvatar] = useState<string>(
+    currentUser?.avatar
+  );
+
   const {
     handleSubmit,
     control,
@@ -34,10 +54,6 @@ const ProfilePage: React.FC = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-
-  const onSubmit = (data: object) => {
-    console.log(data);
-  };
 
   const [open, setOpen] = useState(false);
 
@@ -48,7 +64,42 @@ const ProfilePage: React.FC = () => {
   const handleClose = () => {
     setOpen(false);
     reset();
+    setImageUrlAvatar(currentUser?.avatar);
   };
+
+  const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedImage = e.target.files?.[0];
+    if (selectedImage) {
+      const storageRef = ref(storage, `images/${selectedImage.name}`);
+      uploadBytes(storageRef, selectedImage)
+        .then((snapshot) => getDownloadURL(snapshot.ref))
+        .then((url) => {
+          setImageUrlAvatar(url);
+          toast.success("Upload ảnh thành công");
+        })
+        .catch((error) => {
+          console.error("Error uploading image:", error);
+        });
+    }
+  };
+
+  const onSubmit = (data: updateInfo) => {
+    const info = { ...data, avatar: imageUrlAvatar };
+    updateDetailUser(currentUser.id, info).then((response: AxiosResponse) => {
+      if (response.status === 200) {
+        fetchDetailUser(currentUser.id);
+        toast.success("Thay đổi thông tin thành công");
+        dispatch(act_setUser({ ...currentUser, ...info }));
+        localStorage.setItem(
+          "user",
+          JSON.stringify({ ...currentUser, ...info })
+        );
+        handleClose();
+      }
+    });
+  };
+  console.log(imageUrlAvatar);
+
   return (
     <>
       <Helmet>
@@ -63,69 +114,52 @@ const ProfilePage: React.FC = () => {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle>
-            <div className="flex justify-between items-center">
-              {" "}
+            <div className="flex">
               <p>Sửa Thông Tin</p>
-              <IconButton onClick={handleClose}>
-                <CloseIcon />
-              </IconButton>
             </div>
           </DialogTitle>
-          <DialogContent>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit(onSubmit)}
-              sx={{ mt: 3 }}
-            >
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <Controller
-                    name="name"
-                    control={control}
-                    defaultValue=""
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        fullWidth
-                        label="Họ Tên"
-                        error={!!errors.name}
-                        helperText={errors.name?.message}
-                      />
-                    )}
-                  />
-                </Grid>
 
-                <Grid item xs={12}>
-                  <Controller
-                    name="phone"
-                    control={control}
-                    defaultValue=""
-                    render={({ field }) => (
-                      <TextField
-                        {...field}
-                        fullWidth
-                        label="Số điện thoại"
-                        error={!!errors.phone}
-                        helperText={errors.phone?.message}
-                      />
-                    )}
-                  />
-                </Grid>
-              </Grid>
-              <Button type="submit" variant="contained" sx={{ mt: 3, mb: 2 }}>
-                Lưu
-              </Button>
+          <DialogContent>
+            <div>
+              <div className="p-4" style={{ marginBottom: "20px" }}>
+                <img src={imageUrlAvatar} alt="" width={200} />
+              </div>
+              <div className="">
+                <input type="file" onChange={handleAvatarUpload} className="" />
+              </div>
+            </div>
+            <Box component="form" noValidate>
+              <CustomInput
+                name="name"
+                control={control}
+                error={!!errors.name}
+                helperText={errors.name?.message}
+                label="Họ tên"
+                defaultValue={detailUser?.name}
+              />
+              <CustomInput
+                name="phone"
+                control={control}
+                label="Số điện thoại"
+                error={!!errors.phone}
+                helperText={errors.phone?.message}
+                defaultValue={detailUser?.phone}
+              />
             </Box>
           </DialogContent>
-          {/* <DialogActions>
-            <Button onClick={handleClose} autoFocus>
-              Huỷ Bỏ
-            </Button>
-            <Button onClick={handleClose} autoFocus>
+          <DialogActions>
+            <Button onClick={handleClose}>Huỷ</Button>
+            <Button
+              type="submit"
+              variant="contained"
+              className="bg-red-500"
+              color="success"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={handleSubmit(onSubmit)}
+            >
               Lưu
             </Button>
-          </DialogActions> */}
+          </DialogActions>
         </Dialog>
       </React.Fragment>
       <main className=" bg-slate-50">
@@ -134,23 +168,42 @@ const ProfilePage: React.FC = () => {
             <h1 className=" font-semibold text-2xl text-center mb-4">
               Thông tin cá nhân
             </h1>
-            <table className="w-full mb-4">
-              <tr>
-                <th className="text-start">Họ Tên</th>
-                <td>Nguyễn Mạnh Long</td>
-              </tr>
-              <tr>
-                <th className="text-start">Email</th>
-                <td>longnguyen2000@gmail.com</td>
-              </tr>
-              <tr>
-                <th className="text-start">Số Điện Thoại</th>
-                <td>0123456789</td>
-              </tr>
-            </table>
-            <Button variant="outlined" onClick={handleClickOpen}>
-              Sửa thông tin
-            </Button>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={4}>
+                <div className="flex justify-center items-center w-full">
+                  <Avatar
+                    sx={{ width: 156, height: 156 }}
+                    alt={detailUser?.name}
+                    src={detailUser?.avatar}
+                  />
+                </div>
+              </Grid>
+              <Grid item xs={12} md={8}>
+                <table className="w-full">
+                  <tbody>
+                    <tr>
+                      <th className="text-start p-2">Họ Tên</th>
+                      <td className="p-2">{detailUser?.name}</td>
+                    </tr>
+                    <tr>
+                      <th className="text-start p-2">Email</th>
+                      <td className="p-2">{detailUser?.email}</td>
+                    </tr>
+                    <tr>
+                      <th className="text-start p-2">Số Điện Thoại</th>
+                      <td className="p-2">{detailUser?.phone}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <Button
+                  variant="outlined"
+                  onClick={handleClickOpen}
+                  className="mt-4 ms-2"
+                >
+                  Sửa thông tin
+                </Button>
+              </Grid>
+            </Grid>
           </div>
         </div>
       </main>

@@ -30,10 +30,10 @@
     {
       "email": "longmanhnguyen205@gmail.com",
       "role": "user",
-      "avatar": "",
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/upload-file-51381.appspot.com/o/images%2Fgai-xinh-han-quoc-2-1.jpg?alt=media&token=b043bc66-1b08-4407-a4b6-ee220e9528b6",
       "password": "$2a$10$xpU/mt13BMfLfK9FeWVDn.O9uhIcrig3Gc3Qwd3Ls8WySzD9VQTM.",
-      "name": "Nguyễn Mạnh Long",
-      "phone": "0866808540",
+      "name": "Nguyễn Mạnh ",
+      "phone": "1111111111",
       "id": 4
     },
     {
@@ -80,6 +80,13 @@
       "name": "Trang",
       "phone": "0123456789",
       "id": 9
+    },
+    {
+      "email": "hanh@gmail.com",
+      "password": "$2a$10$ElKB/vgdfgzoA88olaXDq.PJBGANCTDfvO8nRuMk5R9c/lcPrwDWO",
+      "name": "hanh",
+      "phone": "0866808540",
+      "id": 10
     }
   ],
   "types": [

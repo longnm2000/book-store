@@ -67,12 +67,20 @@ const RegisterPage: React.FC = () => {
 
       <div className="sm:py-20  mx-auto bg-no-repeat bg-center bg-cover bg-[url('https://marketplace.canva.com/EAD2962NKnQ/2/0/1600w/canva-rainbow-gradient-pink-and-purple-virtual-background-_Tcjok-d9b4.jpg')]">
         <div className=" w-fit mx-auto p-2 md:p-4 md:rounded-lg bg-white shadow-xl">
-          <h1 className="text-3xl font-semibold text-center">Đăng Ký</h1>
+          <div className=" flex justify-between">
+            <h1 className="text-3xl font-semibold text-center">Đăng Ký</h1>
+            <Button
+              component={Link}
+              to={"/login"}
+              className="text-sm capitalize"
+            >
+              Đăng nhập
+            </Button>
+          </div>
           <Box
             component="form"
             noValidate
             onSubmit={handleSubmit(onSubmit)}
-            sx={{ mt: 3 }}
             className=" max-w-md"
           >
             <Grid container>
@@ -80,8 +88,10 @@ const RegisterPage: React.FC = () => {
                 <CustomInput
                   control={control}
                   name="name"
+                  label="Họ Tên"
                   error={!!errors.name}
                   helperText={errors.name?.message}
+                  defaultValue=""
                 />
               </Grid>
 
@@ -89,8 +99,10 @@ const RegisterPage: React.FC = () => {
                 <CustomInput
                   control={control}
                   name="email"
+                  label="Email"
                   error={!!errors.email}
                   helperText={errors.email?.message}
+                  defaultValue=""
                 />
               </Grid>
               <Grid item xs={12}>
@@ -106,8 +118,10 @@ const RegisterPage: React.FC = () => {
                 <CustomInput
                   control={control}
                   name="phone"
+                  label="Số Điện thoại"
                   error={!!errors.phone}
                   helperText={errors.phone?.message}
+                  defaultValue=""
                 />
               </Grid>
             </Grid>
@@ -116,16 +130,10 @@ const RegisterPage: React.FC = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg capitalize"
             >
               Đăng ký
             </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Button component={Link} to={"/login"} sx={{ color: "black" }}>
-                  Có tài khoản? Đăng nhập
-                </Button>
-              </Grid>
-            </Grid>
           </Box>
         </div>
       </div>

@@ -78,14 +78,21 @@ const LoginPage: React.FC = () => {
             component="form"
             className=" max-w-md mx-auto"
           >
-            <h1 className=" font-semibold text-3xl text-center mb-3">
-              Đăng Nhập
-            </h1>
+            <div className="flex justify-between">
+              <h1 className=" font-semibold text-2xl text-center mb-3">
+                Đăng Nhập
+              </h1>
+              <Button component={Link} to={"/register"} className=" capitalize">
+                Đăng ký
+              </Button>
+            </div>
             <CustomInput
               control={control}
               name="email"
+              label="Email"
               error={!!errors.email}
               helperText={errors.email?.message}
+              defaultValue=""
             />
             <PasswordInput
               control={control}
@@ -98,15 +105,10 @@ const LoginPage: React.FC = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg capitalize"
             >
               Đăng nhập
             </Button>
-
-            <div className="flex justify-end">
-              <Button component={Link} to={"/register"} sx={{ color: "black" }}>
-                Đăng ký
-              </Button>
-            </div>
           </Box>
         </div>
       </div>

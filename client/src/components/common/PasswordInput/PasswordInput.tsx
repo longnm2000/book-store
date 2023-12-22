@@ -40,12 +40,15 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
       control={control}
       defaultValue={""}
       render={({ field }) => (
-        <FormControl variant="outlined" fullWidth sx={{ mt: 2 }}>
-          <InputLabel error={error}>Mật khẩu</InputLabel>
+        <FormControl variant="outlined" fullWidth sx={{ mt: 3 }}>
+          <InputLabel size="small" className="capitalize" error={error}>
+            Mật khẩu
+          </InputLabel>
           <OutlinedInput
             {...field}
             error={error}
             id={name}
+            size="small"
             type={showPassword ? "text" : "password"}
             autoComplete="current-password"
             endAdornment={
@@ -61,6 +64,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
               </InputAdornment>
             }
             label="Password"
+            className="capitalize rounded-lg"
           />
           <FormHelperText error id={`${name}-helper-text`}>
             {helperText}

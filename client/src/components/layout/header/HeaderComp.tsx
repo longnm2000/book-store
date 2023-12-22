@@ -129,11 +129,7 @@ function ResponsiveAppBar() {
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
                   alt={currentUser.name}
-                  src={
-                    currentUser.name
-                      ? "https://gaixinhbikini.com/wp-content/uploads/2023/02/anh-gai-dep-2k-005.jpg"
-                      : ""
-                  }
+                  src={currentUser.name ? currentUser.avatar : ""}
                 />
               </IconButton>
             </Tooltip>

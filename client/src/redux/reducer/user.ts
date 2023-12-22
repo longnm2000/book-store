@@ -1,8 +1,8 @@
 import { UserAction } from "../../types/types";
 import * as actionTypes from "../constant/actionTypes";
-const initState = {};
+const initState = JSON.parse(localStorage.getItem("user") || "{}");
 
-const users = (state = initState, action: UserAction) => {
+const user = (state = initState, action: UserAction) => {
   switch (action.type) {
     case actionTypes.SET_USER:
       return { ...state, ...action.payload };
@@ -10,4 +10,4 @@ const users = (state = initState, action: UserAction) => {
       return state;
   }
 };
-export default users;
+export default user;
