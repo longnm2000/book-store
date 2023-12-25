@@ -17,7 +17,7 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { act_setUser } from "../../../redux/action";
 
-function ResponsiveAppBar() {
+function HeaderComp() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -154,6 +154,9 @@ function ResponsiveAppBar() {
                 <MenuItem onClick={() => navigate("/profile")}>
                   <Typography>Trang cá nhân</Typography>
                 </MenuItem>
+                <MenuItem onClick={() => navigate("/history")}>
+                  <Typography>Lịch sử mượn sách</Typography>
+                </MenuItem>
                 <MenuItem onClick={handleLogout}>
                   <Typography>Đăng xuất</Typography>
                 </MenuItem>
@@ -197,4 +200,4 @@ function ResponsiveAppBar() {
     </AppBar>
   );
 }
-export default ResponsiveAppBar;
+export default HeaderComp;

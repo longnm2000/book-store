@@ -73,3 +73,14 @@ export interface SearchParams {
   _order: string;
   title_like: string;
 }
+
+export interface Order {
+  id: number;
+  userId: number;
+  productId: number;
+  status: number;
+  borrowedDate: number;
+  returnDate: number;
+  createAt: Date;
+  product: Book;
+}

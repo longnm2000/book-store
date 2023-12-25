@@ -7,3 +7,9 @@ export const act_setUser = (value: User) => {
     payload: value,
   };
 };
+// export const act_setAdmin = (value: User) => {
+//   return {
+//     type: actionTypes.SET_ADMIN,
+//     payload: value,
+//   };
+// };

@@ -93,7 +93,10 @@ const SearchPage: React.FC = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    setSearchParams(filterValue);
+    const filteredObj = Object.fromEntries(
+      Object.entries(filterValue).filter(([, value]) => value !== "")
+    );
+    setSearchParams(filteredObj);
   }, [filterValue]);
 
   return (

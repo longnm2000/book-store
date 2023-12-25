@@ -83,10 +83,19 @@
     },
     {
       "email": "hanh@gmail.com",
+      "role": "user",
       "password": "$2a$10$ElKB/vgdfgzoA88olaXDq.PJBGANCTDfvO8nRuMk5R9c/lcPrwDWO",
       "name": "hanh",
       "phone": "0866808540",
       "id": 10
+    },
+    {
+      "email": "zeus@gmail.com",
+      "role": "admin",
+      "password": "$2a$10$ElKB/vgdfgzoA88olaXDq.PJBGANCTDfvO8nRuMk5R9c/lcPrwDWO",
+      "name": "zeus",
+      "phone": "0866808540",
+      "id": 11
     }
   ],
   "types": [
@@ -881,6 +890,89 @@
       "userId": 4,
       "createAt": 1702959776393,
       "id": 21
+    }
+  ],
+  "orders": [
+    {
+      "id": 1,
+      "userId": 1,
+      "productId": 30,
+      "borrowedDate": 321312312321,
+      "returnDate": 1271361782621783,
+      "createAt": 1703495810336,
+      "status": 0
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "productId": 30,
+      "borrowedDate": 321312312321,
+      "returnDate": 1271361782621783,
+      "createAt": 1703495810336,
+      "status": 2
+    },
+    {
+      "id": 3,
+      "userId": 1,
+      "productId": 29,
+      "borrowedDate": 321312312321,
+      "returnDate": 1271361782621783,
+      "createAt": 1703495810336,
+      "status": 1
+    },
+    {
+      "userId": 4,
+      "productId": 30,
+      "status": 0,
+      "borrowedDate": "2023-12-25T17:00:00.000Z",
+      "returnDate": "2023-12-28T17:00:00.000Z",
+      "createAt": 1703495810336,
+      "id": 4
+    },
+    {
+      "userId": 4,
+      "productId": 1,
+      "status": 0,
+      "borrowedDate": "2023-12-26T17:00:00.000Z",
+      "returnDate": "2023-12-29T17:00:00.000Z",
+      "createAt": 1703495810336,
+      "id": 5
+    },
+    {
+      "userId": 4,
+      "productId": 2,
+      "status": 0,
+      "borrowedDate": "2023-12-25T17:00:00.000Z",
+      "returnDate": "2023-12-29T17:00:00.000Z",
+      "createAt": 1703495810336,
+      "id": 6
+    },
+    {
+      "userId": 4,
+      "productId": 3,
+      "status": 0,
+      "borrowedDate": "2023-12-25T17:00:00.000Z",
+      "returnDate": "2023-12-27T17:00:00.000Z",
+      "createAt": 1703495822622,
+      "id": 7
+    },
+    {
+      "userId": 4,
+      "productId": 4,
+      "status": 0,
+      "borrowedDate": "2023-12-26T17:00:00.000Z",
+      "returnDate": "2023-12-28T17:00:00.000Z",
+      "createAt": 1703495832949,
+      "id": 8
+    },
+    {
+      "userId": 4,
+      "productId": 7,
+      "status": 0,
+      "borrowedDate": "2023-12-27T17:00:00.000Z",
+      "returnDate": "2023-12-29T17:00:00.000Z",
+      "createAt": 1703495947890,
+      "id": 9
     }
   ]
 }

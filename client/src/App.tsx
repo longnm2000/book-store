@@ -11,6 +11,8 @@ import ProfilePage from "./pages/Profile/ProfilePage";
 import { ToastContainer } from "react-toastify";
 import NotSignedIn from "./components/PrivateUserRoutes/NotSignedIn";
 import SignedIn from "./components/PrivateUserRoutes/SignedIn";
+import HistoryPage from "./pages/History/HistoryPage";
+import LoginAdminPage from "./pages/Admin/Login/LoginAdminPage";
 
 function App() {
   const navigate = useNavigate();
@@ -42,9 +44,13 @@ function App() {
         </Route>
         <Route element={<SignedIn />}>
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/history" element={<HistoryPage />} />
         </Route>
         <Route path="/detail/:id" element={<DetailPage />} />
         <Route path="/search" element={<SearchPage />} />
+
+        <Route path="/admin/login" element={<LoginAdminPage />} />
+
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>

@@ -33,6 +33,9 @@ import { calculateForBook } from "../../helper/helper";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { useSelector } from "react-redux";
+import { addNewOrder, isExistOrder } from "../../axios/order";
+import { toast } from "react-toastify";
 // import { set } from "lodash";
 
 const ratingCount = (data: Comment[], point: number) => {
@@ -71,6 +74,8 @@ const DetailPage: React.FC = () => {
     resolver: yupResolver(schema),
   });
   const id = useParams().id;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const currentUser = useSelector((state: any) => state.user);
 
   const [data, setData] = useState<Book | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
@@ -84,7 +89,6 @@ const DetailPage: React.FC = () => {
       const res: AxiosResponse = await axios.get(
         `http://localhost:3000/products/${id}?_embed=comments`
       );
-
       setData(res.data);
     } catch (error) {
       console.log(error);
@@ -109,15 +113,6 @@ const DetailPage: React.FC = () => {
     fetchComments();
   };
 
-  // const handleOpen = () => {
-  //   setOpen(true);
-  // };
-
-  // const handleClose = () => {
-  //   setOpen(false);
-  //   reset();
-  // };
-
   let average: number = 0,
     totalComments: number = 0,
     sumScore: number = 0;
@@ -127,54 +122,32 @@ const DetailPage: React.FC = () => {
     average = Math.floor(sumScore / totalComments);
   }
 
-  // const onSubmit = (data: CommentForm) => {
-  //   const userId = JSON.parse(localStorage.getItem("user") || "")?.id || "";
-  //   axiosInstance
-  //     .post("/comments", {
-  //       ...data,
-  //       productId: id ? +id : 0,
-  //       userId,
-  //       createAt: Date.now(),
-  //     })
-  //     .then((res) => {
-  //       console.log(res);
-  //       if (res.status === 201) {
-  //         toast.success("Đánh giá sản phẩm thành công");
-  //         // sumScore += data.score;
-  //         // commentsTotal++;
-  //         handleClose();
-  //         fetchComments();
-  //       }
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //       if (err.code === "ERR_NETWORK") {
-  //         toast.error("Lỗi mạng");
-  //         return;
-  //       }
-  //       toast.error(`Có lỗi xảy ra ${err.response?.data}`);
-  //     });
-  // };
-  // console.log(comments);
-
-  // const [borrowedDate, setBorrowedDate] = useState(dayjs());
-  // const [returnDate, setReturnDate] = useState(dayjs().add(1, "day"));
-  // const [timeInfo, setTimeInfo] = useState({
-  //   borrowedDate: dayjs(),
-  //   returnDate: dayjs().add(1, "day"),
-  // });
-  // // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // const handleChangeTime = (value: any, name: string) => {
-  //   setTimeInfo((prev) => ({ ...prev, [name]: dayjs(value) }));
-  // };
-  // console.log(timeInfo);
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = (data: any) => {
-    console.log(data);
-    console.log("haha");
+  const onSubmit = async (data: { borrowedDate: Date; returnDate: Date }) => {
+    if (currentUser && id) {
+      try {
+        const isExistRes = await isExistOrder(currentUser.id, +id, [0, 1]);
+        if (isExistRes.data.length === 0) {
+          const addOrderRes = await addNewOrder({
+            userId: currentUser.id,
+            productId: +id,
+            status: 0,
+            borrowedDate: data.borrowedDate,
+            returnDate: data.returnDate,
+            createAt: Date.now(),
+          });
+          if (addOrderRes.status === 201) {
+            toast.success("Mượn sách thành công");
+          }
+        } else {
+          toast.error("Cuốn sách này bạn đã mượn");
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Có lỗi xảy ra\n" + error);
+      }
+    }
   };
-  console.log(errors);
 
   return (
     <>
@@ -182,62 +155,7 @@ const DetailPage: React.FC = () => {
         <title>{data?.title}</title>
       </Helmet>
       <HeaderComp />
-      {/* <Dialog
-        open={open}
-        fullWidth
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          Viết đánh giá sản phẩm
-        </DialogTitle>
-        <DialogContent>
-          <Box component="form" className=" w-full">
-            <Controller
-              name="score"
-              control={control}
-              defaultValue={1}
-              render={({ field }) => (
-                <Rating {...field} name="score" defaultValue={1} />
-              )}
-            />
-            {errors.score && <p>{errors.score.message}</p>}
-            <Controller
-              name="content"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  margin="normal"
-                  fullWidth
-                  id="content"
-                  placeholder="Viết đánh giá"
-                  name="content"
-                  multiline
-                  rows={4}
-                  error={!!errors.content}
-                  helperText={errors.content?.message}
-                />
-              )}
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} variant="outlined" color="error">
-            Huỷ
-          </Button>
-          <Button
-            type="submit"
-            color="success"
-            variant="contained"
-            onClick={handleSubmit(onSubmit)}
-          >
-            Agree
-          </Button>
-        </DialogActions>
-      </Dialog> */}
+
       <main className=" bg-slate-50 py-4">
         <div className="container mx-auto">
           <div className=" bg-white p-4 rounded-lg">
