@@ -1,21 +1,13 @@
-import {
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  OutlinedInput,
-  IconButton,
-  InputAdornment,
-} from "@mui/material";
 import { Controller } from "react-hook-form";
-import { useState } from "react";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-
+import { Form, Input } from "antd";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 interface PasswordInputProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: any;
   name: string;
   error: boolean;
   helperText: string | undefined;
+  label: string;
 }
 
 const PasswordInput: React.FC<PasswordInputProps> = ({
@@ -23,53 +15,28 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
   name,
   error,
   helperText,
+  label,
 }) => {
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
-
   return (
     <Controller
       name={name}
       control={control}
       defaultValue={""}
       render={({ field }) => (
-        <FormControl variant="outlined" fullWidth sx={{ mt: 3 }}>
-          <InputLabel size="small" className="capitalize" error={error}>
-            Mật khẩu
-          </InputLabel>
-          <OutlinedInput
+        <Form.Item
+          label={label}
+          validateStatus={error ? "error" : ""}
+          help={helperText}
+          className={"capitalize"}
+        >
+          <Input.Password
             {...field}
-            error={error}
-            id={name}
-            size="small"
-            type={showPassword ? "text" : "password"}
-            autoComplete="current-password"
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
+            placeholder={label}
+            iconRender={(visible) =>
+              visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
             }
-            label="Password"
-            className="capitalize rounded-lg"
           />
-          <FormHelperText error id={`${name}-helper-text`}>
-            {helperText}
-          </FormHelperText>
-        </FormControl>
+        </Form.Item>
       )}
     />
   );

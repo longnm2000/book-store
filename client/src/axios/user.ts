@@ -16,3 +16,7 @@ export const getDetailUser = (id: number) => {
 export const updateDetailUser = (id: number, data: ProfileInfo) => {
   return axiosInstance.patch(`/600/users/${id}`, data);
 };
+
+export const getAllUsers = () => {
+  return axiosInstance.get("/users");
+};

@@ -1,4 +1,3 @@
-import { Box, Button } from "@mui/material";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -15,6 +14,7 @@ import { act_setUser } from "../../redux/action";
 import CustomInput from "../../components/common/CustomInput/CustomInput";
 import PasswordInput from "../../components/common/PasswordInput/PasswordInput";
 import { emailValidation, passwordValidation } from "../../helper/validations";
+import { Button, Form } from "antd";
 
 const schema = yup.object().shape({
   email: emailValidation,
@@ -65,6 +65,7 @@ const LoginPage: React.FC = () => {
         }
       });
   };
+  console.log(errors);
   return (
     <>
       <Helmet>
@@ -72,44 +73,49 @@ const LoginPage: React.FC = () => {
       </Helmet>
 
       <div className="sm:py-20  mx-auto bg-no-repeat bg-center bg-cover bg-[url('https://marketplace.canva.com/EAD2962NKnQ/2/0/1600w/canva-rainbow-gradient-pink-and-purple-virtual-background-_Tcjok-d9b4.jpg')]">
-        <div className=" w-fit mx-auto p-2 md:p-4 md:rounded-lg bg-white shadow-xl">
-          <Box
-            onSubmit={handleSubmit(onSubmit)}
-            component="form"
-            className=" max-w-md mx-auto"
-          >
-            <div className="flex justify-between">
-              <h1 className=" font-semibold text-2xl text-center mb-3">
-                Đăng Nhập
-              </h1>
-              <Button component={Link} to={"/register"} className=" capitalize">
-                Đăng ký
-              </Button>
-            </div>
-            <CustomInput
-              control={control}
-              name="email"
-              label="Email"
-              error={!!errors.email}
-              helperText={errors.email?.message}
-              defaultValue=""
-            />
-            <PasswordInput
-              control={control}
-              name="password"
-              error={!!errors.password}
-              helperText={errors.password?.message}
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg capitalize"
+        <div className="container mx-auto">
+          <div className=" lg:w-2/5 max-w-5xl mx-auto p-2 md:p-4 md:rounded-lg bg-white shadow-xl">
+            <Form
+              onFinish={handleSubmit(onSubmit)}
+              layout="vertical"
+              className=" mx-auto lg:p-3"
             >
-              Đăng nhập
-            </Button>
-          </Box>
+              <div className="flex justify-between">
+                <h1 className=" font-semibold text-2xl text-center mb-3">
+                  Đăng Nhập
+                </h1>
+                <Link to={"/register"}>
+                  {" "}
+                  <Button type="text" className=" capitalize text-blue-400">
+                    Đăng ký
+                  </Button>
+                </Link>
+              </div>
+              <CustomInput
+                control={control}
+                name="email"
+                label="Email"
+                error={!!errors.email}
+                helperText={errors.email?.message}
+                defaultValue=""
+              />
+              <PasswordInput
+                control={control}
+                name="password"
+                error={!!errors.password}
+                helperText={errors.password?.message}
+                label="Mật khẩu"
+              />
+
+              <Button
+                htmlType="submit"
+                block
+                className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-semibold px-4 rounded-lg capitalize"
+              >
+                Đăng nhập
+              </Button>
+            </Form>
+          </div>
         </div>
       </div>
       <FooterComp />

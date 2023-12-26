@@ -5,7 +5,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { AxiosError, AxiosResponse } from "axios";
 import { Helmet } from "react-helmet";
-import { Box, Button, Grid } from "@mui/material";
 
 import { toast } from "react-toastify";
 import { RegisterInfo } from "../../types/types";
@@ -18,6 +17,7 @@ import {
   passwordValidation,
   phoneValidation,
 } from "../../helper/validations";
+import { Button, Form } from "antd";
 
 const schema = yup.object().shape({
   name: nameValidation,
@@ -66,75 +66,69 @@ const RegisterPage: React.FC = () => {
       </Helmet>
 
       <div className="sm:py-20  mx-auto bg-no-repeat bg-center bg-cover bg-[url('https://marketplace.canva.com/EAD2962NKnQ/2/0/1600w/canva-rainbow-gradient-pink-and-purple-virtual-background-_Tcjok-d9b4.jpg')]">
-        <div className=" w-fit mx-auto p-2 md:p-4 md:rounded-lg bg-white shadow-xl">
-          <div className=" flex justify-between">
-            <h1 className="text-3xl font-semibold text-center">Đăng Ký</h1>
-            <Button
-              component={Link}
-              to={"/login"}
-              className="text-sm capitalize"
+        <div className="container mx-auto">
+          <div className="lg:w-2/5 max-w-5xl mx-auto p-2 md:p-4 md:rounded-lg bg-white shadow-xl">
+            <div className=" flex justify-between mb-2">
+              <h1 className="text-2xl font-semibold text-center">Đăng Ký</h1>
+              <Link to={"/login"}>
+                {" "}
+                <Button
+                  type="text"
+                  className="text-sm capitalize text-blue-400"
+                >
+                  Đăng nhập
+                </Button>
+              </Link>
+            </div>
+            <Form
+              layout="vertical"
+              onFinish={handleSubmit(onSubmit)}
+              className=" w-full"
             >
-              Đăng nhập
-            </Button>
+              <CustomInput
+                control={control}
+                name="name"
+                label="Họ Tên"
+                error={!!errors.name}
+                helperText={errors.name?.message}
+                defaultValue=""
+              />
+
+              <CustomInput
+                control={control}
+                name="email"
+                label="Email"
+                error={!!errors.email}
+                helperText={errors.email?.message}
+                defaultValue=""
+              />
+
+              <PasswordInput
+                control={control}
+                name="password"
+                error={!!errors.password}
+                helperText={errors.password?.message}
+                label="Mật khẩu"
+              />
+
+              <CustomInput
+                control={control}
+                name="phone"
+                label="Số Điện thoại"
+                error={!!errors.phone}
+                helperText={errors.phone?.message}
+                defaultValue=""
+              />
+
+              <Button
+                htmlType="submit"
+                block
+                className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-semibold px-4 rounded-lg capitalize"
+              >
+                Đăng ký
+              </Button>
+            </Form>
           </div>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit(onSubmit)}
-            className=" max-w-md"
-          >
-            <Grid container>
-              <Grid item xs={12}>
-                <CustomInput
-                  control={control}
-                  name="name"
-                  label="Họ Tên"
-                  error={!!errors.name}
-                  helperText={errors.name?.message}
-                  defaultValue=""
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <CustomInput
-                  control={control}
-                  name="email"
-                  label="Email"
-                  error={!!errors.email}
-                  helperText={errors.email?.message}
-                  defaultValue=""
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <PasswordInput
-                  control={control}
-                  name="password"
-                  error={!!errors.password}
-                  helperText={errors.password?.message}
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <CustomInput
-                  control={control}
-                  name="phone"
-                  label="Số Điện thoại"
-                  error={!!errors.phone}
-                  helperText={errors.phone?.message}
-                  defaultValue=""
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg capitalize"
-            >
-              Đăng ký
-            </Button>
-          </Box>
         </div>
       </div>
       <FooterComp />

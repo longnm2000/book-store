@@ -13,6 +13,7 @@ import NotSignedIn from "./components/PrivateUserRoutes/NotSignedIn";
 import SignedIn from "./components/PrivateUserRoutes/SignedIn";
 import HistoryPage from "./pages/History/HistoryPage";
 import LoginAdminPage from "./pages/Admin/Login/LoginAdminPage";
+import ManagerUser from "./pages/Admin/ManagerUser/ManagerUser";
 
 function App() {
   const navigate = useNavigate();
@@ -50,6 +51,7 @@ function App() {
         <Route path="/search" element={<SearchPage />} />
 
         <Route path="/admin/login" element={<LoginAdminPage />} />
+        <Route path="/admin/manager-users" element={<ManagerUser />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

@@ -32,6 +32,10 @@ import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CommentForm } from "../../types/types";
+import Swal, { SweetAlertOptions } from "sweetalert2";
+
+import { deleteOrder } from "../../axios/order";
+import { Link } from "react-router-dom";
 
 const schema = yup.object().shape({
   score: yup.number().required("Phai co diem"),
@@ -52,7 +56,7 @@ const HistoryPage: React.FC = () => {
   const currentUser = useSelector((state: any) => state.user);
   const [currentPage, setCurrentPage] = useState(1);
   const [productId, setProductId] = useState(0);
-  const { orders, totalPage } = useAllOrdersByUserId(
+  const { orders, totalPage, fetchAllOrdersByUserId } = useAllOrdersByUserId(
     currentUser.id,
     currentPage
   );
@@ -73,6 +77,46 @@ const HistoryPage: React.FC = () => {
   const handleClose = () => {
     setOpen(false);
     reset();
+  };
+
+  const handleDelete = async (orderId: number) => {
+    const result = await Swal.fire({
+      icon: "warning",
+      title: "Bạn có chắc muốn huỷ mượn sách không?",
+      showCancelButton: true,
+      confirmButtonText: "Xác nhận",
+      cancelButtonText: "Hủy bỏ",
+    } as SweetAlertOptions);
+
+    if (result.isConfirmed) {
+      deleteOrder(orderId)
+        .then((response) => {
+          if (response.status === 200) {
+            toast.success("Xoá thành công");
+            fetchAllOrdersByUserId(currentUser.id);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error?.code === "ERR_NETWORK") {
+            toast.error("Lỗi mạng");
+            return;
+          }
+          switch (error.response?.data) {
+            case "jwt expired":
+              toast.error("Phiên đăng nhập hết hạn vui lòng đăng nhập lại");
+              break;
+            case "Missing authorization header":
+              toast.error("Vui lòng đăng nhập");
+              break;
+            case "jwt malformed":
+              toast.error("Vui lòng đăng nhập");
+              break;
+            default:
+              toast.error("Có lỗi xảy ra");
+          }
+        });
+    }
   };
 
   const onSubmit = (data: CommentForm) => {
@@ -184,7 +228,11 @@ const HistoryPage: React.FC = () => {
                       <TableCell component="th" scope="row">
                         {i + 1 + (currentPage - 1) * 5}
                       </TableCell>
-                      <TableCell align="center">{e.product.title}</TableCell>
+                      <TableCell align="center">
+                        <Link to={`/detail/${e.productId}`} target="_blank">
+                          {e.product.title}
+                        </Link>
+                      </TableCell>
                       <TableCell>
                         <img
                           src={e.product.avatar}
@@ -201,7 +249,7 @@ const HistoryPage: React.FC = () => {
                         {dayjs(e.returnDate).format("DD/MM/YYYY")}
                       </TableCell>
                       <TableCell align="center">
-                        {e.status === 0
+                        {e.status === 1
                           ? "Đang xử lý"
                           : e.status === 1
                           ? "Đã cho mượn"
@@ -214,12 +262,17 @@ const HistoryPage: React.FC = () => {
                           <Button
                             color="success"
                             variant="contained"
-                            disabled={e.status !== 2}
+                            // disabled={e.status !== 2}
                             onClick={() => handleOpen(e.productId)}
                           >
                             Đánh giá
                           </Button>
-                          <Button color="error" variant="outlined">
+                          <Button
+                            color="error"
+                            variant="outlined"
+                            onClick={() => handleDelete(e.id)}
+                            disabled={e.status !== 0}
+                          >
                             Huỷ
                           </Button>
                         </div>

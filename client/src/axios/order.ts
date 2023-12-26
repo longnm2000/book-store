@@ -37,5 +37,5 @@ export const getAllOrdersByUserId = (userId: number, page: number) => {
 };
 
 export const deleteOrder = (orderId: number) => {
-  return axiosInstance.delete(`/orders/${orderId}`);
+  return axiosInstance.delete(`/600/orders/${orderId}`);
 };

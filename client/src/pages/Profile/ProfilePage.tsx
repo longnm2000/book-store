@@ -42,6 +42,8 @@ const ProfilePage: React.FC = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const currentUser = useSelector((state: any) => state.user);
   const { detailUser, fetchDetailUser } = useGetUserByID(currentUser.id);
+  console.log(detailUser, currentUser.id);
+
   const [imageUrlAvatar, setImageUrlAvatar] = useState<string>(
     currentUser?.avatar
   );
@@ -69,6 +71,7 @@ const ProfilePage: React.FC = () => {
 
   const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedImage = e.target.files?.[0];
+
     if (selectedImage) {
       const storageRef = ref(storage, `images/${selectedImage.name}`);
       uploadBytes(storageRef, selectedImage)

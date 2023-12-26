@@ -21,5 +21,5 @@ export const useAllOrdersByUserId = (userId: number, page: number) => {
   useEffect(() => {
     fetchAllOrdersByUserId(userId);
   }, [page]);
-  return { orders, isLoading, totalPage };
+  return { orders, isLoading, totalPage, fetchAllOrdersByUserId };
 };
