@@ -1,23 +1,20 @@
-import Button from "@mui/material/Button";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
 import { useNavigate } from "react-router-dom";
 import {
   emailValidation,
   passwordValidation,
 } from "../../../helper/validations";
 import { toast } from "react-toastify";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import CustomInput from "../../../components/common/CustomInput/CustomInput";
 import PasswordInput from "../../../components/common/PasswordInput/PasswordInput";
 import { Account } from "../../../types/types";
-import { loginUser } from "../../../axios/user";
+import { loginUser } from "../../../api/user";
 import { AxiosError, AxiosResponse } from "axios";
-// import { act_setAdmin } from "../../../redux/action";
+import { Button, Col, Form, Row } from "antd";
+import { act_setAdmin } from "../../../redux/action";
 
 const schema = yup.object().shape({
   email: emailValidation,
@@ -35,7 +32,7 @@ export default function LoginAdminPage() {
 
   const navigate = useNavigate();
 
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const onSubmit = (data: Account) => {
     loginUser(data)
@@ -47,12 +44,12 @@ export default function LoginAdminPage() {
               "adminToken",
               JSON.stringify(res.data?.accessToken)
             );
-            // dispatch(act_setAdmin(res.data?.user));
+            dispatch(act_setAdmin(res.data?.user));
             localStorage.setItem("admin", JSON.stringify(res.data?.user));
-            navigate("/admin");
+            navigate("/admin/orders");
           }
         } else {
-          toast.error("Bạn không được phép đăng nhập vào trang này");
+          toast.error("Không tìm thấy người dùng");
           navigate("/login");
         }
       })
@@ -66,7 +63,7 @@ export default function LoginAdminPage() {
             toast.error("Không tìm thấy người dùng");
             break;
           case "Incorrect password":
-            toast.error("Sai mật khẩu");
+            toast.error("Sai tài khoản hoặc mật khẩu");
             break;
           default:
             toast.error("Có lỗi xảy ra");
@@ -76,25 +73,18 @@ export default function LoginAdminPage() {
 
   return (
     <>
-      <Grid container component="main" sx={{ height: "100vh" }}>
-        {/* <CssBaseline /> */}
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-          <Box
-            sx={{
-              my: 8,
-              mx: 4,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <p className="text-2xl font-semibold">Đăng nhập</p>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit(onSubmit)}
-              sx={{ mt: 1 }}
+      <div>
+        <div className="container mx-auto h-screen flex items-center">
+          <div className=" w-full sm:w-3/5 lg:w-2/5 max-w-5xl mx-auto p-2 md:p-4 md:rounded-lg bg-white shadow-xl">
+            <Form
+              onFinish={handleSubmit(onSubmit)}
+              layout="vertical"
+              className=" mx-auto lg:p-3"
             >
+              <h1 className=" font-semibold text-2xl text-center mb-3">
+                Đăng nhập Admin
+              </h1>
+
               <CustomInput
                 control={control}
                 name="email"
@@ -108,38 +98,20 @@ export default function LoginAdminPage() {
                 name="password"
                 error={!!errors.password}
                 helperText={errors.password?.message}
+                label="Mật khẩu"
               />
 
               <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-                className=" capitalize bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                htmlType="submit"
+                block
+                className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-semibold px-4 rounded-lg capitalize"
               >
                 Đăng nhập
               </Button>
-            </Box>
-          </Box>
-        </Grid>
-        <Grid
-          item
-          xs={false}
-          sm={4}
-          md={7}
-          sx={{
-            backgroundImage:
-              "url(https://source.unsplash.com/random?wallpapers)",
-            backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-      </Grid>
+            </Form>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

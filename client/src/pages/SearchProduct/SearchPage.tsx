@@ -19,7 +19,7 @@ import { AxiosResponse } from "axios";
 import { Book } from "../../types/types";
 import { useCategory } from "../../hooks/category";
 import { useSearchParams } from "react-router-dom";
-import { axiosConfig } from "../../axios/config";
+import { axiosConfig } from "../../api/config";
 import SearchIcon from "@mui/icons-material/Search";
 
 const SearchPage: React.FC = () => {

@@ -27,14 +27,14 @@ import {
   // TextField,
 } from "@mui/material";
 import { toast } from "react-toastify";
-import { axiosInstance } from "../../axios/config";
+import { axiosConfig, axiosInstance } from "../../api/config";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CommentForm } from "../../types/types";
 import Swal, { SweetAlertOptions } from "sweetalert2";
 
-import { deleteOrder } from "../../axios/order";
+import { deleteOrder } from "../../api/order";
 import { Link } from "react-router-dom";
 
 const schema = yup.object().shape({
@@ -89,10 +89,11 @@ const HistoryPage: React.FC = () => {
     } as SweetAlertOptions);
 
     if (result.isConfirmed) {
-      deleteOrder(orderId)
+      axiosConfig
+        .patch("/orders/" + orderId, { status: 3 })
         .then((response) => {
           if (response.status === 200) {
-            toast.success("Xoá thành công");
+            toast.success("Huỷ thành công");
             fetchAllOrdersByUserId(currentUser.id);
           }
         })
@@ -249,7 +250,7 @@ const HistoryPage: React.FC = () => {
                         {dayjs(e.returnDate).format("DD/MM/YYYY")}
                       </TableCell>
                       <TableCell align="center">
-                        {e.status === 1
+                        {e.status === 0
                           ? "Đang xử lý"
                           : e.status === 1
                           ? "Đã cho mượn"
@@ -259,14 +260,14 @@ const HistoryPage: React.FC = () => {
                       </TableCell>
                       <TableCell align="center">
                         <div className="flex justify-center gap-2 items-center ">
-                          <Button
+                          {/* <Button
                             color="success"
                             variant="contained"
                             // disabled={e.status !== 2}
                             onClick={() => handleOpen(e.productId)}
                           >
                             Đánh giá
-                          </Button>
+                          </Button> */}
                           <Button
                             color="error"
                             variant="outlined"

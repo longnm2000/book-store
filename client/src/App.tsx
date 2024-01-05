@@ -14,6 +14,11 @@ import SignedIn from "./components/PrivateUserRoutes/SignedIn";
 import HistoryPage from "./pages/History/HistoryPage";
 import LoginAdminPage from "./pages/Admin/Login/LoginAdminPage";
 import ManagerUser from "./pages/Admin/ManagerUser/ManagerUser";
+import ManagerOrdersPage from "./pages/Admin/ManagerOrders/ManagerOrdersPage";
+import AdminLayout from "./components/layout/AdminLayout/AdminLayout";
+import ManagerProductsPage from "./pages/Admin/ManagerProducts/ManagerProductsPage";
+import AddProductPage from "./pages/Admin/AddProduct/AddProductPage";
+import ForgotPasswordPage from "./pages/ForgotPassword/ForgotPasswordPage";
 
 function App() {
   const navigate = useNavigate();
@@ -27,7 +32,7 @@ function App() {
     <>
       <ToastContainer
         position="bottom-right"
-        autoClose={5000}
+        autoClose={2000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
@@ -49,9 +54,15 @@ function App() {
         </Route>
         <Route path="/detail/:id" element={<DetailPage />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="admin" element={<AdminLayout />}>
+          <Route path="orders" element={<ManagerOrdersPage />} />
+          <Route path="users" element={<ManagerUser />} />
+          <Route path="products" element={<ManagerProductsPage />} />
+          <Route path="products/add" element={<AddProductPage />} />
+        </Route>
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
         <Route path="/admin/login" element={<LoginAdminPage />} />
-        <Route path="/admin/manager-users" element={<ManagerUser />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

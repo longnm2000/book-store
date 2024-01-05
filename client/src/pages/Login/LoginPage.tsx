@@ -1,14 +1,14 @@
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import FooterComp from "../../components/layout/footer/FooterComp";
+
 import { AxiosError, AxiosResponse } from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Account } from "../../types/types";
-import { loginUser } from "../../axios/user";
+import { loginUser } from "../../api/user";
 import { useDispatch } from "react-redux";
 import { act_setUser } from "../../redux/action";
 import CustomInput from "../../components/common/CustomInput/CustomInput";
@@ -37,15 +37,19 @@ const LoginPage: React.FC = () => {
   const onSubmit = (data: Account) => {
     loginUser(data)
       .then((res: AxiosResponse) => {
-        if (res.status === 200) {
-          toast.success("Đăng nhập thành công!");
-          localStorage.setItem(
-            "accessToken",
-            JSON.stringify(res.data?.accessToken)
-          );
-          dispatch(act_setUser(res.data?.user));
-          localStorage.setItem("user", JSON.stringify(res.data?.user));
-          navigate("/");
+        if (res.data.user.isLock) {
+          toast.error("Tài khoản bị khoá");
+        } else {
+          if (res.status === 200) {
+            toast.success("Đăng nhập thành công!");
+            localStorage.setItem(
+              "accessToken",
+              JSON.stringify(res.data?.accessToken)
+            );
+            dispatch(act_setUser(res.data?.user));
+            localStorage.setItem("user", JSON.stringify(res.data?.user));
+            navigate("/");
+          }
         }
       })
       .catch((err: AxiosError) => {
@@ -72,7 +76,7 @@ const LoginPage: React.FC = () => {
         <title>Đăng nhập</title>
       </Helmet>
 
-      <div className="sm:py-20  mx-auto bg-no-repeat bg-center bg-cover bg-[url('https://marketplace.canva.com/EAD2962NKnQ/2/0/1600w/canva-rainbow-gradient-pink-and-purple-virtual-background-_Tcjok-d9b4.jpg')]">
+      <div className="sm:py-20  mx-auto bg-repeat-y bg-center bg-cover bg-[url('https://marketplace.canva.com/EAD2962NKnQ/2/0/1600w/canva-rainbow-gradient-pink-and-purple-virtual-background-_Tcjok-d9b4.jpg')]">
         <div className="container mx-auto">
           <div className=" lg:w-2/5 max-w-5xl mx-auto p-2 md:p-4 md:rounded-lg bg-white shadow-xl">
             <Form
@@ -115,10 +119,14 @@ const LoginPage: React.FC = () => {
                 Đăng nhập
               </Button>
             </Form>
+            <Link to={"/forgot-password"}>
+              <Button type="text" className=" capitalize text-blue-400">
+                Quên mật khẩu?
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
-      <FooterComp />
     </>
   );
 };

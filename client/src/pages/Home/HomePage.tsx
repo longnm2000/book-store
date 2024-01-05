@@ -1,30 +1,12 @@
-import { Grid } from "@mui/material";
 import CardComp from "../../components/card/CardComp";
 import BannerComp from "../../components/banner/BannerComp";
 import FooterComp from "../../components/layout/footer/FooterComp";
 import HeaderComp from "../../components/layout/header/HeaderComp";
 import { Helmet } from "react-helmet";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { Book } from "../../types/types";
+import { useAllProductsWithComments } from "../../hooks/product";
 
 const HomePage: React.FC = () => {
-  const [data, setData] = useState<Book[]>([]);
-  const fetchData = () => {
-    axios
-      .get(
-        "http://localhost:3000/products?_embed=comments&_limit=8&_sort=createAt&_order=desc"
-      )
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const { productsWithComments } = useAllProductsWithComments("createAt", 8);
   return (
     <>
       <Helmet>
@@ -36,37 +18,8 @@ const HomePage: React.FC = () => {
           <div>
             <BannerComp />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-4">
-            <a href="#">
-              <img
-                src="https://cdn0.fahasa.com/media/wysiwyg/Thang-12-2023/Vongxoay1_Sbanner_310x210_310x210_2.png"
-                alt=""
-                className="mx-auto"
-              />
-            </a>
-            <a href="#">
-              <img
-                src="https://cdn0.fahasa.com/media/wysiwyg/Thang-12-2023/TrangThieuNhiT923_Banner_SmallBanner_310x210_1.png"
-                alt=""
-                className="mx-auto"
-              />
-            </a>
-            <a href="#">
-              <img
-                src="https://cdn0.fahasa.com/media/wysiwyg/Thang-12-2023/BlindBoxT1123_Banner_SmallBanner_310x210.png"
-                alt=""
-                className="mx-auto"
-              />
-            </a>
-            <a href="#">
-              <img
-                src="https://cdn0.fahasa.com/media/wysiwyg/Thang-12-2023/Diamond_T1223_Ver2_TanViet_SmallBanner_310x210.png"
-                alt=""
-                className="mx-auto"
-              />
-            </a>
-          </div>
-          <div className="grid gap-2 lg:grid-cols-10 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 bg-white p-4 my-4 rounded-lg">
+
+          {/* <div className="grid gap-2 lg:grid-cols-10 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 bg-white p-4 my-4 rounded-lg">
             <a href="#" className="flex flex-col items-center justify-start">
               <img
                 src="https://cdn0.fahasa.com/media/wysiwyg/Thang-12-2023/YearAndSale.png"
@@ -147,16 +100,16 @@ const HomePage: React.FC = () => {
               />
               <p className="text-center">Sản Phẩm Mới</p>
             </a>
-          </div>
+          </div> */}
           <div className=" bg-white rounded-lg p-4">
             <h1 className="font-semibold text-xl mb-4">CÁC CUỐN SÁCH MỚI</h1>
-            <Grid container spacing={2}>
-              {data?.map((e, i) => (
-                <Grid key={i} item sm={6} md={4} xs={12} lg={3}>
+            <div className="grid gap-2 lg:grid-cols-4 grid-cols-1 sm:grid-cols-3 ">
+              {productsWithComments?.map((e, i) => (
+                <div key={i}>
                   <CardComp book={e} />
-                </Grid>
+                </div>
               ))}
-            </Grid>
+            </div>
           </div>
         </div>
       </main>

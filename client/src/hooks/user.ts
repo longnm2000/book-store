@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllUsers, getDetailUser } from "../axios/user";
+import { getAllUsers, getDetailUser } from "../api/user";
 import { User } from "../types/types";
 
 export const useGetUserByID = (id: number) => {
@@ -22,14 +22,26 @@ export const useGetUserByID = (id: number) => {
   return { detailUser, isLoading, fetchDetailUser };
 };
 
-export const useGetAllUsers = () => {
+export const useGetAllUsers = (
+  searchInfo: string,
+  // orderBy: string,
+  currentPage: number,
+  limit: number
+) => {
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [xTotalCount, setXTotalCount] = useState<number>(0);
   const fetchAllUsers = async () => {
     try {
-      const response = await getAllUsers();
+      const response = await getAllUsers(
+        searchInfo,
+        // orderBy,
+        currentPage,
+        limit
+      );
       setAllUsers(response.data);
       setIsLoading(false);
+      setXTotalCount(response.headers["x-total-count"]);
     } catch (error) {
       console.log(error);
       setIsLoading(false);
@@ -38,5 +50,5 @@ export const useGetAllUsers = () => {
   useEffect(() => {
     fetchAllUsers();
   }, []);
-  return { allUsers, isLoading, fetchAllUsers };
+  return { allUsers, isLoading, fetchAllUsers, xTotalCount };
 };

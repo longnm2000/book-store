@@ -1,0 +1,5 @@
+.modal-table th,
+.modal-table td {
+    padding: 2px 16px 2px 0;
+    text-align: left;
+}

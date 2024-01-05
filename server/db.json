@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "Nguyễn Mạnh Long",
-      "email": "longmanhnguyen205@gmail.com",
+      "email": "longmanhnguyen2015@gmail.com",
       "role": "user",
       "avatar": "",
       "password": "$2a$10$tv.1gZ701.XJoJx0jcYZ..JPiwix1b9XLnPmN1iVaciIw7E73Bqcm",
@@ -17,7 +17,7 @@
       "role": "user",
       "avatar": "",
       "password": "$2a$10$BMD2PaVFc6r0FeoYUSa0y.o9g6Dl/svu/zSmtPIV.doJb1Lg6/2oW",
-      "isLock": true,
+      "isLock": false,
       "phone": "0123123211"
     },
     {
@@ -34,9 +34,9 @@
       "email": "longmanhnguyen205@gmail.com",
       "role": "user",
       "avatar": "https://firebasestorage.googleapis.com/v0/b/upload-file-51381.appspot.com/o/images%2Fgai-xinh-han-quoc-2-1.jpg?alt=media&token=b043bc66-1b08-4407-a4b6-ee220e9528b6",
-      "password": "$2a$10$xpU/mt13BMfLfK9FeWVDn.O9uhIcrig3Gc3Qwd3Ls8WySzD9VQTM.",
+      "password": "$2a$10$w.MyRx8oPpFMjhf1mzNBkuQtFK7EHFzAADBss/5TBZz8g/Y.bqh5m",
       "name": "Nguyễn Mạnh ",
-      "isLock": true,
+      "isLock": false,
       "phone": "1111111111",
       "id": 4
     },
@@ -56,7 +56,7 @@
       "avatar": "",
       "password": "$2a$10$TI6Ah0xTAVloDn.gNwhrcOJdspijcB4JQWfVzuSKg4FtIFN9HWFAi",
       "name": "Nguyễn Mạnh Long",
-      "isLock": false,
+      "isLock": true,
       "phone": "0866808540",
       "id": 6
     },
@@ -66,7 +66,7 @@
       "avatar": "",
       "password": "$2a$10$UGi4TCyy8kL0YLr5yh1Bt.tQIOLfutdE8UTGKq39jJXg8XF7KMAna",
       "name": "Nguyễn Đức Chính",
-      "isLock": false,
+      "isLock": true,
       "phone": "0123456789",
       "id": 7
     },
@@ -76,7 +76,7 @@
       "avatar": "",
       "password": "$2a$10$RHSnNUL2qSzBBkwILHlxGOg53kRs4bRstt1cJDIG1EY9Y9TYfC8/q",
       "name": "Phuong",
-      "isLock": false,
+      "isLock": true,
       "phone": "0366525695",
       "id": 8
     },
@@ -103,10 +103,27 @@
       "email": "zeus@gmail.com",
       "role": "admin",
       "password": "$2a$10$ElKB/vgdfgzoA88olaXDq.PJBGANCTDfvO8nRuMk5R9c/lcPrwDWO",
-      "name": "zeus",
+      "name": "Long",
       "isLock": false,
       "phone": "0866808540",
       "id": 11
+    },
+    {
+      "email": "longmanhnguyen2051@gmail.com",
+      "password": "$2a$10$QuiIc5pzQJgDNBo6zfYG0ObHfdiTjPnN6VYEMG3g/RccXTKsGT.wq",
+      "name": "Nguyễn Mạnh Long",
+      "phone": "0866808540",
+      "role": "user",
+      "id": 12
+    },
+    {
+      "email": "builong@gmail.com",
+      "password": "$2a$10$E7baPMvWiaWZhQDCPBvP1eY8GJGhetfwFy1CUhV9qzpPKg6qf9iYq",
+      "name": "Bui van vu",
+      "phone": "0866808540",
+      "role": "user",
+      "id": 13,
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/upload-file-51381.appspot.com/o/images%2F9786043561272_1_1.jpg?alt=media&token=253f48f5-e690-48a2-a839-d4790e6ba86f"
     }
   ],
   "types": [
@@ -731,6 +748,24 @@
       "typeId": 18,
       "description": "Cô Bé Quàng Khăn Đỏ của Jodi Picoult là một phiên bản hiện đại của câu chuyện cổ tích với nhiều yếu tố mới lạ và sâu sắc.",
       "createAt": 1702870620211
+    },
+    {
+      "title": "ưeqqw",
+      "author": "eqweq",
+      "supplier": "ewqewq",
+      "publisher": "eqwewq",
+      "language": "eqweqw",
+      "quantity": 1,
+      "weight": 1,
+      "dimensions": "ewqewq",
+      "releaseDate": 2024,
+      "format": "ewqeqw",
+      "numberOfPages": 1,
+      "description": "ewqeqw",
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/upload-file-51381.appspot.com/o/images%2F9786043561272_1_1.jpg?alt=media&token=b9a4fce6-f312-40dc-a5c8-02ec91dd8a82",
+      "createAt": 1704358492592,
+      "typeId": 1,
+      "id": 31
     }
   ],
   "comments": [
@@ -919,7 +954,7 @@
       "borrowedDate": 321312312321,
       "returnDate": 1271361782621783,
       "createAt": 1703495810336,
-      "status": 0
+      "status": 2
     },
     {
       "id": 2,
@@ -942,7 +977,7 @@
     {
       "userId": 4,
       "productId": 30,
-      "status": 0,
+      "status": 3,
       "borrowedDate": "2023-12-25T17:00:00.000Z",
       "returnDate": "2023-12-28T17:00:00.000Z",
       "createAt": 1703495810336,
@@ -951,7 +986,7 @@
     {
       "userId": 4,
       "productId": 1,
-      "status": 0,
+      "status": 3,
       "borrowedDate": "2023-12-26T17:00:00.000Z",
       "returnDate": "2023-12-29T17:00:00.000Z",
       "createAt": 1703495810336,
@@ -960,11 +995,20 @@
     {
       "userId": 4,
       "productId": 2,
-      "status": 0,
+      "status": 3,
       "borrowedDate": "2023-12-25T17:00:00.000Z",
       "returnDate": "2023-12-29T17:00:00.000Z",
       "createAt": 1703495810336,
       "id": 6
+    },
+    {
+      "userId": 4,
+      "productId": 31,
+      "status": 2,
+      "borrowedDate": "2024-01-03T17:00:00.000Z",
+      "returnDate": "2024-01-04T17:00:00.000Z",
+      "createAt": 1704358819096,
+      "id": 7
     }
   ]
 }

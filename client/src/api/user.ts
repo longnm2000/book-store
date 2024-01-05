@@ -17,6 +17,13 @@ export const updateDetailUser = (id: number, data: ProfileInfo) => {
   return axiosInstance.patch(`/600/users/${id}`, data);
 };
 
-export const getAllUsers = () => {
-  return axiosInstance.get("/users");
+export const getAllUsers = (
+  searchInfo: string,
+  // orderBy: string,
+  currentPage: number,
+  limit: number
+) => {
+  return axiosInstance.get(
+    `/users?role=user&q=${searchInfo}&_page=${currentPage}&_limit=${limit}`
+  );
 };

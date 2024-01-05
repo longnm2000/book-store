@@ -7,7 +7,7 @@ interface CustomInputProps {
   label: string;
   error: boolean;
   helperText: string | undefined;
-  defaultValue: string | undefined;
+  defaultValue: string | number | undefined;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({

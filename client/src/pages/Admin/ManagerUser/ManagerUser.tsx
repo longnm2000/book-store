@@ -1,38 +1,83 @@
-import React, { useState } from "react";
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
-import { Layout, Menu, Button, theme, Table } from "antd";
+import React, { useEffect, useState } from "react";
+
+import { Button, Modal, Pagination, PaginationProps, Table, Input } from "antd";
 import { useGetAllUsers } from "../../../hooks/user";
 import type { ColumnsType } from "antd/es/table";
 import { User } from "../../../types/types";
-import { axiosConfig } from "../../../axios/config";
-const { Header, Sider, Content } = Layout;
+import { axiosConfig } from "../../../api/config";
+import { ExclamationCircleFilled } from "@ant-design/icons";
+import { toast } from "react-toastify";
+import { SearchProps } from "antd/es/input";
 
 const ManagerUser: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [searchInfo, setSearchInfo] = useState<string>("");
+  const [orderBy, setOrderBy] = useState<string>("asc");
+  const [limit, setLimit] = useState(10);
+  const { allUsers, fetchAllUsers, xTotalCount, isLoading } = useGetAllUsers(
+    searchInfo,
+    currentPage,
+    limit
+  );
 
-  const { allUsers, fetchAllUsers } = useGetAllUsers();
-  const handleLockUser = (userId: number, status: boolean) => {
-    console.log(userId, status);
-    axiosConfig.patch(`/users/${userId}`, { isLock: status });
-    fetchAllUsers();
+  const { confirm } = Modal;
+  const handleLockUser = async (userId: number, status: boolean) => {
+    try {
+      await axiosConfig.patch(`/users/${userId}`, { isLock: status });
+      fetchAllUsers();
+      toast.success(!status ? "Đã mở khoá tài khoản" : "Đã khoá tài khoản");
+    } catch (error) {
+      toast.error("Có lỗi xảy ra");
+      console.log(error);
+    }
   };
+  const handleChangePage = (selectPage: number) => {
+    setCurrentPage(selectPage);
+  };
+  const onSearch: SearchProps["onSearch"] = (value) => setSearchInfo(value);
+  const onShowSizeChange: PaginationProps["onShowSizeChange"] = (
+    _,
+    pageSize
+  ) => {
+    setLimit(pageSize);
+  };
+  useEffect(() => {
+    fetchAllUsers();
+  }, [currentPage, searchInfo, orderBy, limit]);
+  console.log(currentPage, allUsers);
+
+  const showConfirm = (id: number, value: boolean) => {
+    confirm({
+      title: value
+        ? "Bạn có muốn khoá tài khoản này không?"
+        : "Bạn có muốn mở khoá tài khoản này không?",
+      icon: <ExclamationCircleFilled />,
+
+      onOk() {
+        handleLockUser(id, value);
+      },
+      onCancel() {
+        console.log("Cancel");
+      },
+      okButtonProps: {
+        style: { backgroundColor: "blue" },
+      },
+      okText: "Xác nhận",
+      cancelText: "Huỷ",
+      cancelButtonProps: {
+        danger: true,
+      },
+    });
+  };
+
   const columns: ColumnsType<User> = [
     {
       title: "#",
       dataIndex: "id",
-      key: "name",
+      key: "id",
     },
     {
-      title: "Name",
+      title: "Họ Tên",
       dataIndex: "name",
       key: "name",
     },
@@ -42,95 +87,74 @@ const ManagerUser: React.FC = () => {
       key: "email",
     },
     {
-      title: "Avatar",
+      title: "Ảnh Đại Diện",
       dataIndex: "avatar",
       key: "avatar",
       render: (text: string) =>
         text ? <img src={text} alt="Avatar" width={100} /> : <></>,
     },
     {
-      title: "Phone",
+      title: "Số Điện Thoại",
       key: "phone",
       dataIndex: "phone",
     },
     {
-      title: "Status",
+      title: "Trạng Thái",
       key: "isLock",
       dataIndex: "isLock",
       render: (_, value) => (
         <>
-          <Button onClick={() => handleLockUser(value.id, !value.isLock)}>
-            {value.isLock === false ? "Unlock" : "Lock"}
-          </Button>
+          {value.isLock === false ? (
+            <Button
+              type="primary"
+              className=" bg-green-500 hover:bg-green-700 text-white"
+              onClick={() => showConfirm(value.id, !value.isLock)}
+            >
+              Mở
+            </Button>
+          ) : (
+            <Button danger onClick={() => showConfirm(value.id, !value.isLock)}>
+              Khoá
+            </Button>
+          )}
         </>
       ),
     },
   ];
 
   return (
-    <Layout>
-      <Sider
-        trigger={null}
-        collapsible
-        collapsed={collapsed}
-        style={{
-          height: "100vh",
-        }}
-      >
-        <div className="demo-logo-vertical" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={["1"]}
-          items={[
-            {
-              key: "1",
-              icon: <UserOutlined />,
-              label: "Quản lý người dùng",
-            },
-            {
-              key: "2",
-              icon: <VideoCameraOutlined />,
-              label: "Quản lý mượn sách",
-            },
-            {
-              key: "3",
-              icon: <UploadOutlined />,
-              label: "Quản lý sách",
-            },
-          ]}
+    <>
+      <div className="flex justify-between">
+        <h1 className=" font-semibold text-2xl mb-4">Quản lý người dùng</h1>
+        <Input.Search
+          className=" max-w-xs"
+          onSearch={onSearch}
+          placeholder="Nhập thông tin tìm kiếm"
+          loading={isLoading}
         />
-      </Sider>
-      <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }}>
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: "16px",
-              width: 64,
-              height: 64,
-            }}
-          />
-        </Header>
-        <Content
-          style={{
-            margin: "24px 16px",
-            padding: 24,
-            minHeight: 280,
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
-          }}
-        >
-          <Table
-            columns={columns}
-            dataSource={allUsers}
-            pagination={{ pageSize: 5 }}
-          />
-        </Content>
-      </Layout>
-    </Layout>
+      </div>
+      {isLoading ? (
+        <p className="text-center">Đang tải</p>
+      ) : (
+        <Table
+          columns={columns}
+          dataSource={allUsers.map((user) => ({
+            ...user,
+            key: user.id,
+          }))}
+          pagination={false}
+        />
+      )}
+      <div className="flex justify-center mt-4">
+        <Pagination
+          showSizeChanger
+          current={currentPage}
+          onShowSizeChange={onShowSizeChange}
+          onChange={(page) => handleChangePage(page)}
+          total={xTotalCount}
+        />
+      </div>
+    </>
   );
 };
 

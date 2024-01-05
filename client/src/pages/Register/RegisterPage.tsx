@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet";
 
 import { toast } from "react-toastify";
 import { RegisterInfo } from "../../types/types";
-import { registerUser } from "../../axios/user";
+import { registerUser } from "../../api/user";
 import CustomInput from "../../components/common/CustomInput/CustomInput";
 import PasswordInput from "../../components/common/PasswordInput/PasswordInput";
 import {

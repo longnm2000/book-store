@@ -24,7 +24,7 @@ import { nameValidation, phoneValidation } from "../../helper/validations";
 import { storage } from "../../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { toast } from "react-toastify";
-import { updateDetailUser } from "../../axios/user";
+import { updateDetailUser } from "../../api/user";
 import { AxiosResponse } from "axios";
 import { act_setUser } from "../../redux/action";
 

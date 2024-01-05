@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Category } from "../types/types";
-import { getCategory } from "../axios/category";
+import { getCategory } from "../api/category";
 import { AxiosResponse } from "axios";
 
 export const useCategory = () => {

@@ -1,7 +1,11 @@
 import { AxiosResponse } from "axios";
 import { useEffect, useState } from "react";
-import { Book } from "../types/types";
-import { getDetailProduct } from "../axios/product";
+import { Book, BookInfo } from "../types/types";
+import {
+  getAllProducts,
+  getAllProductsWithComments,
+  getDetailProduct,
+} from "../api/product";
 // import { axiosConfig } from "../axios/config";
 // import { useSearchParams } from "react-router-dom";
 
@@ -25,6 +29,51 @@ export const useDetailProduct = (id: number) => {
   }, []);
 
   return { detailProduct, isLoading };
+};
+
+export const useAllProducts = (currentPage: number, limit: number) => {
+  const [products, setProducts] = useState<BookInfo[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [xTotalCount, setXTotalCount] = useState<number>(0);
+  const fetchAllProducts = async (currentPage: number, limit: number) => {
+    try {
+      const response: AxiosResponse = await getAllProducts(currentPage, limit);
+      setProducts(response.data);
+      setIsLoading(false);
+      setXTotalCount(response.headers["x-total-count"]);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchAllProducts(currentPage, limit);
+  }, [currentPage, limit]);
+  return { products, isLoading, fetchAllProducts, xTotalCount };
+};
+
+export const useAllProductsWithComments = (sortBy: string, limit: number) => {
+  const [productsWithComments, setProductsWithComments] = useState<BookInfo[]>(
+    []
+  );
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const fetchAllProductsWithComments = async () => {
+    try {
+      const response: AxiosResponse = await getAllProductsWithComments(
+        sortBy,
+        limit
+      );
+      setProductsWithComments(response.data);
+      setIsLoading(false);
+    } catch (error) {
+      console.log(error);
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchAllProductsWithComments();
+  }, []);
+  return { productsWithComments, isLoading, fetchAllProductsWithComments };
 };
 
 // export const useBookFilter = () => {

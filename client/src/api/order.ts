@@ -39,3 +39,26 @@ export const getAllOrdersByUserId = (userId: number, page: number) => {
 export const deleteOrder = (orderId: number) => {
   return axiosInstance.delete(`/600/orders/${orderId}`);
 };
+
+export const getAllOrders = (
+  searchInfo: string,
+  status: string,
+  limit: number
+) => {
+  let url = "/orders?_expand=product&_expand=user&_sort=createAt&_order=desc";
+  if (searchInfo) {
+    url += `&_q=${searchInfo}`;
+  }
+  if (status) {
+    url += `&status=${status}`;
+  }
+  if (limit) {
+    url += `&_limit=${limit}`;
+  }
+
+  return axiosConfig.get(url);
+};
+
+export const changeStatusOrder = (orderId: number, status: number) => {
+  return axiosConfig.patch(`/orders/${orderId}`, { status });
+};

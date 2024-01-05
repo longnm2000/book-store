@@ -1,43 +1,22 @@
 import logo from "../../../assets/logo.jfif";
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import { Box } from "@mui/material";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
+import React from "react";
+import { Avatar, Layout, theme, Dropdown } from "antd";
+const { Header } = Layout;
+import type { MenuProps } from "antd";
+import { Link } from "react-router-dom";
+import { UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { act_setUser } from "../../../redux/action";
 
-function HeaderComp() {
+const HeaderComp: React.FC = () => {
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const currentUser = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
-
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
 
   const handleLogout = () => {
     dispatch(
@@ -47,157 +26,84 @@ function HeaderComp() {
         email: "",
         phone: "",
         avatar: "",
+        isLock: false,
       })
     );
     localStorage.removeItem("user");
     localStorage.removeItem("accessToken");
-    navigate("/");
-    setAnchorElNav(null);
-    setAnchorElUser(null);
     toast.success("Đăng xuất thành công");
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const currentUser = useSelector((state: any) => state.user);
+  const loginItems: MenuProps["items"] = [
+    {
+      key: "1",
+      label: <Link to="/profile">Trang cá nhân</Link>,
+    },
+    {
+      key: "2",
+      label: <Link to="/history">Lịch sử mượn sách</Link>,
+    },
+    {
+      key: "3",
+      label: <a>Đăng xuất</a>,
+      onClick: () => {
+        handleLogout();
+      },
+    },
+  ];
+  const logoutItems: MenuProps["items"] = [
+    {
+      key: "1",
+      label: <Link to="/login">Đăng nhập</Link>,
+    },
+    {
+      key: "2",
+      label: <Link to="/register">Đăng ký</Link>,
+    },
+  ];
 
   return (
-    <AppBar position="sticky" sx={{ background: "white", color: "black" }}>
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
+    <Header style={{ padding: 0, background: colorBgContainer }}>
+      <div className="flex items-center justify-between h-full container mx-auto">
+        <div className="flex items-center justify-center gap-4">
           <Link to={"/"}>
-            <img
-              src={logo}
-              alt=""
-              width={50}
-              className=" hidden md:inline-block"
-            />
+            <img src={logo} alt="logo" width={40} height={40} />
           </Link>
+          <Link to={"/search"}>Danh mục sản phẩm</Link>
+        </div>
 
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              onClick={handleOpenNavMenu}
-              color="inherit"
-            >
-              <MenuIcon />
-            </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: "block", md: "none" },
-              }}
-            >
-              <MenuItem onClick={handleCloseUserMenu}>
-                <Typography>Danh mục sản phẩm</Typography>
-              </MenuItem>
-            </Menu>
-          </Box>
-          {/* <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} /> */}
-          <img src={logo} alt="" width={50} className="md:hidden" />
-
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <Button
-              component={Link}
-              to="/search"
-              sx={{ my: 2, color: "black", display: "block" }}
-            >
-              Danh mục sản phẩm
-            </Button>
-          </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar
-                  alt={currentUser.name}
-                  src={currentUser.name ? currentUser.avatar : ""}
-                />
-              </IconButton>
-            </Tooltip>
-
-            {currentUser.name ? (
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
+        {currentUser?.name ? (
+          <Dropdown
+            menu={{ items: loginItems }}
+            className="cursor-pointer"
+            trigger={["click"]}
+          >
+            <div className="flex items-center gap-4">
+              <Avatar
+                size={45}
+                src={currentUser?.avatar}
+                alt={currentUser?.name}
+                icon={currentUser?.name ? null : <UserOutlined />}
               >
-                <MenuItem onClick={() => navigate("/profile")}>
-                  <Typography>Trang cá nhân</Typography>
-                </MenuItem>
-                <MenuItem onClick={() => navigate("/history")}>
-                  <Typography>Lịch sử mượn sách</Typography>
-                </MenuItem>
-                <MenuItem onClick={handleLogout}>
-                  <Typography>Đăng xuất</Typography>
-                </MenuItem>
-              </Menu>
-            ) : (
-              <Menu
-                sx={{ mt: "45px" }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
-                <MenuItem
-                  onClick={handleCloseUserMenu}
-                  component={Link}
-                  to="/login"
-                >
-                  <Typography>Đăng Nhập</Typography>
-                </MenuItem>
-                <MenuItem
-                  onClick={handleCloseUserMenu}
-                  component={Link}
-                  to="/register"
-                >
-                  <Typography>Đăng Ký</Typography>
-                </MenuItem>
-              </Menu>
-            )}
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+                {currentUser?.name.charAt(0)}
+              </Avatar>
+              <p className="truncate w-30">{currentUser?.name}</p>
+            </div>
+          </Dropdown>
+        ) : (
+          <Dropdown
+            menu={{ items: logoutItems }}
+            className="cursor-pointer"
+            trigger={["click"]}
+          >
+            <div className="flex items-center gap-4">
+              <Avatar size={45} icon={<UserOutlined />} />
+            </div>
+          </Dropdown>
+        )}
+      </div>
+    </Header>
   );
-}
+};
+
 export default HeaderComp;

@@ -5,6 +5,7 @@ export interface User {
   email: string;
   phone: string;
   avatar: string;
+  role: string;
 }
 
 export interface RegisterInfo {
@@ -29,6 +30,7 @@ export interface Book {
   numberOfPages: number;
   categories: number[];
   description: string;
+  quantity: number;
   createAt: number;
   comments?: Comment[];
 }
@@ -58,6 +60,11 @@ export interface UserAction {
   payload: User;
 }
 
+export interface CategoriesAction {
+  type: string;
+  payload: Category[];
+}
+
 export interface Account {
   email: string;
   password: string;
@@ -84,4 +91,13 @@ export interface Order {
   returnDate: number;
   createAt: Date;
   product: Book;
+}
+
+export interface OrderInfo extends Order {
+  user: User;
+  product: Book;
+}
+
+export interface BookInfo extends Book {
+  type: Category;
 }

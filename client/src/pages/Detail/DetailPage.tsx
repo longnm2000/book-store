@@ -34,7 +34,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useSelector } from "react-redux";
-import { addNewOrder, isExistOrder } from "../../axios/order";
+import { addNewOrder, isExistOrder } from "../../api/order";
 import { toast } from "react-toastify";
 // import { set } from "lodash";
 
@@ -160,7 +160,7 @@ const DetailPage: React.FC = () => {
         <div className="container mx-auto">
           <div className=" bg-white p-4 rounded-lg">
             <Grid container spacing={4}>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={4}>
                 <div>
                   <div className="w-3/4 mx-auto">
                     {/* <ProductCarouselComp picture={data?.avatar} /> */}
@@ -168,92 +168,67 @@ const DetailPage: React.FC = () => {
                   </div>
                 </div>
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={8}>
                 <div className="flex flex-col gap-3 break-words">
                   <h1 className=" font-bold text-3xl" title={data?.title}>
                     {data?.title}
                   </h1>
-                  <p>
-                    Tác giả:{" "}
-                    <span className="font-semibold break-words">
-                      {data?.author}
-                    </span>
-                  </p>
-                  <p>
-                    Nhà xuất bản:{" "}
-                    <span className="font-semibold break-words">
-                      {data?.publisher}
-                    </span>
-                  </p>
-                  <p>
-                    Hình thức bìa:{" "}
-                    <span className="font-semibold">{data?.format}</span>
-                  </p>
+
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                       <div className="flex justify-between my-4 gap-4 flex-col md:flex-row">
-                        {" "}
-                        <div>
-                          <Controller
-                            name="borrowedDate"
-                            control={control}
-                            defaultValue={undefined}
-                            render={({ field }) => (
-                              <>
-                                {" "}
-                                <DatePicker
-                                  {...field}
-                                  label="Ngày mượn"
-                                  format="DD/MM/YYYY"
-                                  className="w-full"
-                                  disablePast
-                                />
-                                <FormHelperText error>
-                                  {errors.borrowedDate?.message}
-                                </FormHelperText>
-                              </>
-                            )}
-                          />
-                        </div>
-                        <div>
-                          <Controller
-                            name="returnDate"
-                            control={control}
-                            defaultValue={undefined}
-                            render={({ field }) => (
-                              <>
-                                <DatePicker
-                                  {...field}
-                                  label="Ngày trả"
-                                  format="DD/MM/YYYY"
-                                  className="w-full"
-                                  disablePast
-                                  minDate={dayjs().add(1, "day")}
-                                />
-                                <FormHelperText error>
-                                  {errors.returnDate?.message}
-                                </FormHelperText>
-                              </>
-                            )}
-                          />
+                        <div className="flex justify-between w-full gap-2">
+                          <div className=" flex-1">
+                            <Controller
+                              name="borrowedDate"
+                              control={control}
+                              defaultValue={undefined}
+                              render={({ field }) => (
+                                <>
+                                  {" "}
+                                  <DatePicker
+                                    {...field}
+                                    label="Ngày mượn"
+                                    format="DD/MM/YYYY"
+                                    className="w-full"
+                                    disablePast
+                                  />
+                                  <FormHelperText error>
+                                    {errors.borrowedDate?.message}
+                                  </FormHelperText>
+                                </>
+                              )}
+                            />
+                          </div>
+                          <div className="flex-1">
+                            <Controller
+                              name="returnDate"
+                              control={control}
+                              defaultValue={undefined}
+                              render={({ field }) => (
+                                <>
+                                  <DatePicker
+                                    {...field}
+                                    label="Ngày trả"
+                                    format="DD/MM/YYYY"
+                                    className="w-full"
+                                    disablePast
+                                    minDate={dayjs().add(1, "day")}
+                                  />
+                                  <FormHelperText error>
+                                    {errors.returnDate?.message}
+                                  </FormHelperText>
+                                </>
+                              )}
+                            />
+                          </div>
                         </div>
                       </div>
-
-                      {/* <DatePicker
-                        label="Ngày trả"
-                        disablePast
-                        minDate={dayjs(timeInfo.borrowedDate).add(1, "day")}
-                        onChange={(e) => handleChangeTime(e, "returnDate")}
-                        value={timeInfo.returnDate}
-                        format="DD/MM/YYYY"
-                        className="w-full"
-                      /> */}
                       <Button
                         variant="contained"
-                        fullWidth
                         onClick={handleSubmit(onSubmit)}
                         type="submit"
-                        className="bg-blue-500 hover:bg-blue-700 text-white text-lg py-2 px-4 rounded-lg capitalize"
+                        className="bg-blue-500 hover:bg-blue-700 text-white text-lg capitalize"
                       >
                         Mượn sách
                       </Button>
@@ -349,7 +324,7 @@ const DetailPage: React.FC = () => {
             </Grid>
           </div>
 
-          <div className="bg-white p-4 rounded-lg mt-4">
+          {/* <div className="bg-white p-4 rounded-lg mt-4">
             <h2 className=" font-semibold text-2xl mb-4">Đánh giá sản phẩm</h2>
             <Grid container>
               <Grid item xs={12} md={6}>
@@ -485,18 +460,7 @@ const DetailPage: React.FC = () => {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <div className=" h-full flex justify-center items-center">
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    startIcon={<CreateIcon />}
-                    // onClick={handleOpen}
-                  >
-                    Viết đánh giá
-                  </Button>
-                </div>
-              </Grid>
+              <Grid item xs={12} md={6}></Grid>
             </Grid>
             {comments?.map((e, i) => (
               <div key={i}>
@@ -520,7 +484,7 @@ const DetailPage: React.FC = () => {
             <div className="flex justify-center">
               <Pagination count={pageTotal} onChange={handlePage} />
             </div>
-          </div>
+          </div> */}
         </div>
       </main>
       <FooterComp />
