@@ -1,34 +1,18 @@
-import {
-  // Box,
-  Button,
-  FormHelperText,
-  // FormHelperText,
-  // Dialog,
-  // DialogActions,
-  // DialogContent,
-  // DialogTitle,
-  Grid,
-  Pagination,
-  Rating,
-  Slider,
-  // TextField,
-} from "@mui/material";
-// import ProductCarouselComp from "../../components/productCarousel/ProductCarouselComp";
+import { FormHelperText } from "@mui/material";
+
 import { Helmet } from "react-helmet";
 import HeaderComp from "../../components/layout/header/HeaderComp";
-import CreateIcon from "@mui/icons-material/Create";
+
 import FooterComp from "../../components/layout/footer/FooterComp";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios, { AxiosResponse } from "axios";
-import { Book } from "../../types/types";
+import { BookInfo } from "../../types/types";
 import { Comment } from "../../types/types";
 import * as dayjs from "dayjs";
 import * as yup from "yup";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-// import { axiosInstance } from "../../axios/config";
-// import { toast } from "react-toastify";
 import { calculateForBook } from "../../helper/helper";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -36,7 +20,9 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useSelector } from "react-redux";
 import { addNewOrder, isExistOrder } from "../../api/order";
 import { toast } from "react-toastify";
-// import { set } from "lodash";
+import { Avatar, Button, Pagination, PaginationProps, Rate } from "antd";
+import { useAllComments } from "../../hooks/comment";
+import { axiosConfig } from "../../api/config";
 
 const ratingCount = (data: Comment[], point: number) => {
   return data.filter((comment) => comment.score === point).length;
@@ -47,17 +33,16 @@ const schema = yup.object().shape({
   returnDate: yup
     .date()
     .required("Không để trống")
-    // .min(yup.ref("borrowedDate"), "Ngày trả phải sau ngày mượn")
     .test(
       "is-after-borrowed",
-      "Ngày trả phải sau ngày mượn ít nhất 1 ngày",
+      "Ngày trả phải sau ngày mượn ít nhất 1 ngày và dài nhất 7 ngày",
       function (value) {
         const borrowedDate = this.parent.borrowedDate;
         const returnDate = value;
         if (borrowedDate && returnDate) {
           const diffTime = returnDate.getTime() - borrowedDate.getTime();
           const diffDays = diffTime / (1000 * 3600 * 24);
-          return diffDays >= 1;
+          return diffDays >= 1 && diffDays <= 7;
         }
         return true;
       }
@@ -76,57 +61,66 @@ const DetailPage: React.FC = () => {
   const id = useParams().id;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const currentUser = useSelector((state: any) => state.user);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(10);
+  const { comments, xTotalCount } = useAllComments(
+    Number(id),
+    currentPage,
+    limit
+  );
+  const [data, setData] = useState<BookInfo | null>(null);
 
-  const [data, setData] = useState<Book | null>(null);
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [pageTotal, setPageTotal] = useState<number>(1);
-  const [page, setPage] = useState<number>(1);
-  // const [open, setOpen] = useState(false);
-  // const [rowPerPage, setRowPerPage] = useState<number>(5);
-  const rowPerPage = 5;
   const fetchData = async () => {
     try {
       const res: AxiosResponse = await axios.get(
-        `http://localhost:3000/products/${id}?_embed=comments`
+        `http://localhost:3000/products/${id}?_expand=type&_embed=comments`
       );
       setData(res.data);
     } catch (error) {
       console.log(error);
     }
   };
-  const fetchComments = async () => {
-    const comments: AxiosResponse = await axios.get(
-      `http://localhost:3000/comments?_expand=user&productId=${id}&_page=${page}&_limit=${rowPerPage}&_sort=createAt&_order=desc`
-    );
-    setComments(comments.data);
-    setPageTotal(Math.ceil(comments.headers["x-total-count"] / rowPerPage));
-  };
   useEffect(() => {
     fetchData();
-  }, [comments]);
-  useEffect(() => {
-    fetchComments();
-  }, [page]);
+  }, []);
+  console.log(data);
 
-  const handlePage = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-    fetchComments();
+  const onShowSizeChange: PaginationProps["onShowSizeChange"] = (
+    _,
+    pageSize
+  ) => {
+    setLimit(pageSize);
   };
 
-  let average: number = 0,
-    totalComments: number = 0,
-    sumScore: number = 0;
-  if (data?.comments) {
-    totalComments = calculateForBook(data.comments).totalComments;
-    sumScore = calculateForBook(data.comments).sumScore;
-    average = Math.floor(sumScore / totalComments);
-  }
+  const handleChangePage = (selectPage: number) => {
+    setCurrentPage(selectPage);
+  };
+
+  let totalComments = calculateForBook(data?.comments || []).totalComments || 0;
+  let sumScore = calculateForBook(data?.comments || []).sumScore || 0;
+  let average = Math.floor(sumScore / totalComments) || 0;
+
+  console.log(average);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = async (data: { borrowedDate: Date; returnDate: Date }) => {
+    // if (currentUser.id) {
+    //   toast.error("Vui lòng đăng nhập để mượn sách");
+    //   return;
+    // }
     if (currentUser && id) {
       try {
+        const userResponse = await axiosConfig.get(`/users/${currentUser.id}`);
+        // if ((userResponse.data.isLock = true)) {
+        //   toast.error("Tài khoản đã bị khoá");
+        //   return;
+        // }
+        const response = await axiosConfig.get(`/products/${id}`);
         const isExistRes = await isExistOrder(currentUser.id, +id, [0, 1]);
+        if (response.data.quantity === 0) {
+          toast.error("Cuốn sách đã được mượn hết");
+          return;
+        }
         if (isExistRes.data.length === 0) {
           const addOrderRes = await addNewOrder({
             userId: currentUser.id,
@@ -159,32 +153,53 @@ const DetailPage: React.FC = () => {
       <main className=" bg-slate-50 py-4">
         <div className="container mx-auto">
           <div className=" bg-white p-4 rounded-lg">
-            <Grid container spacing={4}>
-              <Grid item xs={12} md={4}>
+            <div className="grid grid-cols-3 gap-4">
+              <div className="col-span-3 md:col-span-1">
                 <div>
                   <div className="w-3/4 mx-auto">
-                    {/* <ProductCarouselComp picture={data?.avatar} /> */}
                     <img src={data?.avatar} alt={data?.title} />
                   </div>
                 </div>
-              </Grid>
-              <Grid item xs={12} md={8}>
+              </div>
+              <div className="col-span-3 md:col-span-2">
                 <div className="flex flex-col gap-3 break-words">
-                  <h1 className=" font-bold text-3xl" title={data?.title}>
+                  <h1 className=" font-semibold text-3xl" title={data?.title}>
                     {data?.title}
                   </h1>
+                  <p>
+                    Tác giả:{" "}
+                    <span className="font-semibold capitalize">
+                      {data?.author}
+                    </span>
+                  </p>
+                  <p>
+                    Thể loại:{" "}
+                    <span className="font-semibold capitalize">
+                      {data?.type.name}
+                    </span>
+                  </p>
+                  <p>
+                    Trong kho:{" "}
+                    <span className="font-semibold capitalize">
+                      {data?.quantity === 0
+                        ? "Đã hết"
+                        : Number(data?.quantity) <= 10
+                        ? "Sắp hết"
+                        : data?.quantity}
+                    </span>
+                  </p>
 
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <form onSubmit={handleSubmit(onSubmit)}>
                       <div className="flex justify-between my-4 gap-4 flex-col md:flex-row">
-                        <div className="flex justify-between w-full gap-2">
+                        <div className="flex justify-between w-full gap-2 flex-wrap md:gap-16">
                           <div className=" flex-1">
                             <Controller
                               name="borrowedDate"
                               control={control}
                               defaultValue={undefined}
                               render={({ field }) => (
-                                <>
+                                <div>
                                   {" "}
                                   <DatePicker
                                     {...field}
@@ -196,7 +211,7 @@ const DetailPage: React.FC = () => {
                                   <FormHelperText error>
                                     {errors.borrowedDate?.message}
                                   </FormHelperText>
-                                </>
+                                </div>
                               )}
                             />
                           </div>
@@ -225,21 +240,21 @@ const DetailPage: React.FC = () => {
                         </div>
                       </div>
                       <Button
-                        variant="contained"
                         onClick={handleSubmit(onSubmit)}
-                        type="submit"
-                        className="bg-blue-500 hover:bg-blue-700 text-white text-lg capitalize"
+                        htmlType="submit"
+                        disabled={data?.quantity === 0}
+                        className="bg-blue-500 hover:bg-blue-700 text-white capitalize"
                       >
                         Mượn sách
                       </Button>
                     </form>
                   </LocalizationProvider>
                 </div>
-                <div className=" mt-8">
+                <div className=" mt-4">
+                  <h2 className=" font-bold text-2xl mb-4">
+                    Thông tin cuốn sách
+                  </h2>
                   <table className="table-auto w-full border-collapse">
-                    <caption className="caption-top">
-                      Thông tin sản phẩm
-                    </caption>
                     <tbody>
                       <tr>
                         <th className=" text-start capitalize border p-2 border-slate-300">
@@ -316,175 +331,85 @@ const DetailPage: React.FC = () => {
                       </tr>
                     </tbody>
                   </table>
-                  <hr className="my-4" />
-                  <h2 className=" font-semibold text-2xl">Mô tả sản phẩm</h2>
-                  <p>{data?.description}</p>
                 </div>
-              </Grid>
-            </Grid>
+              </div>
+            </div>
+            <h2 className=" font-semibold text-2xl mt-4">Mô tả sản phẩm</h2>
+            <p>{data?.description}</p>
           </div>
 
-          {/* <div className="bg-white p-4 rounded-lg mt-4">
-            <h2 className=" font-semibold text-2xl mb-4">Đánh giá sản phẩm</h2>
-            <Grid container>
-              <Grid item xs={12} md={6}>
-                <Grid container>
-                  <Grid item xs={12} md={3}>
-                    {" "}
-                    <div className="flex flex-col justify-center items-center h-full">
-                      <p>
-                        <span className="font-semibold text-5xl">
-                          {average || 0}
-                        </span>
-                        <span className="font-semibold text-4xl">/5</span>
-                      </p>
-                      <Rating
-                        size="small"
-                        name="read-only"
-                        value={average ? average : 0}
-                        readOnly
-                      />
-                      <p>{totalComments} đánh giá</p>
-                    </div>
-                  </Grid>
-                  <Grid item xs={12} md={9}>
-                    <div>
-                      <div className="flex gap-2">
-                        <span>5 sao</span>
-                        <Slider
-                          value={
-                            data?.comments ? ratingCount(data.comments, 5) : 0
-                          }
-                          color="warning"
-                          max={totalComments}
-                          min={0}
-                          valueLabelDisplay="auto"
-                        />
-                        <div className=" w-10">
-                          {data?.comments && totalComments
-                            ? (
-                                (ratingCount(data.comments, 5) /
-                                  totalComments) *
-                                100
-                              ).toFixed(1)
-                            : 0}{" "}
-                          %
-                        </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <span>4 sao</span>
-                        <Slider
-                          value={
-                            data?.comments ? ratingCount(data.comments, 4) : 0
-                          }
-                          color="warning"
-                          valueLabelDisplay="auto"
-                          max={totalComments}
-                          min={0}
-                        />
-                        <div className=" w-10">
-                          {data?.comments && totalComments
-                            ? (
-                                (ratingCount(data.comments, 4) /
-                                  totalComments) *
-                                100
-                              ).toFixed(2)
-                            : 0}{" "}
-                          %
-                        </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <span>3 sao</span>
-                        <Slider
-                          value={
-                            data?.comments ? ratingCount(data.comments, 3) : 0
-                          }
-                          color="warning"
-                          valueLabelDisplay="auto"
-                          max={totalComments}
-                        />
-                        <div className=" w-10">
-                          {data?.comments && totalComments
-                            ? (
-                                (ratingCount(data.comments, 3) /
-                                  totalComments) *
-                                100
-                              ).toFixed(2)
-                            : 0}{" "}
-                          %
-                        </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <span>2 sao</span>
-                        <Slider
-                          value={
-                            data?.comments ? ratingCount(data.comments, 2) : 0
-                          }
-                          color="warning"
-                          valueLabelDisplay="auto"
-                          max={totalComments}
-                        />
-                        <div className=" w-10">
-                          {data?.comments && totalComments
-                            ? (
-                                (ratingCount(data.comments, 2) /
-                                  totalComments) *
-                                100
-                              ).toFixed(2)
-                            : 0}{" "}
-                          %
-                        </div>
-                      </div>
-                      <div className="flex gap-2">
-                        <span>1 sao</span>
-                        <Slider
-                          value={
-                            data?.comments ? ratingCount(data.comments, 1) : 0
-                          }
-                          color="warning"
-                          valueLabelDisplay="auto"
-                          max={totalComments}
-                        />
-                        <div className=" w-10">
-                          {data?.comments && totalComments
-                            ? (
-                                (ratingCount(data.comments, 1) /
-                                  totalComments) *
-                                100
-                              ).toFixed(2)
-                            : 0}{" "}
-                          %
-                        </div>
-                      </div>
-                    </div>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item xs={12} md={6}></Grid>
-            </Grid>
+          <div className="bg-white p-4 rounded-lg mt-4">
+            <h1 className=" font-semibold text-2xl">Đánh giá cuốn sách</h1>
+            <div className="my-4 flex gap-4 w-full justify-between max-w-2xl flex-col md:flex-row">
+              <div>
+                <p>
+                  <span className="font-semibold text-5xl">{average || 0}</span>
+                  <span className="font-semibold text-4xl">/5</span>
+                </p>
+                <Rate disabled value={average} className="mt-4" />
+                <p className="mt-4">{xTotalCount} đánh giá</p>
+              </div>
+              <div>
+                <div className="flex gap-4">
+                  <Rate disabled defaultValue={5} />
+                  {ratingCount(data?.comments || [], 5)} đánh giá
+                </div>
+                <div className="flex gap-4">
+                  <Rate disabled defaultValue={4} />
+                  {ratingCount(data?.comments || [], 4)} đánh giá
+                </div>
+                <div className="flex gap-4">
+                  <Rate disabled defaultValue={3} />
+                  {ratingCount(data?.comments || [], 3)} đánh giá
+                </div>
+                <div className="flex gap-4">
+                  <Rate disabled defaultValue={2} />
+                  {ratingCount(data?.comments || [], 2)} đánh giá
+                </div>
+                <div className="flex gap-4">
+                  <Rate disabled defaultValue={1} />
+                  {ratingCount(data?.comments || [], 1)} đánh giá
+                </div>
+              </div>
+            </div>
+
             {comments?.map((e, i) => (
               <div key={i}>
                 <hr className="my-4" />
-                <Grid container>
-                  <Grid item xs={12} md={3}>
-                    <div>
-                      <p>{e.user?.name}</p>
-                      <p>{dayjs(e.createAt).format("DD/MM/YYYY")}</p>
+                <div className="grid grid-cols-3 gap-4">
+                  <div className=" col-span-1">
+                    <div className="flex items-center gap-4 flex-wrap">
+                      <Avatar src={e.user?.avatar} alt="Avatar">
+                        {e.user?.name[0]}
+                      </Avatar>
+                      <div>
+                        <p>{e?.user?.name}</p>
+                        <p>{dayjs(e.createAt).format("DD/MM/YYYY")}</p>
+                      </div>
                     </div>
-                  </Grid>
-                  <Grid item xs={12} md={9}>
+                  </div>
+                  <div className=" col-span-2">
                     <div>
-                      <Rating name="read-only" value={e.score} readOnly />
+                      <Rate disabled defaultValue={e.score} />
                       <p>{e.content}</p>
                     </div>
-                  </Grid>
-                </Grid>
+                  </div>
+                </div>
               </div>
             ))}
-            <div className="flex justify-center">
-              <Pagination count={pageTotal} onChange={handlePage} />
-            </div>
-          </div> */}
+            {comments?.length > 0 && (
+              <div className="flex justify-center mt-4">
+                <Pagination
+                  current={currentPage}
+                  total={xTotalCount}
+                  showSizeChanger
+                  onChange={(page) => handleChangePage(page)}
+                  onShowSizeChange={onShowSizeChange}
+                  locale={{ items_per_page: "/trang" }}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </main>
       <FooterComp />

@@ -33,11 +33,11 @@
     {
       "email": "longmanhnguyen205@gmail.com",
       "role": "user",
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/upload-file-51381.appspot.com/o/images%2Fgai-xinh-han-quoc-2-1.jpg?alt=media&token=b043bc66-1b08-4407-a4b6-ee220e9528b6",
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/upload-file-51381.appspot.com/o/images%2Ft%E1%BA%A3i%20xu%E1%BB%91ng.jfif?alt=media&token=4ae46183-2d19-42f7-ba82-51251f7b55e2",
       "password": "$2a$10$w.MyRx8oPpFMjhf1mzNBkuQtFK7EHFzAADBss/5TBZz8g/Y.bqh5m",
-      "name": "Nguyễn Mạnh ",
+      "name": "Loa thung 123",
       "isLock": false,
-      "phone": "1111111111",
+      "phone": "1233211232",
       "id": 4
     },
     {
@@ -124,6 +124,29 @@
       "role": "user",
       "id": 13,
       "avatar": "https://firebasestorage.googleapis.com/v0/b/upload-file-51381.appspot.com/o/images%2F9786043561272_1_1.jpg?alt=media&token=253f48f5-e690-48a2-a839-d4790e6ba86f"
+    },
+    {
+      "email": "qazx@gmail.com",
+      "password": "$2a$10$hutLGvRP8wBwR1EpwYx8uOCA2KYgUxiVUDPhyukltYPmCOlgV60Bq",
+      "name": "qazx",
+      "phone": "0123456789",
+      "id": 14
+    },
+    {
+      "email": "longnm20052000@gmail.com",
+      "password": "$2a$10$kMs7/uhx8WgT5XtH.Ishje/7h9zqNUcC1Et0xDX/AoaLMONk1HzWe",
+      "name": "Nguyen Long",
+      "phone": "0123456789",
+      "role": "user",
+      "id": 15
+    },
+    {
+      "email": "longnm20052001@gmail.com",
+      "password": "$2a$10$4MaLhez.TMpoAdVvrEbVp.DdfLNnXgAb6xGYgjZNQaknjy/E25sDC",
+      "name": "long hoys",
+      "phone": "0123456789",
+      "id": 16,
+      "avatar": "https://firebasestorage.googleapis.com/v0/b/upload-file-51381.appspot.com/o/images%2F9786043561272_1_1.jpg?alt=media&token=931e1481-2e27-480f-852b-edf4e3fecea4"
     }
   ],
   "types": [
@@ -164,10 +187,6 @@
       "name": "Sách Kinh Tế"
     },
     {
-      "id": 10,
-      "name": "Sách Tôn Giáo - Tâm Linh"
-    },
-    {
       "id": 11,
       "name": "Sách Âm Nhạc - Nghệ Thuật"
     },
@@ -186,10 +205,6 @@
     {
       "id": 15,
       "name": "Sách Du Lịch"
-    },
-    {
-      "id": 16,
-      "name": "Sách Điện Ảnh - Truyền Hình"
     },
     {
       "id": 17,
@@ -379,7 +394,7 @@
       "supplier": "IndieBound",
       "publisher": "J.B. Lippincott & Co.",
       "language": "English",
-      "quantity": 10,
+      "quantity": 11,
       "weight": 500,
       "dimensions": "14 x 20 x 2 cm",
       "releaseDate": 1960,
@@ -397,7 +412,7 @@
       "supplier": "Books-A-Million",
       "publisher": "Scribner",
       "language": "English",
-      "quantity": 10,
+      "quantity": 6,
       "weight": 480,
       "dimensions": "13 x 20 x 2 cm",
       "releaseDate": 1925,
@@ -415,7 +430,7 @@
       "supplier": "Amazon",
       "publisher": "Allen & Unwin",
       "language": "English",
-      "quantity": 10,
+      "quantity": 9,
       "weight": 600,
       "dimensions": "15 x 22 x 3 cm",
       "releaseDate": 1937,
@@ -750,22 +765,40 @@
       "createAt": 1702870620211
     },
     {
-      "title": "ưeqqw",
-      "author": "eqweq",
-      "supplier": "ewqewq",
-      "publisher": "eqwewq",
-      "language": "eqweqw",
-      "quantity": 1,
-      "weight": 1,
-      "dimensions": "ewqewq",
-      "releaseDate": 2024,
-      "format": "ewqeqw",
-      "numberOfPages": 1,
-      "description": "ewqeqw",
-      "avatar": "https://firebasestorage.googleapis.com/v0/b/upload-file-51381.appspot.com/o/images%2F9786043561272_1_1.jpg?alt=media&token=b9a4fce6-f312-40dc-a5c8-02ec91dd8a82",
-      "createAt": 1704358492592,
-      "typeId": 1,
+      "description": "Cô Bé Quàng Khăn Đỏ của Jodi Picoult là một phiên bản hiện đại của câu chuyện cổ tích với nhiều yếu tố mới lạ và sâu sắc.",
+      "typeId": 18,
+      "numberOfPages": 390,
+      "format": "bìa mềm",
+      "releaseDate": 2011,
+      "dimensions": "14 x 21 x 2.5 cm",
+      "weight": 550,
+      "quantity": 11,
+      "language": "Tiếng Việt",
+      "publisher": "NXB Văn Học",
+      "supplier": "Tiki",
+      "author": "Jodi Picoult",
+      "title": "Cô Bé Quàng Khăn Đỏ",
+      "avatar": "",
+      "createAt": 1704682542490,
       "id": 31
+    },
+    {
+      "description": "Cô Bé Quàng Khăn Đỏ của Jodi Picoult là một phiên bản hiện đại của câu chuyện cổ tích với nhiều yếu tố mới lạ và sâu sắc.",
+      "typeId": 18,
+      "numberOfPages": 390,
+      "format": "bìa mềm",
+      "releaseDate": 2011,
+      "dimensions": "14 x 21 x 2.5 cm",
+      "weight": 550,
+      "quantity": 11,
+      "language": "Tiếng Việt",
+      "publisher": "NXB Văn Học",
+      "supplier": "Tiki",
+      "author": "Jodi Picoult",
+      "title": "Cô Bé Quàng Khăn Đỏ",
+      "avatar": "",
+      "createAt": 1704682575005,
+      "id": 32
     }
   ],
   "comments": [
@@ -898,11 +931,11 @@
       "id": 16
     },
     {
-      "score": 1,
-      "content": "ewqeqwewq",
+      "score": 4,
+      "content": "1234",
       "productId": 30,
       "userId": 4,
-      "createAt": 1702958089428,
+      "createAt": 1704650291309,
       "id": 17
     },
     {
@@ -944,6 +977,14 @@
       "userId": 4,
       "createAt": 1703561528813,
       "id": 22
+    },
+    {
+      "content": "ưqeqw",
+      "score": 5,
+      "productId": 30,
+      "userId": 4,
+      "createAt": 1704647986670,
+      "id": 23
     }
   ],
   "orders": [
@@ -1003,12 +1044,21 @@
     },
     {
       "userId": 4,
-      "productId": 31,
+      "productId": 30,
+      "status": 3,
+      "borrowedDate": "2024-01-06T17:00:00.000Z",
+      "returnDate": "2024-01-07T17:00:00.000Z",
+      "createAt": 1704639157626,
+      "id": 8
+    },
+    {
+      "userId": 4,
+      "productId": 30,
       "status": 2,
-      "borrowedDate": "2024-01-03T17:00:00.000Z",
-      "returnDate": "2024-01-04T17:00:00.000Z",
-      "createAt": 1704358819096,
-      "id": 7
+      "borrowedDate": "2024-01-07T17:00:00.000Z",
+      "returnDate": "2024-01-08T17:00:00.000Z",
+      "createAt": 1704667378914,
+      "id": 11
     }
   ]
 }

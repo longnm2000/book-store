@@ -30,9 +30,13 @@ export const addNewOrder = (data: {
   return axiosConfig.post("/orders", data);
 };
 
-export const getAllOrdersByUserId = (userId: number, page: number) => {
+export const getAllOrdersByUserId = (
+  userId: number,
+  page: number,
+  limit: number
+) => {
   return axiosInstance.get(
-    `/orders?userId=${userId}&_expand=product&_page=${page}&_limit=5&_sort=createAt&_order=desc`
+    `/orders?userId=${userId}&_expand=product&_page=${page}&_limit=${limit}&_sort=createAt&_order=desc`
   );
 };
 

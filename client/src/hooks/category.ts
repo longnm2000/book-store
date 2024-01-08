@@ -22,5 +22,5 @@ export const useCategory = () => {
     fetchCategories();
   }, []);
 
-  return { categories, isLoading };
+  return { categories, isLoading, fetchCategories };
 };

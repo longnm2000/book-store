@@ -3,19 +3,10 @@ import HeaderComp from "../../components/layout/header/HeaderComp";
 import FooterComp from "../../components/layout/footer/FooterComp";
 import { useState } from "react";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import {
-  Box,
-  Button,
-  Grid,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Avatar,
-  DialogActions,
-} from "@mui/material";
+import { Grid, Avatar } from "@mui/material";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useGetUserByID } from "../../hooks/user";
@@ -25,27 +16,28 @@ import { storage } from "../../../firebase";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { toast } from "react-toastify";
 import { updateDetailUser } from "../../api/user";
-import { AxiosResponse } from "axios";
 import { act_setUser } from "../../redux/action";
+import { Button, Form, Input, Modal } from "antd";
 
 interface updateInfo {
   name: string;
   phone: string;
+  image: any;
 }
 
 const schema = yup.object().shape({
   name: nameValidation,
   phone: phoneValidation,
+  image: yup.mixed().notRequired(),
 });
 const ProfilePage: React.FC = () => {
   const dispatch = useDispatch();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const currentUser = useSelector((state: any) => state.user);
   const { detailUser, fetchDetailUser } = useGetUserByID(currentUser.id);
-  console.log(detailUser, currentUser.id);
 
-  const [imageUrlAvatar, setImageUrlAvatar] = useState<string>(
-    currentUser?.avatar
+  const [selectedImage, setSelectedImage] = useState<string>(
+    detailUser?.avatar || currentUser?.avatar
   );
 
   const {
@@ -65,43 +57,42 @@ const ProfilePage: React.FC = () => {
 
   const handleClose = () => {
     setOpen(false);
-    reset();
-    setImageUrlAvatar(currentUser?.avatar);
   };
 
-  const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedImage = e.target.files?.[0];
+  const onSubmit = async (data: any) => {
+    console.log("ok");
 
-    if (selectedImage) {
-      const storageRef = ref(storage, `images/${selectedImage.name}`);
-      uploadBytes(storageRef, selectedImage)
-        .then((snapshot) => getDownloadURL(snapshot.ref))
-        .then((url) => {
-          setImageUrlAvatar(url);
-          toast.success("Upload ảnh thành công");
-        })
-        .catch((error) => {
-          console.error("Error uploading image:", error);
-        });
-    }
-  };
+    try {
+      const { image, ...updateInfo } = data;
+      let finalUpdateInfo = { ...updateInfo, avatar: selectedImage };
+      if (image && image instanceof File) {
+        const storageRef = ref(storage, `images/${image.name}`);
+        const snapshot = await uploadBytes(storageRef, image);
+        const url = await getDownloadURL(snapshot.ref);
+        finalUpdateInfo = { ...finalUpdateInfo, avatar: url };
+      }
+      console.log(data);
 
-  const onSubmit = (data: updateInfo) => {
-    const info = { ...data, avatar: imageUrlAvatar };
-    updateDetailUser(currentUser.id, info).then((response: AxiosResponse) => {
+      const response = await updateDetailUser(currentUser.id, finalUpdateInfo);
+
       if (response.status === 200) {
         fetchDetailUser(currentUser.id);
         toast.success("Thay đổi thông tin thành công");
-        dispatch(act_setUser({ ...currentUser, ...info }));
+        dispatch(act_setUser({ ...currentUser, ...finalUpdateInfo }));
         localStorage.setItem(
           "user",
-          JSON.stringify({ ...currentUser, ...info })
+          JSON.stringify({ ...currentUser, ...finalUpdateInfo })
         );
         handleClose();
+        fetchDetailUser(currentUser.id);
       }
-    });
+    } catch (error) {
+      console.error("Error occurred:", error);
+      if (error instanceof Error) {
+        toast.error(`Đã xảy ra lỗi: ${error.message}`);
+      }
+    }
   };
-  console.log(imageUrlAvatar);
 
   return (
     <>
@@ -109,62 +100,67 @@ const ProfilePage: React.FC = () => {
         <title>Thông tin cá nhân</title>
       </Helmet>
       <HeaderComp />
-      <React.Fragment>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle>
-            <div className="flex">
-              <p>Sửa Thông Tin</p>
-            </div>
-          </DialogTitle>
+      <Modal
+        title="Sửa Thông Tin"
+        open={open}
+        onCancel={handleClose}
+        onOk={handleSubmit(onSubmit)}
+        cancelText="Huỷ"
+        okText="Thay đổi"
+        okButtonProps={{
+          style: { background: "#FF7506", color: "white" },
+        }}
+      >
+        <img
+          src={selectedImage}
+          alt=""
+          style={{
+            maxWidth: "300px",
+            width: "100%",
+            display: "block",
+            margin: "auto",
+          }}
+        />
+        <Form layout="vertical" style={{ marginTop: "16px" }}>
+          <Controller
+            control={control}
+            name="image"
+            render={({ field: { onChange, onBlur, value, ref } }) => (
+              <Form.Item label="Chọn Ảnh" valuePropName="file">
+                {" "}
+                <Input
+                  type="file"
+                  onChange={(e) => {
+                    if (e.target?.files) {
+                      onChange(e.target.files[0]);
+                      setSelectedImage(URL.createObjectURL(e.target.files[0]));
+                    }
+                  }}
+                  onBlur={onBlur}
+                  ref={ref}
+                />
+              </Form.Item>
+            )}
+          />
+          <CustomInput
+            name="name"
+            control={control}
+            error={!!errors.name}
+            helperText={errors.name?.message}
+            label="Họ tên"
+            defaultValue={detailUser?.name}
+          />
+          <CustomInput
+            name="phone"
+            control={control}
+            label="Số điện thoại"
+            error={!!errors.phone}
+            helperText={errors.phone?.message}
+            defaultValue={detailUser?.phone}
+          />
+        </Form>
+      </Modal>
 
-          <DialogContent>
-            <div>
-              <div className="p-4" style={{ marginBottom: "20px" }}>
-                <img src={imageUrlAvatar} alt="" width={200} />
-              </div>
-              <div className="">
-                <input type="file" onChange={handleAvatarUpload} className="" />
-              </div>
-            </div>
-            <Box component="form" noValidate>
-              <CustomInput
-                name="name"
-                control={control}
-                error={!!errors.name}
-                helperText={errors.name?.message}
-                label="Họ tên"
-                defaultValue={detailUser?.name}
-              />
-              <CustomInput
-                name="phone"
-                control={control}
-                label="Số điện thoại"
-                error={!!errors.phone}
-                helperText={errors.phone?.message}
-                defaultValue={detailUser?.phone}
-              />
-            </Box>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Huỷ</Button>
-            <Button
-              type="submit"
-              variant="contained"
-              className="bg-red-500"
-              color="success"
-              sx={{ mt: 3, mb: 2 }}
-              onClick={handleSubmit(onSubmit)}
-            >
-              Lưu
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </React.Fragment>
       <main className=" bg-slate-50">
         <div className="container mx-auto py-4">
           <div className=" max-w-xl p-4 rounded-lg mx-auto bg-white">
@@ -199,9 +195,8 @@ const ProfilePage: React.FC = () => {
                   </tbody>
                 </table>
                 <Button
-                  variant="outlined"
                   onClick={handleClickOpen}
-                  className="mt-4 ms-2"
+                  className="mt-4 ms-2 bg-blue-500 hover:bg-blue-700 text-white"
                 >
                   Sửa thông tin
                 </Button>

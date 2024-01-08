@@ -76,54 +76,56 @@ const LoginPage: React.FC = () => {
         <title>Đăng nhập</title>
       </Helmet>
 
-      <div className="sm:py-20  mx-auto bg-repeat-y bg-center bg-cover bg-[url('https://marketplace.canva.com/EAD2962NKnQ/2/0/1600w/canva-rainbow-gradient-pink-and-purple-virtual-background-_Tcjok-d9b4.jpg')]">
-        <div className="container mx-auto">
-          <div className=" lg:w-2/5 max-w-5xl mx-auto p-2 md:p-4 md:rounded-lg bg-white shadow-xl">
-            <Form
-              onFinish={handleSubmit(onSubmit)}
-              layout="vertical"
-              className=" mx-auto lg:p-3"
-            >
-              <div className="flex justify-between">
-                <h1 className=" font-semibold text-2xl text-center mb-3">
-                  Đăng Nhập
-                </h1>
-                <Link to={"/register"}>
-                  {" "}
-                  <Button type="text" className=" capitalize text-blue-400">
-                    Đăng ký
-                  </Button>
-                </Link>
-              </div>
-              <CustomInput
-                control={control}
-                name="email"
-                label="Email"
-                error={!!errors.email}
-                helperText={errors.email?.message}
-                defaultValue=""
-              />
-              <PasswordInput
-                control={control}
-                name="password"
-                error={!!errors.password}
-                helperText={errors.password?.message}
-                label="Mật khẩu"
-              />
-
-              <Button
-                htmlType="submit"
-                block
-                className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-semibold px-4 rounded-lg capitalize"
+      <div className="sm:py-20 bg-center w-screen h-screen bg-gradient-to-r from-indigo-200 via-purple-400 to-pink-400">
+        <div className="container mx-auto w-full h-full">
+          <div className=" flex justify-center items-center w-full h-full">
+            <div className=" lg:w-2/5 max-w-5xl p-2 md:p-4 md:rounded-lg bg-white shadow-xl">
+              <Form
+                onFinish={handleSubmit(onSubmit)}
+                layout="vertical"
+                className="lg:p-3"
               >
-                Đăng nhập
-              </Button>
-            </Form>
-            <Link to={"/forgot-password"}>
-              <Button type="text" className=" capitalize text-blue-400">
-                Quên mật khẩu?
-              </Button>
-            </Link>
+                <div className="flex justify-between">
+                  <h1 className=" font-semibold text-2xl text-center mb-3">
+                    Đăng Nhập
+                  </h1>
+                  <Link to={"/register"}>
+                    {" "}
+                    <Button type="text" className=" capitalize text-blue-400">
+                      Đăng ký
+                    </Button>
+                  </Link>
+                </div>
+                <CustomInput
+                  control={control}
+                  name="email"
+                  label="Email"
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
+                  defaultValue=""
+                />
+                <PasswordInput
+                  control={control}
+                  name="password"
+                  error={!!errors.password}
+                  helperText={errors.password?.message}
+                  label="Mật khẩu"
+                />
+
+                <Button
+                  htmlType="submit"
+                  block
+                  className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-semibold px-4 rounded-lg capitalize"
+                >
+                  Đăng nhập
+                </Button>
+              </Form>
+              <Link to={"/forgot-password"}>
+                <Button type="text" className=" capitalize text-blue-400">
+                  Quên mật khẩu?
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

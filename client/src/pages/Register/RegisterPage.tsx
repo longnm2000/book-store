@@ -64,74 +64,83 @@ const RegisterPage: React.FC = () => {
       <Helmet>
         <title>Đăng ký</title>
       </Helmet>
-
-      <div className="sm:py-20  mx-auto bg-no-repeat bg-center bg-cover bg-[url('https://marketplace.canva.com/EAD2962NKnQ/2/0/1600w/canva-rainbow-gradient-pink-and-purple-virtual-background-_Tcjok-d9b4.jpg')]">
-        <div className="container mx-auto">
-          <div className="lg:w-2/5 max-w-5xl mx-auto p-2 md:p-4 md:rounded-lg bg-white shadow-xl">
-            <div className=" flex justify-between mb-2">
-              <h1 className="text-2xl font-semibold text-center">Đăng Ký</h1>
-              <Link to={"/login"}>
-                {" "}
-                <Button
-                  type="text"
-                  className="text-sm capitalize text-blue-400"
-                >
-                  Đăng nhập
-                </Button>
-              </Link>
-            </div>
-            <Form
-              layout="vertical"
-              onFinish={handleSubmit(onSubmit)}
-              className=" w-full"
-            >
-              <CustomInput
-                control={control}
-                name="name"
-                label="Họ Tên"
-                error={!!errors.name}
-                helperText={errors.name?.message}
-                defaultValue=""
-              />
-
-              <CustomInput
-                control={control}
-                name="email"
-                label="Email"
-                error={!!errors.email}
-                helperText={errors.email?.message}
-                defaultValue=""
-              />
-
-              <PasswordInput
-                control={control}
-                name="password"
-                error={!!errors.password}
-                helperText={errors.password?.message}
-                label="Mật khẩu"
-              />
-
-              <CustomInput
-                control={control}
-                name="phone"
-                label="Số Điện thoại"
-                error={!!errors.phone}
-                helperText={errors.phone?.message}
-                defaultValue=""
-              />
-
-              <Button
-                htmlType="submit"
-                block
-                className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-semibold px-4 rounded-lg capitalize"
+      <div className="sm:py-20 bg-center w-screen h-screen bg-gradient-to-r from-indigo-200 via-purple-400 to-pink-400">
+        <div className="container mx-auto w-full h-full">
+          <div className=" flex justify-center items-center w-full h-full">
+            <div className=" lg:w-2/5 max-w-5xl p-2 md:p-4 md:rounded-lg bg-white shadow-xl">
+              <Form
+                layout="vertical"
+                onFinish={handleSubmit(onSubmit)}
+                className=" w-full"
               >
-                Đăng ký
-              </Button>
-            </Form>
+                <div className=" flex justify-between mb-2">
+                  <h1 className="text-2xl font-semibold text-center">
+                    Đăng Ký
+                  </h1>
+                  <Link to={"/login"}>
+                    {" "}
+                    <Button
+                      type="text"
+                      className="text-sm capitalize text-blue-400"
+                    >
+                      Đăng nhập
+                    </Button>
+                  </Link>
+                </div>
+                <CustomInput
+                  control={control}
+                  name="name"
+                  label="Họ Tên"
+                  error={!!errors.name}
+                  helperText={errors.name?.message}
+                  defaultValue=""
+                />
+
+                <CustomInput
+                  control={control}
+                  name="email"
+                  label="Email"
+                  error={!!errors.email}
+                  helperText={errors.email?.message}
+                  defaultValue=""
+                />
+
+                <PasswordInput
+                  control={control}
+                  name="password"
+                  error={!!errors.password}
+                  helperText={errors.password?.message}
+                  label="Mật khẩu"
+                />
+
+                <CustomInput
+                  control={control}
+                  name="phone"
+                  label="Số Điện thoại"
+                  error={!!errors.phone}
+                  helperText={errors.phone?.message}
+                  defaultValue=""
+                />
+
+                <Button
+                  htmlType="submit"
+                  block
+                  className="mt-2 bg-blue-500 hover:bg-blue-700 text-white font-semibold px-4 rounded-lg capitalize"
+                >
+                  Đăng ký
+                </Button>
+              </Form>
+            </div>
           </div>
         </div>
       </div>
-      <FooterComp />
+
+      {/* <div className="sm:py-20  mx-auto bg-no-repeat bg-center bg-cover bg-[url('https://marketplace.canva.com/EAD2962NKnQ/2/0/1600w/canva-rainbow-gradient-pink-and-purple-virtual-background-_Tcjok-d9b4.jpg')]">
+        <div className="container mx-auto">
+          <div className="lg:w-2/5 max-w-5xl mx-auto p-2 md:p-4 md:rounded-lg bg-white shadow-xl"></div>
+        </div>
+      </div> */}
+      {/* <FooterComp /> */}
     </>
   );
 };

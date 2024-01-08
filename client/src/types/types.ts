@@ -28,7 +28,7 @@ export interface Book {
   releaseDate: number;
   format: string;
   numberOfPages: number;
-  categories: number[];
+  typeId: number;
   description: string;
   quantity: number;
   createAt: number;
@@ -90,6 +90,10 @@ export interface Order {
   borrowedDate: number;
   returnDate: number;
   createAt: Date;
+  product: Book;
+}
+
+export interface OrderDetail extends Order {
   product: Book;
 }
 

@@ -4,12 +4,16 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { toast } from "react-toastify";
 import { axiosConfig } from "../../../api/config";
 import { AxiosResponse } from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ProductForm from "../../../components/ProductForm/ProductForm";
 import { Book } from "../../../types/types";
+import { useDetailProduct } from "../../../hooks/product";
+import { Button } from "antd";
 
-const AddProductPage: FC = () => {
+const UpdateProductPage: FC = () => {
   const navigate = useNavigate();
+  const productId = useParams().id;
+  const { detailProduct, isLoading } = useDetailProduct(Number(productId));
   const year = new Date().getFullYear();
   const defaultBook: Book = {
     id: 0,
@@ -29,7 +33,6 @@ const AddProductPage: FC = () => {
     quantity: 1,
     createAt: Date.now(),
   };
-
   const onSubmit = async (data: any) => {
     try {
       const { image, ...updateInfo } = data;
@@ -55,12 +58,26 @@ const AddProductPage: FC = () => {
       }
     }
   };
+
+  console.log(detailProduct);
+
   return (
     <>
-      <h1 className="font-semibold text-2xl">Thêm Sản Phẩm</h1>
-      <ProductForm onSubmit={onSubmit} defaultValue={defaultBook} />
+      <div className="flex flex-wrap justify-between">
+        <h1 className="font-semibold text-2xl mb-4">Sửa Sản Phẩm</h1>
+        <Button type="link" onClick={() => navigate("/admin/products")}>
+          Quay lại
+        </Button>
+      </div>
+      {isLoading ? (
+        <p>Đang tải</p>
+      ) : detailProduct ? (
+        <ProductForm onSubmit={onSubmit} defaultValue={detailProduct} />
+      ) : (
+        navigate("*")
+      )}
     </>
   );
 };
 
-export default AddProductPage;
+export default UpdateProductPage;

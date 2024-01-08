@@ -5,6 +5,7 @@ import { BookInfo } from "../../../types/types";
 import { Button, Modal, Pagination, PaginationProps, Table } from "antd";
 import {
   DeleteOutlined,
+  EditOutlined,
   ExclamationCircleFilled,
   EyeOutlined,
 } from "@ant-design/icons";
@@ -13,13 +14,14 @@ import dayjs from "dayjs";
 import { axiosConfig } from "../../../api/config";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const ManagerProductsPage: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState<BookInfo>();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [limit, setLimit] = useState(10);
-  const { products, isLoading, xTotalCount } = useAllProducts(
+  const { products, isLoading, xTotalCount, fetchAllProducts } = useAllProducts(
     currentPage,
     limit
   );
@@ -74,6 +76,14 @@ const ManagerProductsPage: React.FC = () => {
             Xem
           </Button>
           <Button
+            type="primary"
+            icon={<EditOutlined />}
+            className="bg-orange-500 hover:bg-orange-700"
+            onClick={() => navigate(`/admin/products/update/${record.id}`)}
+          >
+            Sửa
+          </Button>
+          <Button
             icon={<DeleteOutlined />}
             danger
             onClick={() => handleDelete(record.id)}
@@ -112,10 +122,29 @@ const ManagerProductsPage: React.FC = () => {
       },
       okType: "danger",
       cancelText: "Huỷ",
-      onOk() {
+      async onOk() {
         try {
-          axiosConfig.delete("/products/" + id);
+          const orderResponse = await axiosConfig.get(
+            `/orders?productId=${id}&status=0&status=1`
+          );
+          if (orderResponse.data.length > 0) {
+            toast.error(
+              "Sản phẩm đang trong tình trạng đang xử lý hoặc đang cho mượn chưa thu hồi, không thể xóa"
+            );
+            return;
+          }
+          const response = await axiosConfig.get(
+            `/orders?productId=${id}&status=0&status=1`
+          );
+          if (response.data.length > 0) {
+            toast.error(
+              "Sản phẩm đang trong tình trạng đang xử lý hoặc đang cho mượn, không thể xóa"
+            );
+            return;
+          }
+          await axiosConfig.delete("/products/" + id);
           toast.success("Xóa thành công");
+          fetchAllProducts(currentPage, limit);
         } catch (error) {
           console.log(error);
           toast.error("Có lỗi xảy ra");
@@ -129,7 +158,10 @@ const ManagerProductsPage: React.FC = () => {
 
   return (
     <>
-      <h1 className=" font-semibold text-2xl mb-4">Quản Lý Sản Phẩm</h1>
+      <Helmet>
+        <title>Quản lý sản phẩm</title>
+      </Helmet>
+      ;<h1 className=" font-semibold text-2xl mb-4">Quản Lý Sản Phẩm</h1>
       {isLoading ? (
         <p>Loading...</p>
       ) : (
@@ -143,6 +175,7 @@ const ManagerProductsPage: React.FC = () => {
           </Button>
           <Table
             columns={columns}
+            style={{ overflowX: "auto" }}
             dataSource={products.map((product) => ({
               ...product,
               key: product.id,
@@ -156,6 +189,7 @@ const ManagerProductsPage: React.FC = () => {
               onShowSizeChange={onShowSizeChange}
               onChange={(page) => handleChangePage(page)}
               total={xTotalCount}
+              locale={{ items_per_page: "/ trang" }}
             />
           </div>
           <Modal

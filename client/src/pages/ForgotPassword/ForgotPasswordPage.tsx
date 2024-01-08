@@ -11,6 +11,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { User } from "../../types/types";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const schema = yup.object().shape({
   email: emailValidation,
@@ -49,19 +50,19 @@ const ForgotPasswordPage: FC = () => {
       );
       if (response.data.length > 0 && response.data[0].role === "user") {
         setUser(response.data[0]);
-        // const emailResponse = await emailjs.send(
-        //   "service_yfv72ud",
-        //   "template_v2fm8n8",
-        //   templateParams,
-        //   "HaLHl0iirClrvxDNt"
-        // );
-        // if (emailResponse.status === 200) {
-        message.success("Mã khôi phục mật khẩu đã được gửi");
-        setTimeout(() => {
-          code.current = "";
-        }, 60000);
-        next();
-        // }
+        const emailResponse = await emailjs.send(
+          "service_yfv72ud",
+          "template_v2fm8n8",
+          templateParams,
+          "HaLHl0iirClrvxDNt"
+        );
+        if (emailResponse.status === 200) {
+          message.success("Mã khôi phục mật khẩu đã được gửi");
+          setTimeout(() => {
+            code.current = "";
+          }, 10000);
+          next();
+        }
       } else {
         toast.error("Email không tìm thấy");
       }
@@ -119,6 +120,7 @@ const ForgotPasswordPage: FC = () => {
       title: "Nhập mã",
       content: (
         <Form onFinish={handleEnterCode} layout="vertical">
+          <p>Mã hết hạn trong 60 giây</p>
           <Form.Item
             label="Mã thay đổi mật khẩu"
             name={"code"}
@@ -185,6 +187,9 @@ const ForgotPasswordPage: FC = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Quên Mật Khẩu</title>
+      </Helmet>
       <div className="container mx-auto pt-20">
         <div className="max-w-2xl mx-auto">
           <Steps current={current} items={items} />

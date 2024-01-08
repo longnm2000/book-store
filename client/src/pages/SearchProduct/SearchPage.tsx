@@ -16,7 +16,7 @@ import HeaderComp from "../../components/layout/header/HeaderComp";
 import FooterComp from "../../components/layout/footer/FooterComp";
 import React, { useEffect, useState } from "react";
 import { AxiosResponse } from "axios";
-import { Book } from "../../types/types";
+import { BookInfo } from "../../types/types";
 import { useCategory } from "../../hooks/category";
 import { useSearchParams } from "react-router-dom";
 import { axiosConfig } from "../../api/config";
@@ -25,7 +25,7 @@ import SearchIcon from "@mui/icons-material/Search";
 const SearchPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { categories } = useCategory();
-  const [products, setProducts] = useState<Book[]>([]);
+  const [products, setProducts] = useState<BookInfo[]>([]);
   const [totalPage, setTotalPage] = useState<number>(0);
   const [filterValue, setFilterValue] = useState({
     categoryId: searchParams.get("categoryId") || "",
@@ -63,7 +63,7 @@ const SearchPage: React.FC = () => {
   };
 
   const fetchFilteredProducts = async () => {
-    let url = `?_embed=comments&_sort=title&_page=${filterValue._page}&_limit=6`;
+    let url = `?_embed=comments&_expand=type&_sort=title&_page=${filterValue._page}&_limit=6`;
 
     if (searchParams.get("title_like")) {
       url += `&title_like=${searchParams.get("title_like")}`;
@@ -79,8 +79,6 @@ const SearchPage: React.FC = () => {
 
     try {
       const response: AxiosResponse = await axiosConfig.get(`/products${url}`);
-      console.log(`/products${url}`);
-
       setTotalPage(Math.ceil(response.headers["x-total-count"] / 6));
       setProducts(response.data);
     } catch (error) {

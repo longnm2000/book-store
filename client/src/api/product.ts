@@ -2,7 +2,7 @@ import { axiosConfig } from "./config";
 export const getProduct = () => axiosConfig.get("/products");
 
 export const getDetailProduct = (id: number) =>
-  axiosConfig.get(`/detail/${id}?_embed=comments`);
+  axiosConfig.get(`/products/${id}?_embed=comments`);
 
 export const getAllProducts = (currentPage: number, limit: number) => {
   let url = "/products?_expand=type&_sort=createAt&_order=desc";

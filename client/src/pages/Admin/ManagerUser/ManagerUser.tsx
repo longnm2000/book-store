@@ -8,6 +8,7 @@ import { axiosConfig } from "../../../api/config";
 import { ExclamationCircleFilled } from "@ant-design/icons";
 import { toast } from "react-toastify";
 import { SearchProps } from "antd/es/input";
+import { Helmet } from "react-helmet";
 
 const ManagerUser: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -124,7 +125,11 @@ const ManagerUser: React.FC = () => {
 
   return (
     <>
-      <div className="flex justify-between">
+      <Helmet>
+        <title>Quản lý người dùng</title>
+      </Helmet>
+
+      <div className="flex justify-between flex-wrap mb-4">
         <h1 className=" font-semibold text-2xl mb-4">Quản lý người dùng</h1>
         <Input.Search
           className=" max-w-xs"
@@ -138,10 +143,12 @@ const ManagerUser: React.FC = () => {
       ) : (
         <Table
           columns={columns}
+          style={{ overflowX: "auto" }}
           dataSource={allUsers.map((user) => ({
             ...user,
             key: user.id,
           }))}
+          locale={{ emptyText: "Không tìm đc kết quả" }}
           pagination={false}
         />
       )}
@@ -152,6 +159,7 @@ const ManagerUser: React.FC = () => {
           onShowSizeChange={onShowSizeChange}
           onChange={(page) => handleChangePage(page)}
           total={xTotalCount}
+          locale={{ items_per_page: "/ trang" }}
         />
       </div>
     </>

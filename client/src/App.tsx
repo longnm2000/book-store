@@ -19,6 +19,9 @@ import AdminLayout from "./components/layout/AdminLayout/AdminLayout";
 import ManagerProductsPage from "./pages/Admin/ManagerProducts/ManagerProductsPage";
 import AddProductPage from "./pages/Admin/AddProduct/AddProductPage";
 import ForgotPasswordPage from "./pages/ForgotPassword/ForgotPasswordPage";
+import UpdateProductPage from "./pages/Admin/UpdateProduct/UpdateProductPage";
+import CategoriesManagement from "./pages/Admin/CategoriesManagement/CategoriesManagement";
+import PrivateAdminRoutes from "./components/PrivateAdminRoutes/PrivateAdminRoutes";
 
 function App() {
   const navigate = useNavigate();
@@ -54,11 +57,15 @@ function App() {
         </Route>
         <Route path="/detail/:id" element={<DetailPage />} />
         <Route path="/search" element={<SearchPage />} />
-        <Route path="admin" element={<AdminLayout />}>
-          <Route path="orders" element={<ManagerOrdersPage />} />
-          <Route path="users" element={<ManagerUser />} />
-          <Route path="products" element={<ManagerProductsPage />} />
-          <Route path="products/add" element={<AddProductPage />} />
+        <Route element={<PrivateAdminRoutes />}>
+          <Route path="admin" element={<AdminLayout />}>
+            <Route path="orders" element={<ManagerOrdersPage />} />
+            <Route path="users" element={<ManagerUser />} />
+            <Route path="products" element={<ManagerProductsPage />} />
+            <Route path="products/add" element={<AddProductPage />} />
+            <Route path="products/update/:id" element={<UpdateProductPage />} />
+            <Route path="categories" element={<CategoriesManagement />} />
+          </Route>
         </Route>
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 

@@ -17,6 +17,8 @@ import { ExclamationCircleFilled, EyeOutlined } from "@ant-design/icons";
 import { changeStatusOrder } from "../../../api/order";
 import { toast } from "react-toastify";
 import { SearchProps } from "antd/es/input";
+import { Helmet } from "react-helmet";
+import { axiosConfig } from "../../../api/config";
 
 const ManagerOrdersPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,12 +42,36 @@ const ManagerOrdersPage: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleChange = (value: string, id: number) => {
+  const handleChange = (value: string, id: number, productId: number) => {
     confirm({
       title: "Bạn có chắc muốn thay đổi trạng thái không?",
       icon: <ExclamationCircleFilled />,
+      okButtonProps: {
+        style: { backgroundColor: "blue" },
+      },
+      okText: "Đồng ý",
+      cancelText: "Hủy",
       async onOk() {
         try {
+          console.log(value, id);
+
+          const response = await axiosConfig.get(`/products/${productId}`);
+          console.log(response.data);
+
+          if (response.data.quantity === 0 && Number(value) === 1) {
+            toast.error("Đã hết hàng");
+            return;
+          }
+          if (response.data.quantity > 0 && Number(value) === 1) {
+            await axiosConfig.patch(`/products/${productId}`, {
+              quantity: response.data.quantity - 1,
+            });
+          }
+          if (Number(value) === 2) {
+            await axiosConfig.patch(`/products/${productId}`, {
+              quantity: response.data.quantity + 1,
+            });
+          }
           await changeStatusOrder(id, Number(value));
           fetchAllOrders(searchInfo, status);
           toast.success("Thay đổi trạng thái thành công");
@@ -139,7 +165,9 @@ const ManagerOrdersPage: React.FC = () => {
             defaultValue={record.status.toString()}
             disabled={record.status === 3 || record.status === 2}
             style={{ width: 120 }}
-            onChange={(value) => handleChange(value, record.id)}
+            onChange={(value) =>
+              handleChange(value, record.id, record.productId)
+            }
             options={[
               {
                 value: "0",
@@ -157,7 +185,10 @@ const ManagerOrdersPage: React.FC = () => {
               {
                 value: "2",
                 label: "Đã Trả Sách",
-                disabled: record.status === 3 || record.status === 2,
+                disabled:
+                  record.status === 3 ||
+                  record.status === 2 ||
+                  record.status === 0,
               },
               {
                 value: "3",
@@ -190,7 +221,11 @@ const ManagerOrdersPage: React.FC = () => {
         <p className="text-center">Đang tải</p>
       ) : (
         <>
-          <div className="flex justify-between">
+          <Helmet>
+            <title>Quản lý mượn sách</title>
+          </Helmet>
+
+          <div className="flex justify-between flex-wrap mb-4">
             <h1 className=" font-semibold text-2xl mb-4">Quản lý mượn sách</h1>
             <div className="flex gap-2 ">
               {" "}
@@ -230,11 +265,13 @@ const ManagerOrdersPage: React.FC = () => {
             </div>
           </div>
           <Table
+            style={{ overflowX: "auto" }}
             columns={columns}
             dataSource={orders.map((order) => ({
               ...order,
               key: order.id,
             }))}
+            locale={{ emptyText: "Không có dữ liệu" }}
             pagination={false}
           />
           <div className="flex justify-center mt-4">
@@ -244,6 +281,7 @@ const ManagerOrdersPage: React.FC = () => {
               onShowSizeChange={onShowSizeChange}
               onChange={(page) => handleChangePage(page)}
               total={xTotalCount}
+              locale={{ items_per_page: "/ trang" }}
             />
           </div>
           <Modal

@@ -6,7 +6,7 @@ import { Helmet } from "react-helmet";
 import { useAllProductsWithComments } from "../../hooks/product";
 
 const HomePage: React.FC = () => {
-  const { productsWithComments } = useAllProductsWithComments("createAt", 8);
+  const { productsWithComments } = useAllProductsWithComments("createAt", 16);
   return (
     <>
       <Helmet>
@@ -103,11 +103,9 @@ const HomePage: React.FC = () => {
           </div> */}
           <div className=" bg-white rounded-lg p-4">
             <h1 className="font-semibold text-xl mb-4">CÁC CUỐN SÁCH MỚI</h1>
-            <div className="grid gap-2 lg:grid-cols-4 grid-cols-1 sm:grid-cols-3 ">
+            <div className="grid gap-8 lg:grid-cols-4 grid-cols-1 sm:grid-cols-3 ">
               {productsWithComments?.map((e, i) => (
-                <div key={i}>
-                  <CardComp book={e} />
-                </div>
+                <CardComp book={e} key={i} />
               ))}
             </div>
           </div>

@@ -1,6 +1,9 @@
 import * as yup from "yup";
 
-export const nameValidation = yup.string().required("Họ tên không để trống");
+export const nameValidation = yup
+  .string()
+  .required("Họ tên không để trống")
+  .max(50, "Họ tên không dài quá 50 ký tự");
 
 export const emailValidation = yup
   .string()

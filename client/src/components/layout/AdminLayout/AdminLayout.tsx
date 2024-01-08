@@ -24,6 +24,7 @@ const AdminLayout: React.FC = () => {
     switch (pathname) {
       case "/admin/users":
         setSelectKey("1");
+
         break;
       case "/admin/products":
         setSelectKey("2");
@@ -33,6 +34,9 @@ const AdminLayout: React.FC = () => {
         break;
       case "/admin/products/add":
         setSelectKey("2");
+        break;
+      case "/admin/categories":
+        setSelectKey("4");
         break;
       default:
         setSelectKey("3");
@@ -64,6 +68,7 @@ const AdminLayout: React.FC = () => {
         phone: "",
         avatar: "",
         isLock: false,
+        role: "",
       })
     );
     localStorage.removeItem("admin");
@@ -83,6 +88,7 @@ const AdminLayout: React.FC = () => {
           left: 0,
           top: 0,
           bottom: 0,
+          zIndex: 999,
         }}
       >
         <img src="" alt="" />
@@ -116,6 +122,15 @@ const AdminLayout: React.FC = () => {
               onClick: () => {
                 setSelectKey("3");
                 navigate("/admin/orders");
+              },
+            },
+            {
+              key: "4",
+              icon: <UnorderedListOutlined />,
+              label: "Quản lý danh mục",
+              onClick: () => {
+                setSelectKey("4");
+                navigate("/admin/categories");
               },
             },
           ]}
@@ -152,7 +167,6 @@ const AdminLayout: React.FC = () => {
                 >
                   {currentAdmin?.name.charAt(0)}
                 </Avatar>
-                <p>{currentAdmin?.name}</p>
               </div>
             </Dropdown>
           </div>
